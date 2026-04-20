@@ -1,6 +1,6 @@
 # DESIGN.md
 
-Design tokens for Hi Honey, pulled from the Figma source of truth.
+Design tokens for workflow-test, pulled from the Figma source of truth.
 
 **Figma file:** `AnSl87SgxwLiS6LL6I99x7`
 **Last synced:** 2026-04-14
