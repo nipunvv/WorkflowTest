@@ -1,15 +1,16 @@
 {
   "expo": {
-    "name": "workflow-test-scaffold",
-    "slug": "workflow-test-scaffold",
+    "name": "workflow-test",
+    "slug": "workflow-test",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "workflowtestscaffold",
+    "scheme": "workflowtest",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.workflowtest.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -38,7 +39,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
