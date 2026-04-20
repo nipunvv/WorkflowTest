@@ -1,0 +1,12 @@
+appId: com.workflowtest.app
+---
+# Pre-auth smoke: app launches, lands on login screen, Google button is present.
+# This flow requires a dev client or standalone build (`npx expo run:ios`);
+# Maestro can't attach to Expo Go because the `appId` is host.exp.Exponent.
+
+- launchApp:
+    clearState: true
+
+- assertVisible: "workflow-test"
+- assertVisible: "Sign in to continue"
+- assertVisible: "Continue with Google"

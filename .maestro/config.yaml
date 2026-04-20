@@ -1,0 +1,5 @@
+appId: com.workflowtest.app
+---
+# Shared config for all flows in this directory.
+# `appId` is read by `maestro test` when running an individual flow
+# that doesn't declare its own.
