@@ -1,0 +1,51 @@
+appId: com.workflowtest.app
+---
+# Onboarding Step 1 — Basic Info smoke flow.
+#
+# STATUS: RED-authored. Expected to fail against any build of this branch.
+# The GREEN plan (follow-up to docs/plans/2026-04-22-001-feat-onboarding-step-1-tdd-red-plan.md)
+# implements the screen UI, after which this flow is expected to pass.
+#
+# PRECONDITIONS:
+#   - Dev-client build installed on a booted iOS simulator (Maestro cannot attach to Expo Go).
+#   - User is ALREADY SIGNED IN when this flow starts. Maestro cannot drive Google OAuth
+#     inside ASWebAuthenticationSession (system Safari sheet). Sign in manually first, then
+#     run this flow with the persisted Supabase session still active.
+#
+# KNOWN MAESTRO LIMITATIONS (annotated below):
+#   - The native date picker sheet cannot be driven directly. The GREEN implementation
+#     should expose a `testID="dob-field"` that accepts an onChangeDate event so tests
+#     can simulate selection; Maestro may still struggle with the real picker UI on
+#     iOS and Android. If `tapOn: { id: "dob-field" }` + picker interaction is flaky,
+#     revisit and either split into Android/iOS variants or use `pressKey` shortcuts.
+#   - The Step 2 assertion is a placeholder. Step 2 is a follow-up issue; update the
+#     assertion text once the Step 2 stub ships.
+
+- launchApp: {}
+
+# Navigate to the onboarding screen via deep link. Requires the authed session
+# established above so the root `Stack.Protected guard={isAuthed}` admits the route.
+- openLink: workflowtest://onboarding/step-1
+
+- assertVisible: "Step 1 of 3"
+- assertVisible: "Let's get to know you"
+
+- tapOn:
+    id: "First Name"
+- inputText: "Angel"
+
+# Open the Date of Birth picker and dismiss it. Real-device picker UI varies by
+# platform; this step may need platform-specific handling during GREEN.
+- tapOn:
+    id: "dob-field"
+# After selecting a date, the picker closes. If Maestro can't drive selection,
+# GREEN should wire a developer-build shortcut (e.g., long-press to seed a date).
+
+# Toggle "Not sure" ON to exercise the diagnosis-disable path.
+- tapOn:
+    id: "diagnosis-not-sure"
+- assertVisible: "Not applicable"
+
+# Advance to Step 2. Placeholder — update this assertion once Step 2 ships.
+- tapOn: "Next"
+- assertVisible: "Step 2"

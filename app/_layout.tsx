@@ -53,6 +53,7 @@ function ThemedRootStack() {
       <Stack>
         <Stack.Protected guard={isAuthed}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         </Stack.Protected>
         <Stack.Protected guard={!isAuthed}>
