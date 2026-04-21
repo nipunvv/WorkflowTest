@@ -7,6 +7,7 @@ appId: com.workflowtest.app
 - launchApp:
     clearState: true
 
-- assertVisible: "workflow-test"
-- assertVisible: "Sign in to continue"
-- assertVisible: "Continue with Google"
+- assertVisible: "Welcome to"
+- assertVisible: "Hi Honey"
+- assertVisible: "Your health data is private & encrypted"
+- assertVisible: "Sign in with Google"
