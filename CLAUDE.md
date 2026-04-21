@@ -174,4 +174,5 @@ Read `DESIGN.md` for the design system: colors, typography, spacing, layout, bor
 - **Add `.claude/` to `.gitignore`.** Worktree and session artifacts don't belong in version control. (Currently missing from this repo's `.gitignore`.)
 - **Don't overload this file with documentation.** Longer guides, onboarding docs, and runbooks go in a `docs/` folder; this file is the map, not the territory.
 - **Put project context in files, not chat messages.** Worktrees and sub-agents read files, not conversation history — anything that matters to future work must live on disk.
+- **`docs/solutions/`** — documented solutions and learnings from past problems (bugs, best practices, workflow patterns), organized by category (`best-practices/`, `runtime-errors/`, etc.) with YAML frontmatter (`module`, `tags`, `problem_type`). Relevant when implementing or debugging in documented areas.
 - **Consider a gitignored `CLAUDE.local.md`** for personal preferences (editor quirks, individual workflow overrides) that shouldn't live in the shared file. Not created here — flagging as an option.
