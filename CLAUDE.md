@@ -11,15 +11,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Mobile stack
 
 - **Expo + Expo Router** with file-based routing in `app/`. No `pages/`, no `next.config.*`.
-- **React Native components only:** `<View>`, `<Text>`, `<Pressable>`. Never HTML elements. Never the deprecated `<TouchableOpacity>`.
+- **React Native components only:** `<View>`, `<Text>`, `<Pressable>`. Never HTML elements. Never the deprecated `<TouchableOpacity>`. **Every string goes inside `<Text>`** — a bare string child of `<View>` crashes at runtime.
 - **NativeWind** for styling (Tailwind classes via `className`). Use `StyleSheet.create()` as a fallback when NativeWind can't express the style (animated values, runtime-computed values).
 - **Supabase** for database + auth. Client-side public vars use the `EXPO_PUBLIC_` prefix.
 - **Secrets rule:** never put a secret in an `EXPO_PUBLIC_*` variable — those bundle into the distributed binary and are trivially extractable. Any call that needs a secret key goes through a backend API (Supabase Edge Function, server route, etc.) that holds the secret server-side.
 - **Testing:** Jest + React Native Testing Library for unit/integration; Maestro YAML flows for E2E. Details in *Testing conventions* below.
 - **Deploy via EAS** — `eas build`, `eas submit`. Not Vercel. Not Netlify. (OTA via `eas update` is not wired up yet — `expo-updates` is not installed.)
 - **Performance:**
-  - Use `FlatList` / `SectionList` for lists larger than ~20 items. Don't `ScrollView` + `.map()` at that size.
+  - Use `FlatList` / `SectionList` for any scrollable list beyond a handful of items. Don't `ScrollView` + `.map()` — `ScrollView` mounts every child upfront; virtualizers render only what's visible. (Reach for `FlashList` if/when items get heavy enough to jank FlatList — not installed yet.)
   - **React Compiler is enabled** (`experiments.reactCompiler: true` in `app.json`). Do NOT hand-write `React.memo` / `useMemo` / `useCallback` as a default — the compiler inserts memoization for you. Only reach for them when profiling shows the compiler missed a case.
+  - **React Compiler compat:** use `.get()` / `.set()` on Reanimated shared values (not `.value`), and destructure hook returns at the top of render (`const { push } = useRouter()`, not `router.push(…)`). Dotting into objects creates new references each render and opts the compiler out of memoization.
+  - **Don't render falsy values as JSX.** `{count && <Text>{count} items</Text>}` crashes when `count === 0` (falsy but JSX-renderable). Use `count ? <Text>…</Text> : null`, `!!count && …`, or an early return. Enable `react/jsx-no-leaked-render` in ESLint to catch it.
+  - **Never store scroll position in `useState`.** Scroll fires every frame — state updates thrash renders. Use `useSharedValue` + `useAnimatedScrollHandler` for animations, or a `useRef` for non-reactive tracking.
+- **Animations (Reanimated + Gesture Handler are installed):**
+  - Animate `transform` (translate / scale / rotate) and `opacity` only — GPU-accelerated, no layout recalculation. Animating `width` / `height` / `top` / `margin` / `padding` re-runs layout every frame and janks.
+  - For animated press states (scale, opacity feedback), use `GestureDetector` + `Gesture.Tap()` + a shared value — not `Pressable`'s `onPressIn`/`onPressOut`. Gesture callbacks run on the UI thread as worklets; Pressable round-trips through JS.
+  - For derived shared values, use `useDerivedValue` (returns a value, tracks deps automatically) — not `useAnimatedReaction` (reserve that for side effects like haptics or `runOnJS`).
+  - State should represent real state (`pressed`, `progress`, `isOpen`), not visual output (`scale`, `opacity`). Derive visuals via `interpolate(pressed.get(), [0, 1], [1, 0.95])` — single source of truth, easy to extend to more properties.
+- **Images:** use `Image` from `expo-image` (already installed) over RN's `Image`. Memory-efficient caching, blurhash placeholders, `contentFit`, `transition`, `priority`, `cachePolicy`. Reserve RN's `Image` for tiny bundled assets.
+- **Native UI primitives — prefer over JS reimplementations:**
+  - **Bottom sheets:** use `Modal` with `presentationStyle="formSheet"` (or Expo Router's `presentation: 'formSheet'` stack option). Native gestures, keyboard avoidance, a11y for free.
+  - **Menus / dropdowns:** when needed, reach for `zeego` (not installed yet) — wraps native `UIMenu` / Android popup menu. Don't roll a JS dropdown.
 - **Accessibility:** every interactive element gets `accessibilityLabel` and `accessibilityRole`. Verify with VoiceOver (iOS) and TalkBack (Android) before shipping.
 - **Deep links:** required for OAuth callbacks and universal-link handoff. The app scheme is set in `app.json` (`scheme: "workflowtest"`).
 - **Platform:** prefer cross-platform. `Platform.OS` / `Platform.select` checks are allowed but used sparingly and only for genuine behavioral differences (haptics strength, safe-area shape, back-gesture handling).
@@ -151,8 +163,11 @@ Read `DESIGN.md` for the design system: colors, typography, spacing, layout, bor
 - Use **dp units** (React Native's logical pixels), not `px`. The raw numbers in `DESIGN.md` translate directly.
 - **Flexbox only.** No CSS Grid. Multi-column layouts use `flexDirection: "row"` + `flexWrap` or `FlatList` with `numColumns`.
 - Breakpoints via **`useWindowDimensions()`**, not media queries. NativeWind's `sm:`/`md:` variants map to width buckets in `tailwind.config.js`.
-- Shadows: translate to `shadowColor` / `shadowOffset` / `shadowOpacity` / `shadowRadius` on iOS **and** `elevation` on Android. A single CSS `box-shadow` doesn't cross-compile.
-- Respect platform conventions: **safe areas** (`react-native-safe-area-context`), **status bar** per screen, **back-gesture** on Android, iOS swipe-back on stack screens.
+- **Spacing:** `gap` on the parent for space between siblings, `padding` for space within. Don't default to `margin*` on children.
+- **Rounded corners:** pair `borderRadius` with `borderCurve: 'continuous'` — smoother iOS corners (ignored on Android, free tweak).
+- **Shadows:** use CSS `boxShadow` string syntax (`boxShadow: '0 2px 8px rgba(0,0,0,0.1)'`) — RN 0.76+ cross-compiles it to iOS shadow props + Android elevation. The legacy `shadowColor` / `shadowOffset` / `shadowOpacity` / `shadowRadius` + `elevation` split is only needed on older RN.
+- **Safe areas:** on the root `ScrollView` of a screen, prefer `contentInsetAdjustmentBehavior="automatic"` over wrapping content in `SafeAreaView` or reading `useSafeAreaInsets()` by hand — iOS handles keyboard and dynamic toolbars natively without layout shifts. Use `useSafeAreaInsets` for non-scroll screens.
+- Respect platform conventions: **status bar** per screen, **back-gesture** on Android, iOS swipe-back on stack screens.
 
 ## Housekeeping
 
