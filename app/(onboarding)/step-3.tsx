@@ -1,22 +1,9 @@
-import { Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 
-// Placeholder for Onboarding Step 3. Tracked as a separate issue; this stub
-// exists so `router.push('/onboarding/step-3')` from Step 2 resolves without
-// a 404 on a dev-client build.
+// RED-phase stub. Exists so app/(onboarding)/__tests__/step-3.test.tsx
+// can import and render the screen without a module-resolution error;
+// every UI assertion fails with "Unable to find ..." — the RED signal.
+// GREEN (issue #4) replaces this with the real Preferred Language screen.
 export default function OnboardingStep3Screen() {
-  return (
-    <View className="flex-1 bg-bg-primary">
-      <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View className="flex-1 items-center justify-center px-8">
-          <Text
-            className="text-text-heading text-center"
-            style={{ fontSize: 24, fontWeight: '700' }}
-          >
-            Step 3 coming soon
-          </Text>
-        </View>
-      </SafeAreaView>
-    </View>
-  );
+  return <View testID="onboarding-step-3-screen" />;
 }
