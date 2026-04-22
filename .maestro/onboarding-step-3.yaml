@@ -1,0 +1,50 @@
+appId: com.workflowtest.app
+---
+# Onboarding Step 3 — Preferred Language smoke flow.
+#
+# STATUS: RED-authored. Expected to fail against any build of this branch.
+# The GREEN plan (follow-up to docs/plans/2026-04-22-002-feat-onboarding-step-3-tdd-red-plan.md)
+# implements the screen UI, after which this flow is expected to pass.
+#
+# PRECONDITIONS:
+#   - Dev-client build installed on a booted iOS simulator (Maestro cannot
+#     attach to Expo Go; appId must be com.workflowtest.app).
+#   - User is ALREADY SIGNED IN when this flow starts. Maestro cannot drive
+#     Google OAuth inside ASWebAuthenticationSession (system Safari sheet).
+#     Sign in manually first, then run this flow with the persisted Supabase
+#     session still active.
+#
+# SCOPE / LIMITATIONS:
+#   - A production walk-through would reach Step 3 via Step 1 → Step 2 → Step 3.
+#     Step 2 is currently a placeholder with no Next button, so this flow
+#     deep-links directly to workflowtest://onboarding/step-3 instead of
+#     exercising the Step 2 → Step 3 wiring. The Step 2 → Step 3 link will
+#     land when real Step 2 ships.
+#   - CJK matching (简体中文) works on iOS and modern Android builds; if it
+#     proves flaky on a specific device, fall back to tapOn: "Simplified Chinese"
+#     — the english translation rendered on the same row should also be tappable.
+#   - The post-Get-Started assertion ("Welcome") is a best-guess placeholder
+#     for (tabs)/index.tsx copy. Its only job is to verify navigation left
+#     onboarding — any stable tabs-side string satisfies. GREEN updates the
+#     exact text once observed against the live build.
+
+- launchApp: {}
+
+# Deep-link directly into Step 3. Expo Router resolves this once the route is
+# registered (the (onboarding) group is already in app/_layout.tsx).
+- openLink: workflowtest://onboarding/step-3
+
+- assertVisible: "Step 3 of 3"
+- assertVisible: "Preferred Language"
+- assertVisible: "You can change this later in settings"
+- assertVisible: "English"
+
+# Switch to Simplified Chinese. If the CJK tap target is flaky on a specific
+# device, replace this with: tapOn: "Simplified Chinese"
+- tapOn: "简体中文"
+
+- tapOn: "Get Started"
+
+# Landed on the default tab. Placeholder assertion text — update in GREEN
+# once the live cold-load string is verified.
+- assertVisible: "Welcome"
