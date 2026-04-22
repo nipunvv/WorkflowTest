@@ -102,13 +102,22 @@ Supabase's Redirect URL allowlist matches the host literally — `**` wildcards 
 
 Supabase's **Site URL** is the fallback when `redirect_to` doesn't match the allowlist. Keep it set to a URL the app can actually handle (`workflowtest://auth/callback` for dev-client, or the current LAN `exp://` URL for Expo Go).
 
+### Post-sign-in redirect
+
+`hooks/use-redirect-on-sign-in.ts` listens for Supabase's `SIGNED_IN` event and calls `replace('/onboarding/step-1')`. This hook is called in `app/_layout.tsx` inside `ThemedRootStack`.
+
+Key behaviours and caveats:
+- Filters on `SIGNED_IN` **only** — `INITIAL_SESSION` and `TOKEN_REFRESHED` do not trigger the redirect, so returning users with an existing session land on their default authed route.
+- Does **not** yet check whether the user has already completed onboarding — every fresh sign-in bounces to step 1. Profile-gate (`profiles.onboarding_completed`) is a tracked follow-up.
+- Do NOT add a second `onAuthStateChange` subscriber for navigation side-effects. It creates listener-ordering races against `AuthProvider`'s subscriber. Extend `AuthContext` to expose `lastAuthEvent` when that gating logic is needed.
+
 ### Routing layout
 
 Expo Router v6 with typed routes enabled.
 
 ```
 app/
-  _layout.tsx        # AuthProvider wrapper, Stack.Protected guards, AppState refresh
+  _layout.tsx        # AuthProvider wrapper, Stack.Protected guards, AppState refresh, useRedirectOnSignIn
   (auth)/            # Unauth group — only reachable when !session
     _layout.tsx
     login.tsx
@@ -116,6 +125,10 @@ app/
     _layout.tsx
     index.tsx        # Home (has temp sign-out button)
     explore.tsx
+  (onboarding)/      # Authed group — onboarding flow
+    _layout.tsx
+    step-1.tsx       # Basic Info screen (First Name, DOB, Diagnosis Date)
+    step-2.tsx       # Placeholder stub — real Step 2 is a separate issue
   modal.tsx
 ```
 
@@ -125,15 +138,36 @@ app/
 - `global.css` is imported once in `app/_layout.tsx`.
 - `babel.config.js` sets `jsxImportSource: "nativewind"` + `nativewind/babel` preset.
 - Tailwind v3.4.x is pinned (NativeWind v4 doesn't support Tailwind v4).
+- `tailwind.config.js` now carries **9 auth-screen tokens** (`bg-primary`, `text-heading`, `accent-primary`, etc.) and **11 onboarding-step-1 tokens** (`bg-card`, `bg-input`, `border-input-active`, `bg-progress-fill`, etc.), plus **3 `boxShadow` tokens** (`button`, `card`, `next`). All values are Figma-derived and diverge intentionally from `DESIGN.md`'s ramp — see ADR 004.
+
+### `DateField` wrapper pattern for custom synthetic events
+
+When a component needs to expose a custom event prop (e.g. `onChangeDate`) that isn't a standard RN prop, wrap it in a thin component:
+
+```tsx
+function DateField({ testID, accessibilityLabel, value, onChangeDate, ... }: DateFieldProps) {
+  // owns modal open state; onChangeDate is a first-class typed prop
+}
+```
+
+RNTL's `fireEvent(node, 'changeDate', date)` walks the tree from the queried node upward until it finds `onChangeDate` — the event name capitalizes to the prop name. Two gotchas:
+- Use `fireEvent(node, 'changeDate', ...)` **not** `fireEvent(node, 'onChangeDate', ...)` — RNTL auto-prefixes `on`, so the latter resolves to `props.onOnChangeDate` (no-op).
+- The wrapper component does not need to be the directly queried node — RNTL walks up to a parent that declares the prop.
+
+See `app/(onboarding)/step-1.tsx` and `docs/solutions/best-practices/tdd-multiscreen-react-native-patterns-2026-04-22.md` (Pattern 2) for the full pattern.
 
 ## Testing conventions
 
 - Unit / integration tests colocate in `__tests__/` dirs next to the code they test.
 - `jest-setup.ts` pre-mocks `expo-secure-store` (in-memory), `expo-web-browser`, `expo-linking`, and `react-native-reanimated`. Override per-test with `jest.mocked(...)` or fresh `jest.mock` calls.
 - Path alias `@/` → repo root (set in `tsconfig.json` and mirrored in `jest` config).
+- Mock `expo-router` **per test file** (not globally in `jest-setup.ts`) — future screens may need different router behavior per-test. Expose `useRouter: jest.fn()` returning `{ push, back, replace, dismiss }` as `jest.fn()`.
+- **RED scaffolding rule:** before committing a failing test suite, ensure every failure reads "Unable to find …" not "Cannot find module …". Module-resolution failures are broken RED — add a minimal stub (empty `<View testID="...">`) and route registration first.
 
-### Maestro limitations
+### Maestro flows
 
+- `.maestro/launch.yaml` — app launch smoke test.
+- `.maestro/onboarding-step-1.yaml` — fill Basic Info form, toggle "Not sure", tap Next. Requires a fresh dev-client build (new native date-picker module) and a live Supabase session.
 - Maestro identifies apps by native `appId` (`com.workflowtest.app`), so it **cannot attach to Expo Go** (which runs as `host.exp.Exponent`). A dev-client or standalone build must be installed first.
 - The Google OAuth consent screen runs inside `ASWebAuthenticationSession` (a system Safari sheet) and cannot be driven by Maestro. Post-auth flows are best covered by Jest/RNTL integration tests with a mocked auth context.
 
@@ -142,6 +176,7 @@ app/
 - `eas.json` defines `development` (simulator-only dev client), `preview`, and `production` profiles.
 - Currently configured for iOS simulator builds — no Apple Developer account needed.
 - `app.json` holds `scheme: "workflowtest"` and `ios.bundleIdentifier: "com.workflowtest.app"`. These are referenced by Supabase Redirect URL config and Maestro `appId`; changing them requires updating both.
+- **Rebuild the dev-client** when new native modules are added. PR #6 added `@react-native-community/datetimepicker@8.4.4` and `react-native-modal-datetime-picker@^18.0.0` (both native, registered via config plugin in `app.json`). Any build predating PR #6 will crash on the date-picker screen.
 
 ## Environment
 
@@ -174,4 +209,5 @@ Read `DESIGN.md` for the design system: colors, typography, spacing, layout, bor
 - **Add `.claude/` to `.gitignore`.** Worktree and session artifacts don't belong in version control. (Currently missing from this repo's `.gitignore`.)
 - **Don't overload this file with documentation.** Longer guides, onboarding docs, and runbooks go in a `docs/` folder; this file is the map, not the territory.
 - **Put project context in files, not chat messages.** Worktrees and sub-agents read files, not conversation history — anything that matters to future work must live on disk.
+- **`docs/solutions/`** — documented solutions and learnings from past problems (bugs, best practices, workflow patterns), organized by category (`best-practices/`, `runtime-errors/`, etc.) with YAML frontmatter (`module`, `tags`, `problem_type`). Relevant when implementing or debugging in documented areas.
 - **Consider a gitignored `CLAUDE.local.md`** for personal preferences (editor quirks, individual workflow overrides) that shouldn't live in the shared file. Not created here — flagging as an option.

@@ -1,50 +1,96 @@
-# Welcome to your Expo app 👋
+# Hi Honey
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native + Expo mobile app for personal health and symptom tracking. Built with Expo Router, NativeWind, and Supabase.
 
-## Get started
+**Status:** Pre-MVP. Two screens shipped — sign-in (Google OAuth) and onboarding step 1 (Basic Info). The core auth infrastructure, routing guards, and TDD harness are in place.
 
-1. Install dependencies
+## Getting started
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+**Prerequisites:** Node 18+, npm, Xcode (for iOS simulator).
 
 ```bash
-npm run reset-project
+git clone https://github.com/nipunvv/WorkflowTest.git
+cd WorkflowTest
+npm install
+cp .env.example .env   # fill in EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY
+npx expo start         # opens in Expo Go or dev-client
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+To use the onboarding flow (which includes a native date picker), you need a dev-client build:
 
-## Learn more
+```bash
+npx eas build --platform ios --profile development
+npx eas build:run -p ios --latest
+npx expo start --dev-client
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Project structure
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+app/
+  _layout.tsx          # AuthProvider, Stack.Protected guards, AppState refresh
+  (auth)/              # Sign-in screen (unauthenticated)
+  (tabs)/              # Main app tabs (authenticated)
+  (onboarding)/        # Onboarding flow (authenticated, post-sign-in)
+hooks/
+  use-redirect-on-sign-in.ts   # Fires on SIGNED_IN → /onboarding/step-1
+lib/
+  auth-context.tsx     # AuthProvider, useAuth, signInWithGoogle, signOut
+  supabase.ts          # Supabase client (PKCE, ChunkedSecureStoreAdapter)
+  secure-store-adapter.ts  # iOS Keychain chunking (2KB limit workaround)
+components/            # Shared UI components
+docs/
+  index.md             # Docs directory map
+  plans/               # Feature planning docs
+  solutions/           # Learnings and patterns from past work
+  decisions/           # Architecture Decision Records (ADRs)
+.maestro/              # E2E Maestro YAML flows
+```
 
-## Join the community
+## Commands
 
-Join our community of developers creating universal apps.
+```bash
+# Dev server
+npx expo start                       # Expo Go or dev-client
+npx expo start --dev-client          # force dev-client
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# Tests
+npm test                             # Jest + RNTL (all tests)
+npm run test:watch                   # watch mode
+npx jest path/to/file.test.ts        # single file
+npx jest -t "partial test name"      # single test
+
+# Code quality
+npm run lint                         # ESLint (expo lint)
+npm run format                       # Prettier + Tailwind class sort
+npx tsc --noEmit                     # type-check
+
+# EAS builds
+npx eas build --platform ios --profile development   # cloud build (simulator)
+npx eas build:run -p ios --latest                    # install latest build on sim
+
+# E2E (dev-client build must be installed and running)
+maestro test .maestro/
+```
+
+## Documentation
+
+| File | What it covers |
+|---|---|
+| `CLAUDE.md` | Non-negotiables, mobile stack rules, architecture notes, gotchas — read before touching any code |
+| `DESIGN.md` | Design tokens: colors, typography, spacing, shadows, motion |
+| `docs/index.md` | Full map of the `docs/` directory |
+| `docs/decisions/` | Architecture Decision Records (ADRs) |
+| `docs/plans/` | Per-feature TDD planning docs |
+| `docs/solutions/` | Patterns and learnings from past work |
+
+## Status and roadmap
+
+| Area | Status |
+|---|---|
+| Google OAuth sign-in | Shipped (PR #1) |
+| Onboarding Step 1 — Basic Info | Shipped (PR #6) |
+| Onboarding Steps 2 & 3 | Not started |
+| Persist onboarding data to Supabase | Not started (no `profiles` schema yet) |
+| Profile-gated redirect (skip onboarding for returning users) | Not started — tracked follow-up |
+| OTA updates (`eas update`) | Not wired — `expo-updates` not installed |
