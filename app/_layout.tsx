@@ -9,12 +9,11 @@ import { AppState } from 'react-native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useRedirectOnSignIn } from '@/hooks/use-redirect-on-sign-in';
 import { AuthProvider, useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  anchor: '(onboarding)',
 };
 
 // Supabase does not auto-refresh tokens in backgrounded React Native apps.
@@ -38,7 +37,6 @@ export default function RootLayout() {
 function ThemedRootStack() {
   const colorScheme = useColorScheme();
   const { session, loading } = useAuth();
-  useRedirectOnSignIn();
 
   useEffect(() => {
     if (AppState.currentState === 'active') {
@@ -54,9 +52,7 @@ function ThemedRootStack() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Protected guard={isAuthed}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         </Stack.Protected>
         <Stack.Protected guard={!isAuthed}>
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />

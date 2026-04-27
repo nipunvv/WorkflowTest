@@ -236,7 +236,10 @@ describe('OnboardingStep1Screen — navigation (R5, R6)', () => {
     const [arg] = mockPush.mock.calls[0];
     const pathname =
       typeof arg === 'string' ? arg : (arg as { pathname?: string } | undefined)?.pathname;
-    expect(pathname).toMatch(/\/onboarding\/step-2/);
+    // Accept either the group-stripped URL form (`/onboarding/step-2`) or the
+    // Expo Router typed-routes form (`/(onboarding)/step-2`). Both resolve to
+    // the same route at runtime; the spec is "go to step-2", not the URL shape.
+    expect(pathname).toMatch(/\/\(?onboarding\)?\/step-2/);
   });
 
   test('tapping Next does nothing when the form is invalid', () => {

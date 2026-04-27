@@ -79,7 +79,7 @@ Browser-based PKCE flow, not native Google Sign-In. Trace:
 4. `supabase.auth.exchangeCodeForSession(code)` completes the flow.
 5. `onAuthStateChange` listener in `AuthProvider` updates `session` state.
 
-`app/_layout.tsx` gates routes with `<Stack.Protected guard={!!session}>` around `(tabs)` and `<Stack.Protected guard={!session}>` around `(auth)`. While `loading === true`, it renders `null` to avoid flashing the wrong stack on cold start.
+`app/_layout.tsx` gates routes with `<Stack.Protected guard={!!session}>` around `(onboarding)` and `<Stack.Protected guard={!session}>` around `(auth)`. While `loading === true`, it renders `null` to avoid flashing the wrong stack on cold start. `unstable_settings.anchor = '(onboarding)'` makes Step 1 the landing screen for any authed session; there is no post-onboarding destination yet (the default `(tabs)` / `modal` scaffolding was removed).
 
 ### The non-obvious pieces
 
@@ -102,14 +102,13 @@ Supabase's Redirect URL allowlist matches the host literally — `**` wildcards 
 
 Supabase's **Site URL** is the fallback when `redirect_to` doesn't match the allowlist. Keep it set to a URL the app can actually handle (`workflowtest://auth/callback` for dev-client, or the current LAN `exp://` URL for Expo Go).
 
-### Post-sign-in redirect
+### Post-sign-in flow
 
-`hooks/use-redirect-on-sign-in.ts` listens for Supabase's `SIGNED_IN` event and calls `replace('/onboarding/step-1')`. This hook is called in `app/_layout.tsx` inside `ThemedRootStack`.
+Post-login routing is driven entirely by `unstable_settings.anchor = '(onboarding)'` — when `Stack.Protected` admits the authed routes, Expo Router lands on `(onboarding)/step-1.tsx` as the initial screen. There is no explicit redirect hook. A previous `useRedirectOnSignIn` hook was removed when the `(tabs)` stack was deleted and onboarding became the sole authed landing.
 
-Key behaviours and caveats:
-- Filters on `SIGNED_IN` **only** — `INITIAL_SESSION` and `TOKEN_REFRESHED` do not trigger the redirect, so returning users with an existing session land on their default authed route.
-- Does **not** yet check whether the user has already completed onboarding — every fresh sign-in bounces to step 1. Profile-gate (`profiles.onboarding_completed`) is a tracked follow-up.
-- Do NOT add a second `onAuthStateChange` subscriber for navigation side-effects. It creates listener-ordering races against `AuthProvider`'s subscriber. Extend `AuthContext` to expose `lastAuthEvent` when that gating logic is needed.
+Known limitation: every authed session (fresh sign-in OR cold-start session-restore) currently lands on Step 1 regardless of whether the user has already completed onboarding. A profile-completion gate is a tracked follow-up; the `Stack.Protected` pattern will accommodate it with a third guard once the `profiles` table exists.
+
+Do NOT add a second `onAuthStateChange` subscriber for navigation side-effects — it creates listener-ordering races against `AuthProvider`'s subscriber. When the profile gate lands, extend `AuthContext` to expose the profile state and guard the `(onboarding)` / future-tabs groups off it.
 
 ### Routing layout
 
@@ -117,20 +116,18 @@ Expo Router v6 with typed routes enabled.
 
 ```
 app/
-  _layout.tsx        # AuthProvider wrapper, Stack.Protected guards, AppState refresh, useRedirectOnSignIn
+  _layout.tsx        # AuthProvider wrapper, Stack.Protected guards, AppState refresh
   (auth)/            # Unauth group — only reachable when !session
     _layout.tsx
     login.tsx
-  (tabs)/            # Authed group — only reachable when session
+  (onboarding)/      # Authed group — onboarding flow; anchor is step-1
     _layout.tsx
-    index.tsx        # Home (has temp sign-out button)
-    explore.tsx
-  (onboarding)/      # Authed group — onboarding flow
-    _layout.tsx
-    step-1.tsx       # Basic Info screen (First Name, DOB, Diagnosis Date)
-    step-2.tsx       # Placeholder stub — real Step 2 is a separate issue
-  modal.tsx
+    step-1.tsx       # Basic Info (First Name, DOB, Diagnosis Date)
+    step-2.tsx       # Symptoms multi-select
+    step-3.tsx       # Placeholder stub — real Step 3 is a separate issue
 ```
+
+There is no post-onboarding destination yet; the default `create-expo-app` `(tabs)` group, Home/Explore screens, and `modal.tsx` were removed as part of wiring the onboarding flow.
 
 ### NativeWind v4
 

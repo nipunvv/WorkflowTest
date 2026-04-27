@@ -1,0 +1,35 @@
+appId: com.workflowtest.app
+---
+# Onboarding Step 2 — Symptoms smoke flow.
+#
+# PRECONDITIONS:
+#   - Dev-client build installed on a booted iOS simulator (Maestro cannot
+#     attach to Expo Go). No new native modules in this issue; builds that
+#     already include the date-picker modules from issue #2 are sufficient.
+#   - User is ALREADY SIGNED IN when this flow starts. Maestro cannot drive
+#     Google OAuth inside ASWebAuthenticationSession.
+#
+# NOTES:
+#   - Jumps directly to Step 2 via deep link rather than walking Step 1 again
+#     — Step 1 is covered by its own flow (onboarding-step-1.yaml).
+#   - Taps chips by visible label text. Maestro matches substrings, so the
+#     emoji prefix on each chip does not need to appear in `tapOn` strings.
+
+- launchApp: {}
+
+- openLink: workflowtest://onboarding/step-2
+
+- assertVisible: "Step 2 of 3"
+- assertVisible: "What are your primary symptoms?"
+
+- tapOn: "Dry Eyes"
+- tapOn: "Fatigue"
+
+# Deselect one chip to exercise the toggle-off path.
+- tapOn: "Dry Eyes"
+
+- tapOn: "Next"
+
+# Step 3 is a placeholder stub (tracked as a separate issue). Match the full
+# placeholder string to avoid incidental matches on other screens.
+- assertVisible: "Step 3 coming soon"

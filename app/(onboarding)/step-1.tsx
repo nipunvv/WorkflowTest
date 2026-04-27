@@ -102,7 +102,7 @@ export default function OnboardingStep1Screen() {
 
   const handleNext = () => {
     if (!canProceed) return;
-    push('/onboarding/step-2' as never);
+    push('/(onboarding)/step-2');
   };
 
   return (
