@@ -1,35 +1,45 @@
 appId: com.workflowtest.app
 ---
-# Onboarding Step 2 — Symptoms smoke flow.
+# Onboarding Step 2 — Goals smoke flow (issue #10, supersedes the symptoms
+# flow from issue #3).
 #
 # PRECONDITIONS:
 #   - Dev-client build installed on a booted iOS simulator (Maestro cannot
-#     attach to Expo Go). No new native modules in this issue; builds that
-#     already include the date-picker modules from issue #2 are sufficient.
+#     attach to Expo Go). No new native modules in this issue; any build that
+#     already includes the date-picker modules from issue #2 is sufficient.
 #   - User is ALREADY SIGNED IN when this flow starts. Maestro cannot drive
 #     Google OAuth inside ASWebAuthenticationSession.
 #
 # NOTES:
 #   - Jumps directly to Step 2 via deep link rather than walking Step 1 again
 #     — Step 1 is covered by its own flow (onboarding-step-1.yaml).
-#   - Taps chips by visible label text. Maestro matches substrings, so the
-#     emoji prefix on each chip does not need to appear in `tapOn` strings.
+#   - Taps preset goal rows by visible label substring. The "Other" row's
+#     TextInput is targeted by stable testID (`goal-other-input`) declared in
+#     step-2.tsx.
+#   - The post-Next assertion targets the real Step 3 screen heading
+#     ("Preferred Language") that PR #9 introduced.
 
 - launchApp: {}
 
 - openLink: workflowtest://onboarding/step-2
 
-- assertVisible: "Step 2 of 3"
-- assertVisible: "What are your primary symptoms?"
+- assertVisible: "Step 2 of 4"
+- assertVisible: "What matters most to you right now?"
 
-- tapOn: "Dry Eyes"
-- tapOn: "Fatigue"
+# Select two preset goals.
+- tapOn: "Find my symptom triggers"
+- tapOn: "Improve my daily energy"
 
-# Deselect one chip to exercise the toggle-off path.
-- tapOn: "Dry Eyes"
+# Deselect one to exercise the toggle-off path.
+- tapOn: "Improve my daily energy"
+
+# Expand the Other row and type into the input.
+- tapOn: "Other"
+- tapOn:
+    id: "goal-other-input"
+- inputText: "Better sleep"
 
 - tapOn: "Next"
 
-# Step 3 is a placeholder stub (tracked as a separate issue). Match the full
-# placeholder string to avoid incidental matches on other screens.
-- assertVisible: "Step 3 coming soon"
+# Step 3 (Preferred Language) — PR #9 replaced the stub with the real screen.
+- assertVisible: "Preferred Language"
