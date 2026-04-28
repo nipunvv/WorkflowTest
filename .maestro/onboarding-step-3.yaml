@@ -23,10 +23,11 @@ appId: com.workflowtest.app
 #   - CJK matching (简体中文) works on iOS and modern Android builds; if it
 #     proves flaky on a specific device, fall back to tapOn: "Simplified Chinese"
 #     — the english translation rendered on the same row should also be tappable.
-#   - The post-Get-Started assertion ("Welcome") is a best-guess placeholder
-#     for (tabs)/index.tsx copy. Its only job is to verify navigation left
-#     onboarding — any stable tabs-side string satisfies. GREEN updates the
-#     exact text once observed against the live build.
+#   - The post-Get-Started assertion verifies the user landed on
+#     app/(onboarding)/complete.tsx — the placeholder destination chosen
+#     because (tabs) was removed from main before this branch rebased.
+#     The real post-onboarding destination ships as a follow-up; until then,
+#     "You're all set!" is the stable landing copy.
 
 - launchApp: {}
 
@@ -45,6 +46,5 @@ appId: com.workflowtest.app
 
 - tapOn: "Get Started"
 
-# Landed on the default tab. Placeholder assertion text — update in GREEN
-# once the live cold-load string is verified.
-- assertVisible: "Welcome"
+# Landed on the post-onboarding placeholder route (app/(onboarding)/complete.tsx).
+- assertVisible: "You're all set!"

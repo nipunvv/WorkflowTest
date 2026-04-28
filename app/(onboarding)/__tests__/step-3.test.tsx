@@ -179,7 +179,7 @@ describe('OnboardingStep3Screen — mutual exclusion (R3)', () => {
 });
 
 describe('OnboardingStep3Screen — Get Started navigation (R4)', () => {
-  test('tapping Get Started calls router.replace("/(tabs)")', () => {
+  test('tapping Get Started calls router.replace("/(onboarding)/complete")', () => {
     renderScreen();
     fireEvent.press(screen.getByRole('button', { name: /Get Started/i }));
 
@@ -187,7 +187,7 @@ describe('OnboardingStep3Screen — Get Started navigation (R4)', () => {
     const [arg] = mockReplace.mock.calls[0];
     const pathname =
       typeof arg === 'string' ? arg : (arg as { pathname?: string } | undefined)?.pathname;
-    expect(pathname).toBe('/(tabs)');
+    expect(pathname).toBe('/(onboarding)/complete');
   });
 
   test('tapping Get Started does NOT call router.push', () => {
