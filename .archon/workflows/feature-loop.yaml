@@ -1,0 +1,108 @@
+name: feature-loop
+description: |
+  The per-feature development loop. Pulls a GitHub issue, plans, writes failing
+  tests, implements, verifies, refactors, reviews, opens a PR, gates on human
+  approval (looping back to refactor on rejection), merges, extracts lessons,
+  and produces documentation.
+
+  Use when: A feature issue is ready to be picked up from the backlog.
+  Produces: A merged PR, a compound-learning artifact, and feature docs.
+
+  Invocation: pass the issue identifier via $ISSUE (e.g. ISSUE=123 archon run feature-loop).
+
+provider: claude
+model: sonnet
+effort: high
+
+worktree:
+  enabled: false
+
+tags: [Feature, Loop, TDD]
+
+nodes:
+  # L2 — Pull GitHub issue
+  # (L1 "create worktree" is handled by worktree.enabled above.)
+  - id: pull-issue
+    bash: |
+      set -euo pipefail
+      if [ -z "${ISSUE:-}" ]; then
+        echo "ERROR: ISSUE env var (issue number) is required" >&2
+        exit 1
+      fi
+      gh issue view "$ISSUE" --json number,title,body,labels,url
+
+  # L3 — ce:plan
+  - id: plan
+    prompt: |
+      Use the compound-engineering ce:plan skill to produce an implementation
+      plan for this GitHub issue:
+
+      $pull-issue.output
+
+      Save the plan as an artifact. The plan must enumerate the units of
+      behavior we will drive with failing tests in the next step.
+    depends_on: [pull-issue]
+    context: fresh
+
+  # L4 — RED: write failing tests
+  - id: red-tests
+    prompt: |
+      RED phase of TDD. Based on the plan from the previous step, write the
+      failing tests that capture the feature's behavior. Do NOT implement the
+      feature yet. Run the test suite and confirm the new tests fail for the
+      right reason. Use the superpowers:test-driven-development skill.
+
+      Plan artifact reference:
+      $plan.output
+    depends_on: [plan]
+    skills: [compound-engineering:ce-work]
+
+  # L6 — Implement feature (ce:work + Figma if a design exists)
+  - id: implement
+    prompt: |
+      Implement the feature using the compound-engineering ce:work skill.
+      If the issue or repo references a Figma design, use the Figma plugin skills
+      (figma:figma-implement-design) to translate the design with high
+      fidelity. Make the failing tests from the previous step pass without
+      weakening them. Stop as soon as tests pass — no extra polish yet.
+    depends_on: [red-tests]
+    skills:
+      - compound-engineering:ce-work
+      - figma:figma-implement-design
+
+  # L7 — GREEN: verify tests pass
+  - id: green-verify
+    bash: |
+      set -euo pipefail
+      # Adjust this command to match the project's test runner.
+      if [ -f package.json ] && grep -q '"test"' package.json; then
+        npm test --silent
+      elif [ -f Gemfile ]; then
+        bundle exec rspec
+      else
+        echo "ERROR: no recognized test runner; update green-verify in workflow.yaml" >&2
+        exit 1
+      fi
+    depends_on: [implement]
+    retry:
+      max_attempts: 2
+      delay_ms: 3000
+      on_error: transient
+
+  # L8 — REFACTOR
+  - id: refactor
+    prompt: |
+      REFACTOR phase. The tests are green. Improve the implementation
+      (naming, duplication, structure, readability) without changing behavior.
+      Re-run the tests after each meaningful change. Stop when the code is
+      simple and the suite is still green.
+    depends_on: [green-verify]
+
+  # L9 — ce:review
+  - id: review
+    prompt: |
+      Use the compound-engineering ce:review skill to perform a structured
+      review of the changes on this branch. Capture findings as artifacts.
+    depends_on: [refactor]
+    context: fresh
+    skills: [compound-engineering:ce-review]
