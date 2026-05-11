@@ -11,6 +11,7 @@ status: accepted
 `app/(onboarding)/step-1.tsx` needed a date field backed by `react-native-modal-datetime-picker`. The implementation had to be testable via RNTL's `fireEvent` without relying on the native picker UI (which can't be driven in Jest).
 
 The naive approach — putting `onChangeDate` directly on a `<Pressable>` — fails at two levels:
+
 1. TypeScript: `Pressable` doesn't accept `onChangeDate` in its props type.
 2. RNTL: `fireEvent(node, 'changeDate', date)` resolves to `props.onChangeDate` by walking up the tree from the queried node. If the prop isn't on the queried node or an ancestor, the call silently no-ops — tests pass green without exercising any behavior.
 
@@ -19,6 +20,7 @@ Additionally, RNTL's `fireEvent` auto-prepends `on` to the event name: `fireEven
 ## Decision
 
 Implement a `DateField` wrapper component inside `step-1.tsx` that:
+
 - Accepts `onChangeDate: (d: Date) => void` as a first-class typed prop.
 - Owns the picker's `isVisible` state internally.
 - Renders a `<Pressable testID="...">` to open the picker, and a `<DateTimePickerModal>` that calls `onChangeDate` on confirm.

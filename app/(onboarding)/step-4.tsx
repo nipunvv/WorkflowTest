@@ -54,8 +54,7 @@ export default function OnboardingStep4Screen({
 
   const title = firstName ? `You're all set, ${firstName}!` : "You're all set!";
   const symptomLabel = `${symptomCount} symptoms tracked`;
-  const deviceLabel =
-    deviceCount === 1 ? '1 device connected' : `${deviceCount} devices connected`;
+  const deviceLabel = deviceCount === 1 ? '1 device connected' : `${deviceCount} devices connected`;
   const languageRowLabel = `Language set to ${languageLabel}`;
 
   const handleGetStarted = () => {
@@ -76,15 +75,12 @@ export default function OnboardingStep4Screen({
           }}
         >
           <View style={{ gap: 12, paddingBottom: 8, width: '100%' }}>
-            <Text
-              className="text-text-subtle"
-              style={{ fontSize: 14, fontWeight: '500' }}
-            >
+            <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '500' }}>
               Step 4 of 4
             </Text>
             <View
               testID="progress-bar"
-              className="bg-bg-progress-track overflow-hidden"
+              className="overflow-hidden bg-bg-progress-track"
               style={{
                 height: 6,
                 borderRadius: 3,
@@ -161,26 +157,10 @@ export default function OnboardingStep4Screen({
                 ✓
               </Text>
             </View>
-            <Text
-              style={{ position: 'absolute', top: 30, left: 12, fontSize: 14 }}
-            >
-              ✨
-            </Text>
-            <Text
-              style={{ position: 'absolute', top: 22, right: 6, fontSize: 16 }}
-            >
-              ✨
-            </Text>
-            <Text
-              style={{ position: 'absolute', bottom: 28, left: 8, fontSize: 12 }}
-            >
-              ✨
-            </Text>
-            <Text
-              style={{ position: 'absolute', bottom: 22, right: 2, fontSize: 14 }}
-            >
-              ✨
-            </Text>
+            <Text style={{ position: 'absolute', top: 30, left: 12, fontSize: 14 }}>✨</Text>
+            <Text style={{ position: 'absolute', top: 22, right: 6, fontSize: 16 }}>✨</Text>
+            <Text style={{ position: 'absolute', bottom: 28, left: 8, fontSize: 12 }}>✨</Text>
+            <Text style={{ position: 'absolute', bottom: 22, right: 2, fontSize: 14 }}>✨</Text>
           </View>
 
           <View style={{ height: 28 }} />
@@ -229,7 +209,7 @@ export default function OnboardingStep4Screen({
             accessible
             role="list"
             accessibilityLabel="Onboarding summary"
-            className="bg-bg-card border-border-card"
+            className="border-border-card bg-bg-card"
             style={{
               borderWidth: 1,
               borderRadius: 20,
@@ -265,10 +245,7 @@ export default function OnboardingStep4Screen({
                 boxShadow: '0 4px 16px rgba(212,165,116,0.3)',
               }}
             >
-              <Text
-                className="text-white"
-                style={{ fontSize: 17, fontWeight: '600' }}
-              >
+              <Text className="text-white" style={{ fontSize: 17, fontWeight: '600' }}>
                 Get Started
               </Text>
               <Text style={{ fontSize: 16 }}>🍯</Text>

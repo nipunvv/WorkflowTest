@@ -1,5 +1,5 @@
 ---
-title: "feat: Onboarding Step 3 — failing tests for TDD (RED, issue #4)"
+title: 'feat: Onboarding Step 3 — failing tests for TDD (RED, issue #4)'
 type: feat
 status: completed
 date: 2026-04-22
@@ -75,28 +75,28 @@ Only R1–R6 and R8 are asserted by this plan's Jest tests. R7's YAML ships here
 
 GREEN will consume these; RED only echoes the user-visible copy.
 
-| Role | Hex | Notes |
-|---|---|---|
-| Page background | `#fff8f0` | cream, already `bg-primary` |
-| Step caption | `#8c8073` | Inter Medium 14, already `text-subtle` |
-| Progress bar track | `rgba(156,175,136,0.2)` | sage tint, already `bg-progress-track` |
-| Progress bar fill | `#9caf88` | sage, **100%** width (was 33% on Step 1), 6dp tall, 3dp radius |
-| Card bg | `#ffffff` | already `bg-card`, 24dp radius, shadow `0 4 24 rgba(212,165,116,0.08)` (`shadow-card`) |
-| Question H1 | `#33291f` | Inter Bold 24 / 32, already `text-heading` |
-| Helper text | `#8c8073` | Inter Regular 14, already `text-subtle` |
-| Row (unselected) bg | `#faf7f5` | already `bg-input` |
-| Row (unselected) border | `#e5e0db` | 1px — slightly off from `border-input-default` (`#e0dbd6`); GREEN to decide whether to add a new `border-row-default` token or reuse the closest match. RED doesn't care. |
-| Row (selected) bg | `rgba(156,175,136,0.12)` | sage tint (new token — likely `bg-row-selected`) |
-| Row (selected) border | `#9caf88` | 2px sage (reuse `bg-progress-fill` color) |
-| Radio (unselected) ring | `#c5beb6` or similar warm gray | 22dp diameter, 2px ring. GREEN to pick. |
-| Radio (selected) ring+dot | `#9caf88` | 22dp diameter, 2px ring, centered 10dp dot |
-| Row row native-name text | `#33291f` | Inter Semi Bold 16, already `text-heading` |
-| Row english-name text | `#8c8073` | Inter Regular 13, already `text-subtle` |
-| Get Started bg | `#d4a574` | already `bg-next` |
-| Get Started label | `#ffffff` | Inter Semi Bold 17 |
-| Get Started emoji | n/a | 🎉 18dp, 8dp gap from the label |
-| Get Started shadow | `0 4 16 rgba(212,165,116,0.3)` | already `shadow-next` |
-| Back link | `#8c8073` | Inter Medium 15, centered |
+| Role                      | Hex                            | Notes                                                                                                                                                                     |
+| ------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page background           | `#fff8f0`                      | cream, already `bg-primary`                                                                                                                                               |
+| Step caption              | `#8c8073`                      | Inter Medium 14, already `text-subtle`                                                                                                                                    |
+| Progress bar track        | `rgba(156,175,136,0.2)`        | sage tint, already `bg-progress-track`                                                                                                                                    |
+| Progress bar fill         | `#9caf88`                      | sage, **100%** width (was 33% on Step 1), 6dp tall, 3dp radius                                                                                                            |
+| Card bg                   | `#ffffff`                      | already `bg-card`, 24dp radius, shadow `0 4 24 rgba(212,165,116,0.08)` (`shadow-card`)                                                                                    |
+| Question H1               | `#33291f`                      | Inter Bold 24 / 32, already `text-heading`                                                                                                                                |
+| Helper text               | `#8c8073`                      | Inter Regular 14, already `text-subtle`                                                                                                                                   |
+| Row (unselected) bg       | `#faf7f5`                      | already `bg-input`                                                                                                                                                        |
+| Row (unselected) border   | `#e5e0db`                      | 1px — slightly off from `border-input-default` (`#e0dbd6`); GREEN to decide whether to add a new `border-row-default` token or reuse the closest match. RED doesn't care. |
+| Row (selected) bg         | `rgba(156,175,136,0.12)`       | sage tint (new token — likely `bg-row-selected`)                                                                                                                          |
+| Row (selected) border     | `#9caf88`                      | 2px sage (reuse `bg-progress-fill` color)                                                                                                                                 |
+| Radio (unselected) ring   | `#c5beb6` or similar warm gray | 22dp diameter, 2px ring. GREEN to pick.                                                                                                                                   |
+| Radio (selected) ring+dot | `#9caf88`                      | 22dp diameter, 2px ring, centered 10dp dot                                                                                                                                |
+| Row row native-name text  | `#33291f`                      | Inter Semi Bold 16, already `text-heading`                                                                                                                                |
+| Row english-name text     | `#8c8073`                      | Inter Regular 13, already `text-subtle`                                                                                                                                   |
+| Get Started bg            | `#d4a574`                      | already `bg-next`                                                                                                                                                         |
+| Get Started label         | `#ffffff`                      | Inter Semi Bold 17                                                                                                                                                        |
+| Get Started emoji         | n/a                            | 🎉 18dp, 8dp gap from the label                                                                                                                                           |
+| Get Started shadow        | `0 4 16 rgba(212,165,116,0.3)` | already `shadow-next`                                                                                                                                                     |
+| Back link                 | `#8c8073`                      | Inter Medium 15, centered                                                                                                                                                 |
 
 **Selected-border stability note (per issue #4 implementation notes):** unselected rows use a 1px border, selected rows use 2px — without a compensating padding adjustment the outer frame would jitter 1dp on selection change. GREEN will either (a) keep 2px on both with a transparent color when unselected or (b) shave 1dp of padding when selected. RED does not assert on layout stability; GREEN should spot-check visually.
 
@@ -163,9 +163,11 @@ GREEN will consume these; RED only echoes the user-visible copy.
 **Dependencies:** None.
 
 **Files:**
+
 - Create: `app/(onboarding)/step-3.tsx`
 
 **Approach:**
+
 - `step-3.tsx` default-exports `OnboardingStep3Screen` rendering `<View testID="onboarding-step-3-screen" />`. Import `View` from `react-native`. No other imports. No props.
 - Do NOT modify `app/(onboarding)/_layout.tsx` (no change needed — the file-based router picks up `step-3.tsx` automatically).
 - Do NOT modify `app/_layout.tsx` (already registers the `(onboarding)` stack).
@@ -174,12 +176,15 @@ GREEN will consume these; RED only echoes the user-visible copy.
 **Execution note:** RED scaffolding only. Zero behavior to assert.
 
 **Patterns to follow:**
+
 - `app/(onboarding)/step-2.tsx` currently contains a placeholder-copy stub with a shipped layout; for Step 3's RED stub, strip it back even further — no text, no copy, just a testID'd `<View>`. Step 2's "coming soon" text is a different category of stub (visible to users on a dev-client); Step 3's stub exists purely so tests resolve.
 
 **Test scenarios:**
+
 - Test expectation: none — stubs have no behavior to assert. Verified transitively by Unit 2's first test case ("stub root is on screen"), which passes as soon as the import resolves, and by manual dev-client deep-link verification.
 
 **Verification:**
+
 - `npx tsc --noEmit` passes.
 - `npx expo start` does not error on module resolution for `app/(onboarding)/step-3.tsx`.
 - `npm run lint` clean.
@@ -194,9 +199,11 @@ GREEN will consume these; RED only echoes the user-visible copy.
 **Dependencies:** Unit 1.
 
 **Files:**
+
 - Create: `app/(onboarding)/__tests__/step-3.test.tsx`
 
 **Approach:**
+
 - Mirror the harness from `app/(onboarding)/__tests__/step-1.test.tsx` verbatim:
   - Import `fireEvent`, `render`, `screen` from `@testing-library/react-native`.
   - `jest.mock('expo-router', () => ({ useRouter: jest.fn(), Stack: { Screen: () => null, Protected: ({children}: {children: unknown}) => children ?? null } }))`.
@@ -210,12 +217,14 @@ GREEN will consume these; RED only echoes the user-visible copy.
 **Execution note:** RED only. Do NOT modify `step-3.tsx`. Do NOT modify `jest-setup.ts`. Verify RED with `npm test` and paste the failing output into the PR description.
 
 **Patterns to follow:**
+
 - `app/(onboarding)/__tests__/step-1.test.tsx` — router mock factory, `beforeEach` / `jest.clearAllMocks`, `SafeAreaProvider` wrapper, `renderScreen` helper, role + label queries.
 - `app/(auth)/__tests__/login.test.tsx` — original pattern reference.
 
 **Test scenarios:**
 
-*Static render (R1):*
+_Static render (R1):_
+
 - **Happy path — header caption:** `screen.getByText('Step 3 of 3')` is on screen.
 - **Happy path — progress bar:** `screen.getByTestId('progress-bar')` is on screen AND `screen.getByTestId('progress-fill')` exists inside it. (No assertion on exact width — style-value brittleness; Step 1's tests set the same precedent.)
 - **Happy path — question headline:** `screen.getByText(/Preferred Language/i)` is on screen.
@@ -226,31 +235,37 @@ GREEN will consume these; RED only echoes the user-visible copy.
 - **Happy path — Get Started button:** `screen.getByRole('button', { name: /Get Started/i })` is on screen.
 - **Happy path — Back link:** `screen.queryByRole('link', { name: /^Back$/i }) ?? screen.getByRole('button', { name: /^Back$/i })` is on screen. (Accept either role to match Step 1's flexibility.)
 
-*Default selection (R2):*
+_Default selection (R2):_
+
 - **Happy path — English pre-selected on mount:** `getByRole('radio', { name: /English/i }).props.accessibilityState.selected === true`.
 - **Happy path — 简体中文 not selected on mount:** `getByRole('radio', { name: /简体中文|Simplified Chinese/i }).props.accessibilityState.selected === false`.
 
-*Mutual exclusion (R3):*
+_Mutual exclusion (R3):_
+
 - **Happy path — tapping 简体中文 selects it:** After `fireEvent.press(getByRole('radio', { name: /简体中文|Simplified Chinese/i }))`, that row's `accessibilityState.selected` is `true`.
 - **Happy path — tapping 简体中文 deselects English:** Same press, English row's `accessibilityState.selected` is `false`.
 - **Edge case — tapping English after 简体中文 re-selects English and deselects 简体中文:** Press zh-CN, then press English; English `selected=true`, zh-CN `selected=false`.
 - **Edge case — only one row is selected at any time:** After each press in the sequence above, assert that exactly one of the two rows has `selected=true` (count via `.filter(r => r.props.accessibilityState.selected).length === 1`).
 
-*Get Started navigation (R4):*
+_Get Started navigation (R4):_
+
 - **Happy path — tapping Get Started calls `router.replace('/(tabs)')`:** After `fireEvent.press(getByRole('button', { name: /Get Started/i }))`, `mockReplace` was called exactly once with the string `'/(tabs)'` (exact literal match). Fallback: if GREEN passes an `Href` object, accept `{ pathname: '/(tabs)' }` — mirror Step 1's Next navigation test.
 - **Edge case — Get Started does NOT call `router.push`:** Same press, `mockPush` was not called. (Catches "implementer used `push` instead of `replace`" drift.)
 - **Edge case — Get Started does NOT call `router.back`:** Same press, `mockBack` was not called.
 
-*Back navigation (R5):*
+_Back navigation (R5):_
+
 - **Happy path — tapping Back calls `router.back()`:** `mockBack` was called exactly once.
 - **Edge case — Back does NOT call `router.replace` or `router.push`:** Same press, neither was called.
 
-*Accessibility (R6):*
+_Accessibility (R6):_
+
 - **Happy path — each row has `role=radio` + non-empty label:** For both English and 简体中文 rows: `props.accessibilityRole === 'radio'` (or `props.role === 'radio'`), `props.accessibilityLabel` is a truthy string, and `props.accessibilityState.selected` is a boolean (not undefined).
 - **Happy path — radiogroup wrapper has `role=radiogroup` + non-empty label:** The wrapper's `accessibilityRole === 'radiogroup'` (or `role === 'radiogroup'`) and `accessibilityLabel` is truthy.
 - **Happy path — every interactive element exposes role + label:** Adapted sweep from Step 1: English radio, zh-CN radio, Get Started button, Back link each have a role and a non-empty `accessibilityLabel`.
 
 **Verification:**
+
 - `npx jest "app/(onboarding)/__tests__/step-3.test.tsx"` exits **non-zero** with every test case failing for the right reason: "Unable to find …" on role/text/testID queries, NOT module-resolution / import / syntax / runtime errors. Expected ~17 failing cases.
 - `npx jest "app/(onboarding)/__tests__/step-3.test.tsx" 2>&1 | grep -E "Cannot find module|TypeError|ReferenceError"` returns **no lines** (per `docs/solutions/best-practices/tdd-multiscreen-react-native-patterns-2026-04-22.md` §3 verification rule).
 - `npx jest "app/(auth)/__tests__/login.test.tsx" "app/(onboarding)/__tests__/step-1.test.tsx"` still passes — no regression.
@@ -267,9 +282,11 @@ GREEN will consume these; RED only echoes the user-visible copy.
 **Dependencies:** Unit 1 (so the route resolves on the dev-client without a 404).
 
 **Files:**
+
 - Create: `.maestro/onboarding-step-3.yaml`
 
 **Approach:**
+
 - Header: `appId: com.workflowtest.app`.
 - Leading comment block mirrors `.maestro/onboarding-step-1.yaml`:
   - RED-authored, expected to fail on this branch.
@@ -289,13 +306,16 @@ GREEN will consume these; RED only echoes the user-visible copy.
 - Document that `maestro test .maestro/onboarding-step-3.yaml` is expected to fail against this branch (the stub renders nothing to assert against) and that GREEN makes it pass.
 
 **Patterns to follow:**
+
 - `.maestro/launch.yaml` — front matter + `launchApp` rhythm.
 - `.maestro/onboarding-step-1.yaml` — precondition + limitation comment block conventions.
 
 **Test scenarios:**
+
 - Test expectation: the YAML itself is the spec; executing it against a GREEN-implemented build is the passing test. RED verification is limited to YAML parsing validity + the file existing at the expected path.
 
 **Verification:**
+
 - `maestro test .maestro/onboarding-step-3.yaml` parses the file without a YAML error (may fail the flow itself — that's expected on this branch).
 - `git diff` in this unit touches only `.maestro/onboarding-step-3.yaml`.
 - `.maestro/launch.yaml` and `.maestro/onboarding-step-1.yaml` are unchanged (no regression).
@@ -311,16 +331,16 @@ GREEN will consume these; RED only echoes the user-visible copy.
 
 ## Risks & Dependencies
 
-| Risk | Mitigation |
-|------|------------|
+| Risk                                                                                                                                                                           | Mitigation                                                                                                                                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | The `'/(tabs)'` literal in the Get Started assertion breaks under Expo Router typed routes (route-group segments in parentheses may not resolve in the manifest until rebuild) | Pin the string in the test. If GREEN's typed-routes check flags `replace('/(tabs)')`, the fix is a `@ts-expect-error` in GREEN's code — never a regex softening in the RED test. The test pins the contract; the implementation adapts. |
-| Row query by `getByRole('radio', { name: /简体中文|Simplified Chinese/i })` is ambiguous — does `accessibilityLabel` contain the native name, the english name, both, or neither? | The regex accepts either, so GREEN has flexibility. If GREEN uses a compound label ("简体中文 Simplified Chinese"), the regex still matches. If GREEN decides to use only `"Chinese"` — the test fails, which is correct (RED pins the language-identification contract). |
-| Maestro CJK character tap (`tapOn: "简体中文"`) may be flaky on some Android devices due to font fallback | Document an english-translation fallback in a comment; if the real run proves flaky, GREEN swaps to the ASCII path. RED verification doesn't run the flow, so this doesn't block the RED commit. |
-| The Maestro flow's `assertVisible: "Welcome"` after Get Started may not match actual `(tabs)/index.tsx` copy | Mark it as a best-guess placeholder in a comment; update in GREEN once the real cold-load text is observed. Purpose is to verify navigation left onboarding — any tabs-side string satisfies. |
-| Duplicate testIDs between Step 1 and Step 3 (`progress-bar`, `progress-fill`) cause a collision if both screens render in the same tree | Impossible in practice — Step 1 and Step 3 are sibling screens in the same Stack; only one renders at a time. Confirmed by Step 1's test using the same testIDs without issue. |
-| RED tests pass against the stub for the wrong reason (e.g., if the stub accidentally had a `<Text>Step 3 of 3</Text>` leftover from a copy-paste) | Unit 1's stub is deliberately minimal — just a testID'd `<View>`. Code review should confirm the stub is truly empty before merging the RED commit. |
-| `fireEvent.press` on a Pressable row wired to `accessibilityRole="radio"` doesn't trigger `onPress` because RN's role normalization rewrote something | Unlikely per RNTL 13.x semantics (`press` → `onPress` is the standard path), but if it surfaces, the fix is in GREEN (wire the Pressable's `onPress` to the selection setter) — not a test rewrite. |
-| Issue #4's Step 2 → Step 3 checkbox gets interpreted as in-scope for this RED plan | Explicitly stated as OUT of scope in Scope Boundaries and again in Open Questions. Review the scope boundary before starting Unit 1. |
+| Row query by `getByRole('radio', { name: /简体中文                                                                                                                             | Simplified Chinese/i })`is ambiguous — does`accessibilityLabel` contain the native name, the english name, both, or neither?                                                                                                            | The regex accepts either, so GREEN has flexibility. If GREEN uses a compound label ("简体中文 Simplified Chinese"), the regex still matches. If GREEN decides to use only `"Chinese"` — the test fails, which is correct (RED pins the language-identification contract). |
+| Maestro CJK character tap (`tapOn: "简体中文"`) may be flaky on some Android devices due to font fallback                                                                      | Document an english-translation fallback in a comment; if the real run proves flaky, GREEN swaps to the ASCII path. RED verification doesn't run the flow, so this doesn't block the RED commit.                                        |
+| The Maestro flow's `assertVisible: "Welcome"` after Get Started may not match actual `(tabs)/index.tsx` copy                                                                   | Mark it as a best-guess placeholder in a comment; update in GREEN once the real cold-load text is observed. Purpose is to verify navigation left onboarding — any tabs-side string satisfies.                                           |
+| Duplicate testIDs between Step 1 and Step 3 (`progress-bar`, `progress-fill`) cause a collision if both screens render in the same tree                                        | Impossible in practice — Step 1 and Step 3 are sibling screens in the same Stack; only one renders at a time. Confirmed by Step 1's test using the same testIDs without issue.                                                          |
+| RED tests pass against the stub for the wrong reason (e.g., if the stub accidentally had a `<Text>Step 3 of 3</Text>` leftover from a copy-paste)                              | Unit 1's stub is deliberately minimal — just a testID'd `<View>`. Code review should confirm the stub is truly empty before merging the RED commit.                                                                                     |
+| `fireEvent.press` on a Pressable row wired to `accessibilityRole="radio"` doesn't trigger `onPress` because RN's role normalization rewrote something                          | Unlikely per RNTL 13.x semantics (`press` → `onPress` is the standard path), but if it surfaces, the fix is in GREEN (wire the Pressable's `onPress` to the selection setter) — not a test rewrite.                                     |
+| Issue #4's Step 2 → Step 3 checkbox gets interpreted as in-scope for this RED plan                                                                                             | Explicitly stated as OUT of scope in Scope Boundaries and again in Open Questions. Review the scope boundary before starting Unit 1.                                                                                                    |
 
 ## Documentation / Operational Notes
 

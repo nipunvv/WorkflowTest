@@ -35,16 +35,16 @@ appId: com.workflowtest.app
 # registered (the (onboarding) group is already in app/_layout.tsx).
 - openLink: workflowtest://onboarding/step-3
 
-- assertVisible: "Step 3 of 3"
-- assertVisible: "Preferred Language"
-- assertVisible: "You can change this later in settings"
-- assertVisible: "English"
+- assertVisible: 'Step 3 of 3'
+- assertVisible: 'Preferred Language'
+- assertVisible: 'You can change this later in settings'
+- assertVisible: 'English'
 
 # Switch to Simplified Chinese. If the CJK tap target is flaky on a specific
 # device, replace this with: tapOn: "Simplified Chinese"
-- tapOn: "简体中文"
+- tapOn: '简体中文'
 
-- tapOn: "Get Started"
+- tapOn: 'Get Started'
 
 # Landed on the post-onboarding placeholder route (app/(onboarding)/complete.tsx).
 - assertVisible: "You're all set!"

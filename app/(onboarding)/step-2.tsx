@@ -79,15 +79,12 @@ export default function OnboardingStep2Screen() {
           }}
         >
           <View style={{ gap: 12, paddingBottom: 8, width: '100%' }}>
-            <Text
-              className="text-text-subtle"
-              style={{ fontSize: 14, fontWeight: '500' }}
-            >
+            <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '500' }}>
               Step 2 of 3
             </Text>
             <View
               testID="progress-bar"
-              className="bg-bg-progress-track overflow-hidden"
+              className="overflow-hidden bg-bg-progress-track"
               style={{
                 height: 6,
                 borderRadius: 3,
@@ -128,10 +125,7 @@ export default function OnboardingStep2Screen() {
               >
                 What are your primary symptoms?
               </Text>
-              <Text
-                className="text-text-subtle"
-                style={{ fontSize: 14, fontWeight: '400' }}
-              >
+              <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '400' }}>
                 Select all that apply
               </Text>
             </View>
@@ -175,10 +169,7 @@ export default function OnboardingStep2Screen() {
                 opacity: canProceed ? 1 : 0.5,
               }}
             >
-              <Text
-                className="text-white"
-                style={{ fontSize: 17, fontWeight: '600' }}
-              >
+              <Text className="text-white" style={{ fontSize: 17, fontWeight: '600' }}>
                 Next
               </Text>
             </Pressable>
@@ -192,10 +183,7 @@ export default function OnboardingStep2Screen() {
                 paddingVertical: 8,
               }}
             >
-              <Text
-                className="text-text-subtle"
-                style={{ fontSize: 15, fontWeight: '500' }}
-              >
+              <Text className="text-text-subtle" style={{ fontSize: 15, fontWeight: '500' }}>
                 Back
               </Text>
             </Pressable>

@@ -90,10 +90,10 @@ Called at the top of `lib/auth-context.tsx`. On web this signals to an auth popu
 
 ## Redirect URL quirks by runtime
 
-| Runtime | `Linking.createURL('auth/callback')` |
-|---|---|
-| Expo Go | `exp://<LAN_IP>:8081/--/auth/callback` (changes per network) |
-| Dev-client / standalone | `workflowtest://auth/callback` (stable) |
+| Runtime                 | `Linking.createURL('auth/callback')`                         |
+| ----------------------- | ------------------------------------------------------------ |
+| Expo Go                 | `exp://<LAN_IP>:8081/--/auth/callback` (changes per network) |
+| Dev-client / standalone | `workflowtest://auth/callback` (stable)                      |
 
 Supabase's Redirect URL allowlist matches the host literally. Wildcards only cover the path segment. This means:
 
@@ -104,14 +104,14 @@ Recommendation: use a dev-client build for all OAuth testing.
 
 ## Key files & components
 
-| File | Role |
-|---|---|
-| `lib/auth-context.tsx` | `AuthProvider` component + `signInWithGoogle` implementation |
-| `lib/supabase.ts` | Supabase client creation; injects `ChunkedSecureStoreAdapter` as storage |
-| `lib/secure-store-adapter.ts` | SecureStore chunking adapter |
-| `app/(auth)/login.tsx` | UI that calls `signInWithGoogle()` |
-| `app/_layout.tsx` | `AuthProvider` wrapper; `Stack.Protected` guards |
-| `hooks/use-redirect-on-sign-in.ts` | Listens for `SIGNED_IN` and routes to onboarding |
+| File                               | Role                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| `lib/auth-context.tsx`             | `AuthProvider` component + `signInWithGoogle` implementation             |
+| `lib/supabase.ts`                  | Supabase client creation; injects `ChunkedSecureStoreAdapter` as storage |
+| `lib/secure-store-adapter.ts`      | SecureStore chunking adapter                                             |
+| `app/(auth)/login.tsx`             | UI that calls `signInWithGoogle()`                                       |
+| `app/_layout.tsx`                  | `AuthProvider` wrapper; `Stack.Protected` guards                         |
+| `hooks/use-redirect-on-sign-in.ts` | Listens for `SIGNED_IN` and routes to onboarding                         |
 
 ## Dependencies
 
@@ -122,12 +122,12 @@ Recommendation: use a dev-client build for all OAuth testing.
 
 ## Configuration
 
-| Variable | Where | Notes |
-|---|---|---|
-| `EXPO_PUBLIC_SUPABASE_URL` | `.env` | Project URL from Supabase dashboard |
-| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | `.env` | Public anon key; safe to ship in binary |
-| Redirect URL allowlist | Supabase dashboard → Auth → URL Configuration | Add `workflowtest://auth/callback` and any `exp://` addresses used in Expo Go |
-| Site URL | Supabase dashboard → Auth → URL Configuration | Set to `workflowtest://auth/callback` for dev-client dev |
+| Variable                        | Where                                         | Notes                                                                         |
+| ------------------------------- | --------------------------------------------- | ----------------------------------------------------------------------------- |
+| `EXPO_PUBLIC_SUPABASE_URL`      | `.env`                                        | Project URL from Supabase dashboard                                           |
+| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | `.env`                                        | Public anon key; safe to ship in binary                                       |
+| Redirect URL allowlist          | Supabase dashboard → Auth → URL Configuration | Add `workflowtest://auth/callback` and any `exp://` addresses used in Expo Go |
+| Site URL                        | Supabase dashboard → Auth → URL Configuration | Set to `workflowtest://auth/callback` for dev-client dev                      |
 
 ## Gotchas / known limitations
 

@@ -60,59 +60,59 @@ Route groups in parentheses do not add a URL segment. `(auth)` → `/login`, `(o
 
 ## `lib/` — core library
 
-| File | Contents |
-|---|---|
-| `auth-context.tsx` | `AuthProvider` component, `useAuth()` hook, `signInWithGoogle()` implementation |
-| `supabase.ts` | Supabase JS client creation; injects `ChunkedSecureStoreAdapter` |
-| `secure-store-adapter.ts` | iOS Keychain chunking adapter |
+| File                      | Contents                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------- |
+| `auth-context.tsx`        | `AuthProvider` component, `useAuth()` hook, `signInWithGoogle()` implementation |
+| `supabase.ts`             | Supabase JS client creation; injects `ChunkedSecureStoreAdapter`                |
+| `secure-store-adapter.ts` | iOS Keychain chunking adapter                                                   |
 
 ## `hooks/` — custom hooks
 
-| File | Contents |
-|---|---|
-| `use-redirect-on-sign-in.ts` | Listens for `SIGNED_IN` event; routes to onboarding |
-| `use-color-scheme.ts` | Wraps RN `useColorScheme`; returns `'light'` as fallback |
-| `use-color-scheme.web.ts` | Web-specific variant |
-| `use-theme-color.ts` | Returns a color from `constants/theme.ts` based on color scheme (used by scaffold components) |
+| File                         | Contents                                                                                      |
+| ---------------------------- | --------------------------------------------------------------------------------------------- |
+| `use-redirect-on-sign-in.ts` | Listens for `SIGNED_IN` event; routes to onboarding                                           |
+| `use-color-scheme.ts`        | Wraps RN `useColorScheme`; returns `'light'` as fallback                                      |
+| `use-color-scheme.web.ts`    | Web-specific variant                                                                          |
+| `use-theme-color.ts`         | Returns a color from `constants/theme.ts` based on color scheme (used by scaffold components) |
 
 ## `components/` — reusable components
 
 All components here are from the Expo scaffold. None are used by the product screens (login, onboarding).
 
-| File | Contents |
-|---|---|
-| `external-link.tsx` | Link that opens in the system browser |
-| `haptic-tab.tsx` | Tab bar button with haptic feedback on press |
-| `hello-wave.tsx` | Animated waving hand (Explore screen decoration) |
-| `parallax-scroll-view.tsx` | Header-parallax scroll view (Explore screen) |
-| `themed-text.tsx` | Text that reads from `constants/theme.ts` colors |
-| `themed-view.tsx` | View that reads from `constants/theme.ts` colors |
-| `ui/collapsible.tsx` | Animated collapsible section |
-| `ui/icon-symbol.tsx` | SF Symbol icon wrapper (Android fallback) |
-| `ui/icon-symbol.ios.tsx` | SF Symbol icon (iOS-specific, uses `expo-symbols`) |
+| File                       | Contents                                           |
+| -------------------------- | -------------------------------------------------- |
+| `external-link.tsx`        | Link that opens in the system browser              |
+| `haptic-tab.tsx`           | Tab bar button with haptic feedback on press       |
+| `hello-wave.tsx`           | Animated waving hand (Explore screen decoration)   |
+| `parallax-scroll-view.tsx` | Header-parallax scroll view (Explore screen)       |
+| `themed-text.tsx`          | Text that reads from `constants/theme.ts` colors   |
+| `themed-view.tsx`          | View that reads from `constants/theme.ts` colors   |
+| `ui/collapsible.tsx`       | Animated collapsible section                       |
+| `ui/icon-symbol.tsx`       | SF Symbol icon wrapper (Android fallback)          |
+| `ui/icon-symbol.ios.tsx`   | SF Symbol icon (iOS-specific, uses `expo-symbols`) |
 
 ## `assets/images/` — static images
 
-| File | Used by |
-|---|---|
-| `auth-decorations.png` | Login screen background decoration |
-| `auth-logo-glow.png` | Login screen logo glow halo |
-| `google-logo.png` | Google "G" logo in the sign-in button |
-| `icon.png` | App icon |
-| `splash-icon.png` | Splash screen image |
-| `android-icon-*.png` | Android adaptive icon layers |
-| `favicon.png` | Web favicon |
-| `react-logo*.png` | Expo scaffold (Explore screen) |
-| `partial-react-logo.png` | Expo scaffold (Home screen header) |
+| File                     | Used by                               |
+| ------------------------ | ------------------------------------- |
+| `auth-decorations.png`   | Login screen background decoration    |
+| `auth-logo-glow.png`     | Login screen logo glow halo           |
+| `google-logo.png`        | Google "G" logo in the sign-in button |
+| `icon.png`               | App icon                              |
+| `splash-icon.png`        | Splash screen image                   |
+| `android-icon-*.png`     | Android adaptive icon layers          |
+| `favicon.png`            | Web favicon                           |
+| `react-logo*.png`        | Expo scaffold (Explore screen)        |
+| `partial-react-logo.png` | Expo scaffold (Home screen header)    |
 
 ## `.maestro/` — E2E flows
 
-| File | Contents |
-|---|---|
-| `config.yaml` | Global Maestro config |
-| `launch.yaml` | App launch flow |
+| File                     | Contents                                                          |
+| ------------------------ | ----------------------------------------------------------------- |
+| `config.yaml`            | Global Maestro config                                             |
+| `launch.yaml`            | App launch flow                                                   |
 | `onboarding-step-1.yaml` | Onboarding Step 1 smoke test (RED — not passing on any build yet) |
-| `README.md` | Maestro limitations and preconditions |
+| `README.md`              | Maestro limitations and preconditions                             |
 
 ## `docs/` — this documentation
 
@@ -142,10 +142,10 @@ docs/
 
 ## Key configuration files
 
-| File | Key settings |
-|---|---|
-| `app.json` | App name ("Hi Honey"), `scheme: "workflowtest"`, `bundleIdentifier: "com.workflowtest.app"`, `experiments.reactCompiler: true`, `experiments.typedRoutes: true`, `newArchEnabled: true` |
-| `tsconfig.json` | `"@/*": ["./*"]` path alias maps `@/` to repo root |
-| `tailwind.config.js` | Color tokens, NativeWind preset, Tailwind v3.4 |
-| `eas.json` | `development` (simulator dev-client), `preview`, `production` build profiles |
-| `jest-setup.ts` | Injects SUPABASE env vars; mocks `expo-secure-store`, `expo-web-browser`, `expo-linking`, `react-native-reanimated` |
+| File                 | Key settings                                                                                                                                                                            |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app.json`           | App name ("Hi Honey"), `scheme: "workflowtest"`, `bundleIdentifier: "com.workflowtest.app"`, `experiments.reactCompiler: true`, `experiments.typedRoutes: true`, `newArchEnabled: true` |
+| `tsconfig.json`      | `"@/*": ["./*"]` path alias maps `@/` to repo root                                                                                                                                      |
+| `tailwind.config.js` | Color tokens, NativeWind preset, Tailwind v3.4                                                                                                                                          |
+| `eas.json`           | `development` (simulator dev-client), `preview`, `production` build profiles                                                                                                            |
+| `jest-setup.ts`      | Injects SUPABASE env vars; mocks `expo-secure-store`, `expo-web-browser`, `expo-linking`, `react-native-reanimated`                                                                     |

@@ -1,5 +1,5 @@
 ---
-title: "feat: Onboarding Step 1 — failing tests for TDD (RED, issue #2)"
+title: 'feat: Onboarding Step 1 — failing tests for TDD (RED, issue #2)'
 type: feat
 status: active
 date: 2026-04-22
@@ -81,26 +81,26 @@ export default function AuthLayout() {
 
 GREEN will use these; RED only echoes the user-visible copy.
 
-| Role | Hex | Notes |
-|---|---|---|
-| Page background | `#fff8f0` | cream, same as `bg-primary` |
-| Step caption text | `#8c8073` | Inter Medium 14, same as `text-subtle` |
-| Progress bar track | `rgba(156,175,136,0.2)` | sage tint |
-| Progress bar fill | `#9caf88` | sage, 1/3 width, 6dp tall, 3dp radius |
-| Card bg | `#ffffff` | 24dp radius, shadow `0 4 24 rgba(212,165,116,0.08)` |
-| Card H1 | `#33291f` | Inter Bold 24 / 32 |
-| Input label | `#736659` | Inter Medium 14, same as `text-body` |
-| Input (active/filled) bg | `#faf7f5` | warm off-white |
-| Input (active/filled) border | `#d4a574` | 1.5px, honey tan |
-| Input (default) border | `#e0dbd6` | 1px, neutral warm |
-| Input placeholder text | `#a6998c` | Inter Regular 16 |
-| Toggle (ON) track | `#9caf88` | sage |
-| Input (disabled) bg | `#f2f0ed` | warm gray, 50% opacity container |
-| Input (disabled) border | `#e5e3e0` | |
-| Input (disabled) placeholder | `#b2a699` | "Not applicable" |
-| Next button bg | `#d4a574` | honey tan, 56dp, 16dp radius, shadow `0 4 16 rgba(212,165,116,0.3)` |
-| Next button label | `#ffffff` | Inter Semi Bold 17 |
-| Back link | `#8c8073` | Inter Medium 15, centered |
+| Role                         | Hex                     | Notes                                                               |
+| ---------------------------- | ----------------------- | ------------------------------------------------------------------- |
+| Page background              | `#fff8f0`               | cream, same as `bg-primary`                                         |
+| Step caption text            | `#8c8073`               | Inter Medium 14, same as `text-subtle`                              |
+| Progress bar track           | `rgba(156,175,136,0.2)` | sage tint                                                           |
+| Progress bar fill            | `#9caf88`               | sage, 1/3 width, 6dp tall, 3dp radius                               |
+| Card bg                      | `#ffffff`               | 24dp radius, shadow `0 4 24 rgba(212,165,116,0.08)`                 |
+| Card H1                      | `#33291f`               | Inter Bold 24 / 32                                                  |
+| Input label                  | `#736659`               | Inter Medium 14, same as `text-body`                                |
+| Input (active/filled) bg     | `#faf7f5`               | warm off-white                                                      |
+| Input (active/filled) border | `#d4a574`               | 1.5px, honey tan                                                    |
+| Input (default) border       | `#e0dbd6`               | 1px, neutral warm                                                   |
+| Input placeholder text       | `#a6998c`               | Inter Regular 16                                                    |
+| Toggle (ON) track            | `#9caf88`               | sage                                                                |
+| Input (disabled) bg          | `#f2f0ed`               | warm gray, 50% opacity container                                    |
+| Input (disabled) border      | `#e5e3e0`               |                                                                     |
+| Input (disabled) placeholder | `#b2a699`               | "Not applicable"                                                    |
+| Next button bg               | `#d4a574`               | honey tan, 56dp, 16dp radius, shadow `0 4 16 rgba(212,165,116,0.3)` |
+| Next button label            | `#ffffff`               | Inter Semi Bold 17                                                  |
+| Back link                    | `#8c8073`               | Inter Medium 15, centered                                           |
 
 **Figma frame quirk:** The design shows the screen inside a 40dp rounded container — that's a preview artifact. On-device this is a full-bleed screen with safe-area insets. RED doesn't care; flagging for GREEN.
 
@@ -156,11 +156,13 @@ GREEN will use these; RED only echoes the user-visible copy.
 **Dependencies:** None.
 
 **Files:**
+
 - Create: `app/(onboarding)/_layout.tsx`
 - Create: `app/(onboarding)/step-1.tsx`
 - Modify: `app/_layout.tsx` (add one `<Stack.Screen>` inside the existing authed `<Stack.Protected>`)
 
 **Approach:**
+
 - `_layout.tsx` mirrors `app/(auth)/_layout.tsx`: `<Stack screenOptions={{ headerShown: false }} />`. No provider, no guard — the authed guard is in the root layout.
 - `step-1.tsx` default-exports `OnboardingStep1Screen` rendering `<View testID="onboarding-step-1-screen" />`. Import `View` from `react-native`. No other imports. No props.
 - In `app/_layout.tsx`, inside the existing `<Stack.Protected guard={isAuthed}>` block, add `<Stack.Screen name="(onboarding)" options={{ headerShown: false }} />` immediately after the `(tabs)` screen line. Leave the `!isAuthed` guard block alone.
@@ -168,13 +170,16 @@ GREEN will use these; RED only echoes the user-visible copy.
 **Execution note:** This unit introduces no testable behavior. Its sole purpose is to make Units 2 and 3 executable and to let a dev-client launch the route manually. Treat it as RED scaffolding, not GREEN implementation.
 
 **Patterns to follow:**
+
 - `app/(auth)/_layout.tsx` for the child stack shape.
 - The existing `app/_layout.tsx` `<Stack.Protected>` pattern for guard structure.
 
 **Test scenarios:**
+
 - Test expectation: none — stubs and route registration have no behavior to assert. Verified transitively by Unit 2's first test ("renders a `testID="onboarding-step-1-screen"` root"), which passes as soon as the stub resolves, and by a manual dev-client launch landing on an empty screen without a 404.
 
 **Verification:**
+
 - `npx tsc --noEmit` passes.
 - `npx expo start` does not error on module resolution for `app/(onboarding)/step-1.tsx`.
 - `npm run lint` clean.
@@ -189,9 +194,11 @@ GREEN will use these; RED only echoes the user-visible copy.
 **Dependencies:** Unit 1.
 
 **Files:**
+
 - Create: `app/(onboarding)/__tests__/step-1.test.tsx`
 
 **Approach:**
+
 - Mirror the harness from `app/(auth)/__tests__/login.test.tsx`: `SafeAreaProvider` wrapper with `initialMetrics`, `render` helper, `beforeEach(jest.clearAllMocks)`.
 - Mock `expo-router` locally:
 
@@ -204,6 +211,7 @@ jest.mock('expo-router', () => ({
 ```
 
 In each test (or in `beforeEach`), set `jest.mocked(useRouter).mockReturnValue({ push: mockPush, back: mockBack, replace: jest.fn(), dismiss: jest.fn(), dismissAll: jest.fn(), canGoBack: () => true, setParams: jest.fn(), navigate: jest.fn() })` with fresh `jest.fn()`s for `push`/`back`.
+
 - Use `render`, `screen`, `fireEvent`, `waitFor` from `@testing-library/react-native`.
 - Use role-based queries where possible (`getByRole('button', { name: ... })`, `getByRole('switch', { name: /Not sure/i })`, `getByRole('text' /* label */)` fallback via `getByLabelText`).
 - Use `fireEvent.changeText(input, 'Angel')` for text input. Assume the First Name input is queryable by `getByLabelText(/First Name/i)` or `getByPlaceholderText(...)` — GREEN will wire `accessibilityLabel="First Name"`.
@@ -214,12 +222,14 @@ In each test (or in `beforeEach`), set `jest.mocked(useRouter).mockReturnValue({
 **Execution note:** RED only. Do NOT modify `step-1.tsx`, `_layout.tsx`, or `app/_layout.tsx` in this unit. Do NOT modify `jest-setup.ts`. Commit the failing tests as-is. Verify RED with `npm test` and paste the failing output into the PR description.
 
 **Patterns to follow:**
+
 - `app/(auth)/__tests__/login.test.tsx` — mock factory shape, `beforeEach` / `afterEach` cleanup, `SafeAreaProvider` wrapper, role + label queries.
 - The `useAuth` mock factory pattern — when this file mocks `expo-router`, keep the factory generic so future onboarding screens can reuse it verbatim.
 
 **Test scenarios:**
 
-*Static render (R1, R7):*
+_Static render (R1, R7):_
+
 - **Happy path — header caption:** `screen.getByText('Step 1 of 3')` is on screen.
 - **Happy path — progress bar:** `screen.getByTestId('progress-bar')` is on screen AND has a child `testID="progress-fill"` whose `style.width` (or a proxied `accessibilityValue.now`) reflects 1/3 progress. (GREEN wires the testIDs; RED fails with "Unable to find element by testID: progress-bar".)
 - **Happy path — H1:** `screen.getByText(/Let's get to know you/i)` is on screen.
@@ -230,16 +240,19 @@ In each test (or in `beforeEach`), set `jest.mocked(useRouter).mockReturnValue({
 - **Happy path — Next button:** `screen.getByRole('button', { name: /^Next$/i })` is on screen.
 - **Happy path — Back link:** `screen.getByRole('button', { name: /^Back$/i })` (or `accessibilityRole="link"`) is on screen.
 
-*First Name input (R2):*
+_First Name input (R2):_
+
 - **Happy path — typing updates value:** `fireEvent.changeText(getByLabelText(/First Name/i), 'Angel')` → the same input's `props.value` is `'Angel'` (or, via `getByDisplayValue('Angel')`, the value is reflected on screen).
 
-*"Not sure" toggle (R3):*
+_"Not sure" toggle (R3):_
+
 - **Happy path — toggle ON disables diagnosis field:** Fire `valueChange(true)` on the Not Sure switch → `getByTestId('diagnosis-field').props.accessibilityState.disabled === true`.
 - **Integration — toggle ON clears prior diagnosis value:** Given a test that drives the diagnosis field via `fireEvent(getByTestId('diagnosis-field'), 'onChangeDate', new Date('2024-01-01'))` (or whatever GREEN wires), the visible value is then `'2024-01-01'` (or its localized form). After firing `valueChange(true)` on the Not Sure switch, the diagnosis field shows `'Not applicable'` (or an empty value query via `getByDisplayValue` returns nothing).
 - **Edge case — toggle OFF re-enables diagnosis field but does not restore prior value:** After ON → OFF cycle, `accessibilityState.disabled === false` AND no prior date value is visible (placeholder returns).
 - **Edge case — toggle is independent of DOB:** Setting DOB, toggling Not Sure ON, then OFF — DOB remains set (asserted via `getByDisplayValue` or the visible date text).
 
-*Next button enablement (R4):*
+_Next button enablement (R4):_
+
 - **Edge case — initial state:** Next is disabled (`props.accessibilityState.disabled === true`) on first render with no fields filled.
 - **Edge case — name-only:** After typing First Name with empty DOB and Not Sure OFF, Next remains disabled.
 - **Edge case — DOB-only:** After setting DOB with empty First Name and Not Sure OFF, Next remains disabled.
@@ -248,16 +261,19 @@ In each test (or in `beforeEach`), set `jest.mocked(useRouter).mockReturnValue({
 - **Happy path — name + Not Sure:** After typing First Name AND toggling Not Sure ON (no DOB), Next is enabled.
 - **Edge case — clearing name re-disables Next:** Typing name + setting DOB enables Next; then clearing the name field via `fireEvent.changeText(input, '')` disables Next again.
 
-*Navigation (R5, R6):*
+_Navigation (R5, R6):_
+
 - **Happy path — Next navigates:** With a valid form (name + DOB), pressing Next → `mockPush` was called exactly once with a string containing `/onboarding/step-2/` (or, if GREEN uses an `Href` object, with `{ pathname: '/onboarding/step-2' }`).
 - **Edge case — Next is a no-op when disabled:** With only First Name typed, pressing Next → `mockPush` was NOT called.
 - **Happy path — Back calls router.back:** Pressing Back → `mockBack` was called exactly once.
 - **Edge case — Back ignores form state:** With a valid form, pressing Back still only calls `mockBack`, not `mockPush`.
 
-*Accessibility (R7):*
+_Accessibility (R7):_
+
 - First Name input, DOB trigger, Diagnosis trigger, Not Sure switch, Next button, Back link — each has `accessibilityRole` (or `role`) set AND `accessibilityLabel` set to a non-empty string.
 
 **Verification:**
+
 - `npx jest app/(onboarding)/__tests__/step-1.test.tsx` exits **non-zero** with every test case failing for the right reason: "Unable to find …" on role/text/testID queries, NOT module-resolution / import / syntax / runtime errors. Expected ~20 failing cases.
 - `npx jest app/(auth)/__tests__/login.test.tsx` still passes — no regression in the existing suite.
 - `npx tsc --noEmit` clean.
@@ -273,9 +289,11 @@ In each test (or in `beforeEach`), set `jest.mocked(useRouter).mockReturnValue({
 **Dependencies:** Unit 1 (so the route is at least registered — the dev-client build otherwise 404s before the flow can begin).
 
 **Files:**
+
 - Create: `.maestro/onboarding-step-1.yaml`
 
 **Approach:**
+
 - Header: `appId: com.workflowtest.app` (copy from `.maestro/launch.yaml`).
 - Flow is sign-in-dependent. Option A: start from `launchApp: clearState: true` → sign in via the real OAuth path (Maestro can't drive the system sheet per `CLAUDE.md`) → unworkable. Option B: add a `- runFlow: file: ../flows/_authed.yaml` dependency — but no such harness exists in this repo yet. Option C: **assume the user is already signed in when running this flow** and invoke it manually from a dev-client with a live session (`launchApp` without `clearState` so the session persists). Pick C; document the precondition in a leading YAML comment.
 - Flow body:
@@ -297,13 +315,16 @@ In each test (or in `beforeEach`), set `jest.mocked(useRouter).mockReturnValue({
   - `appId` must be `com.workflowtest.app`; Expo Go is incompatible.
 
 **Patterns to follow:**
+
 - `.maestro/launch.yaml` — front matter + `launchApp` + `assertVisible` rhythm.
 - `.maestro/README.md` — prose conventions for documenting flow preconditions and limitations.
 
 **Test scenarios:**
+
 - Test expectation: the YAML itself is the spec; executing it against a GREEN-implemented build is the passing test. RED verification is limited to syntactic validity + the file existing at the expected path.
 
 **Verification:**
+
 - `maestro test .maestro/onboarding-step-1.yaml --format junit --output /tmp/_ignore.xml` parses the file without a YAML error (may fail the flow itself against this branch — that's expected).
 - `git diff` in this unit touches only `.maestro/onboarding-step-1.yaml`.
 - `.maestro/launch.yaml` is unchanged (no regression).
@@ -319,14 +340,14 @@ In each test (or in `beforeEach`), set `jest.mocked(useRouter).mockReturnValue({
 
 ## Risks & Dependencies
 
-| Risk | Mitigation |
-|------|------------|
-| `jest.mock('expo-router', ...)` is too narrow and a render path hits an unmocked export, producing a runtime error instead of a matcher failure | Start from the `useRouter` + `Stack.Screen` subset listed in Unit 2's approach. If RED run surfaces `TypeError: X is not a function`, widen the mock factory — do NOT globalize it in `jest-setup.ts` (keeps future screens free to choose their own shape). |
-| The test's behavioral assertions rely on GREEN honoring specific `testID`s (`progress-bar`, `progress-fill`, `dob-field`, `diagnosis-field`, `onboarding-step-1-screen`) — if GREEN drifts from those names the tests won't go green | Pin the testID list in Unit 2's test scenarios section (done above) and call it out explicitly in the RED PR description so the GREEN implementer has no ambiguity. Treat testIDs as a contract, not an implementation detail. |
-| The DOB field is hard to drive from RNTL without knowing the picker library — tests that exercise "DOB is set" may be forced to use library-specific fire-event shapes | RED asserts DOB-dependent behavior by firing `fireEvent(getByTestId('dob-field'), 'onChangeDate', new Date(...))` — a synthetic event shape GREEN can honor regardless of picker library (wrap the picker and expose `onChangeDate` as a prop on a custom field component). Alternative path if that turns out awkward: expose a test-only imperative handle via a `testID="mock-dob-set"` `<Pressable>` that GREEN renders when a `__DEV__` flag is on — only adopt if the wrapper approach creates friction. |
-| Route registration in `app/_layout.tsx` accidentally reorders or wraps the existing `(tabs)` / `modal` / `(auth)` declarations and breaks auth flow | Keep the diff to a single additive `<Stack.Screen name="(onboarding)" options={{ headerShown: false }} />` line inside the existing authed `<Stack.Protected>`; leave ordering of neighboring lines untouched. Run `maestro test .maestro/launch.yaml` after Unit 1 to confirm the existing flow still passes. |
-| Maestro flow's `openLink: workflowtest://onboarding/step-1` fails to resolve on the dev-client if deep-link handling for `(onboarding)` routes needs explicit Expo Router config | Annotate the step with a "if this fails, navigate manually to Step 1 before running the flow" fallback comment. Deep-link wiring is not in scope for this plan; it's only relevant once Maestro runs GREEN anyway. |
-| The issue mentions `router.back()` is a no-op when Step 1 is the stack root — the RED test asserts `mockBack` was called, which is true regardless of whether the real `back` pops or not | Accept this semantic: `router.back()` on the stack root is idempotent and still exercises the wiring. Document in the test with a one-line comment. |
+| Risk                                                                                                                                                                                                                                 | Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `jest.mock('expo-router', ...)` is too narrow and a render path hits an unmocked export, producing a runtime error instead of a matcher failure                                                                                      | Start from the `useRouter` + `Stack.Screen` subset listed in Unit 2's approach. If RED run surfaces `TypeError: X is not a function`, widen the mock factory — do NOT globalize it in `jest-setup.ts` (keeps future screens free to choose their own shape).                                                                                                                                                                                                                                                   |
+| The test's behavioral assertions rely on GREEN honoring specific `testID`s (`progress-bar`, `progress-fill`, `dob-field`, `diagnosis-field`, `onboarding-step-1-screen`) — if GREEN drifts from those names the tests won't go green | Pin the testID list in Unit 2's test scenarios section (done above) and call it out explicitly in the RED PR description so the GREEN implementer has no ambiguity. Treat testIDs as a contract, not an implementation detail.                                                                                                                                                                                                                                                                                 |
+| The DOB field is hard to drive from RNTL without knowing the picker library — tests that exercise "DOB is set" may be forced to use library-specific fire-event shapes                                                               | RED asserts DOB-dependent behavior by firing `fireEvent(getByTestId('dob-field'), 'onChangeDate', new Date(...))` — a synthetic event shape GREEN can honor regardless of picker library (wrap the picker and expose `onChangeDate` as a prop on a custom field component). Alternative path if that turns out awkward: expose a test-only imperative handle via a `testID="mock-dob-set"` `<Pressable>` that GREEN renders when a `__DEV__` flag is on — only adopt if the wrapper approach creates friction. |
+| Route registration in `app/_layout.tsx` accidentally reorders or wraps the existing `(tabs)` / `modal` / `(auth)` declarations and breaks auth flow                                                                                  | Keep the diff to a single additive `<Stack.Screen name="(onboarding)" options={{ headerShown: false }} />` line inside the existing authed `<Stack.Protected>`; leave ordering of neighboring lines untouched. Run `maestro test .maestro/launch.yaml` after Unit 1 to confirm the existing flow still passes.                                                                                                                                                                                                 |
+| Maestro flow's `openLink: workflowtest://onboarding/step-1` fails to resolve on the dev-client if deep-link handling for `(onboarding)` routes needs explicit Expo Router config                                                     | Annotate the step with a "if this fails, navigate manually to Step 1 before running the flow" fallback comment. Deep-link wiring is not in scope for this plan; it's only relevant once Maestro runs GREEN anyway.                                                                                                                                                                                                                                                                                             |
+| The issue mentions `router.back()` is a no-op when Step 1 is the stack root — the RED test asserts `mockBack` was called, which is true regardless of whether the real `back` pops or not                                            | Accept this semantic: `router.back()` on the stack root is idempotent and still exercises the wiring. Document in the test with a one-line comment.                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Documentation / Operational Notes
 

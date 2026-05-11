@@ -19,17 +19,17 @@ appId: com.workflowtest.app
 
 - openLink: workflowtest://onboarding/step-2
 
-- assertVisible: "Step 2 of 3"
-- assertVisible: "What are your primary symptoms?"
+- assertVisible: 'Step 2 of 3'
+- assertVisible: 'What are your primary symptoms?'
 
-- tapOn: "Dry Eyes"
-- tapOn: "Fatigue"
+- tapOn: 'Dry Eyes'
+- tapOn: 'Fatigue'
 
 # Deselect one chip to exercise the toggle-off path.
-- tapOn: "Dry Eyes"
+- tapOn: 'Dry Eyes'
 
-- tapOn: "Next"
+- tapOn: 'Next'
 
 # Step 3 is a placeholder stub (tracked as a separate issue). Match the full
 # placeholder string to avoid incidental matches on other screens.
-- assertVisible: "Step 3 coming soon"
+- assertVisible: 'Step 3 coming soon'

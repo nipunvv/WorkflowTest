@@ -75,22 +75,22 @@ maestro test .maestro/
 
 ## Documentation
 
-| File | What it covers |
-|---|---|
-| `CLAUDE.md` | Non-negotiables, mobile stack rules, architecture notes, gotchas — read before touching any code |
-| `DESIGN.md` | Design tokens: colors, typography, spacing, shadows, motion |
-| `docs/index.md` | Full map of the `docs/` directory |
-| `docs/decisions/` | Architecture Decision Records (ADRs) |
-| `docs/plans/` | Per-feature TDD planning docs |
-| `docs/solutions/` | Patterns and learnings from past work |
+| File              | What it covers                                                                                   |
+| ----------------- | ------------------------------------------------------------------------------------------------ |
+| `CLAUDE.md`       | Non-negotiables, mobile stack rules, architecture notes, gotchas — read before touching any code |
+| `DESIGN.md`       | Design tokens: colors, typography, spacing, shadows, motion                                      |
+| `docs/index.md`   | Full map of the `docs/` directory                                                                |
+| `docs/decisions/` | Architecture Decision Records (ADRs)                                                             |
+| `docs/plans/`     | Per-feature TDD planning docs                                                                    |
+| `docs/solutions/` | Patterns and learnings from past work                                                            |
 
 ## Status and roadmap
 
-| Area | Status |
-|---|---|
-| Google OAuth sign-in | Shipped (PR #1) |
-| Onboarding Step 1 — Basic Info | Shipped (PR #6) |
-| Onboarding Steps 2 & 3 | Not started |
-| Persist onboarding data to Supabase | Not started (no `profiles` schema yet) |
-| Profile-gated redirect (skip onboarding for returning users) | Not started — tracked follow-up |
-| OTA updates (`eas update`) | Not wired — `expo-updates` not installed |
+| Area                                                         | Status                                   |
+| ------------------------------------------------------------ | ---------------------------------------- |
+| Google OAuth sign-in                                         | Shipped (PR #1)                          |
+| Onboarding Step 1 — Basic Info                               | Shipped (PR #6)                          |
+| Onboarding Steps 2 & 3                                       | Not started                              |
+| Persist onboarding data to Supabase                          | Not started (no `profiles` schema yet)   |
+| Profile-gated redirect (skip onboarding for returning users) | Not started — tracked follow-up          |
+| OTA updates (`eas update`)                                   | Not wired — `expo-updates` not installed |

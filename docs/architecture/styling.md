@@ -28,33 +28,33 @@ NativeWind compiles Tailwind class names to React Native styles at build time (v
 
 ### Auth screen tokens (issue #1)
 
-| Token | Value | Usage |
-|---|---|---|
-| `bg-primary` | `#fff8f0` | Screen background |
-| `bg-logo` | `#d4a574` | Logo container background |
-| `bg-badge` | `rgba(156,175,136,0.15)` | Privacy badge background |
-| `button-primary-bg` | `#1f1a14` | Google sign-in button |
-| `text-heading` | `#33291f` | Headings |
-| `text-body` | `#736659` | Body copy |
-| `text-badge` | `#617354` | Badge text |
-| `text-subtle` | `#8c8073` | Secondary text |
-| `accent-primary` | `#d4a574` | Links, accents |
+| Token               | Value                    | Usage                     |
+| ------------------- | ------------------------ | ------------------------- |
+| `bg-primary`        | `#fff8f0`                | Screen background         |
+| `bg-logo`           | `#d4a574`                | Logo container background |
+| `bg-badge`          | `rgba(156,175,136,0.15)` | Privacy badge background  |
+| `button-primary-bg` | `#1f1a14`                | Google sign-in button     |
+| `text-heading`      | `#33291f`                | Headings                  |
+| `text-body`         | `#736659`                | Body copy                 |
+| `text-badge`        | `#617354`                | Badge text                |
+| `text-subtle`       | `#8c8073`                | Secondary text            |
+| `accent-primary`    | `#d4a574`                | Links, accents            |
 
 ### Onboarding Step 1 tokens (issue #2)
 
-| Token | Value | Usage |
-|---|---|---|
-| `bg-card` | `#ffffff` | Card container |
-| `bg-input` | `#faf7f5` | Text input background |
-| `bg-input-disabled` | `#f2f0ed` | Disabled input background |
-| `bg-next` | `#d4a574` | Next button background |
-| `bg-progress-track` | `rgba(156,175,136,0.2)` | Progress bar track |
-| `bg-progress-fill` | `#9caf88` | Progress bar fill |
-| `border-input-active` | `#d4a574` | Input active border |
-| `border-input-default` | `#e0dbd6` | Input default border |
-| `border-input-disabled` | `#e5e3e0` | Input disabled border |
-| `text-placeholder` | `#a6998c` | Input placeholder text |
-| `text-placeholder-disabled` | `#b2a699` | Disabled placeholder text |
+| Token                       | Value                   | Usage                     |
+| --------------------------- | ----------------------- | ------------------------- |
+| `bg-card`                   | `#ffffff`               | Card container            |
+| `bg-input`                  | `#faf7f5`               | Text input background     |
+| `bg-input-disabled`         | `#f2f0ed`               | Disabled input background |
+| `bg-next`                   | `#d4a574`               | Next button background    |
+| `bg-progress-track`         | `rgba(156,175,136,0.2)` | Progress bar track        |
+| `bg-progress-fill`          | `#9caf88`               | Progress bar fill         |
+| `border-input-active`       | `#d4a574`               | Input active border       |
+| `border-input-default`      | `#e0dbd6`               | Input default border      |
+| `border-input-disabled`     | `#e5e3e0`               | Input disabled border     |
+| `text-placeholder`          | `#a6998c`               | Input placeholder text    |
+| `text-placeholder-disabled` | `#b2a699`               | Disabled placeholder text |
 
 ### boxShadow extensions
 
@@ -80,23 +80,23 @@ These use RN 0.76+ cross-platform `boxShadow` string syntax (compiles to iOS sha
 
 ## When to use what
 
-| Situation | Approach |
-|---|---|
-| Static Tailwind-expressible styles | `className="..."` |
-| Styles that depend on runtime values (e.g., `opacity: canProceed ? 1 : 0.5`) | Inline `style={{ ... }}` |
-| Animated values (Reanimated shared values) | `useAnimatedStyle` + `Animated.View` |
-| Rarely-changing, complex static styles | `StyleSheet.create()` — avoids object creation on every render |
+| Situation                                                                    | Approach                                                       |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Static Tailwind-expressible styles                                           | `className="..."`                                              |
+| Styles that depend on runtime values (e.g., `opacity: canProceed ? 1 : 0.5`) | Inline `style={{ ... }}`                                       |
+| Animated values (Reanimated shared values)                                   | `useAnimatedStyle` + `Animated.View`                           |
+| Rarely-changing, complex static styles                                       | `StyleSheet.create()` — avoids object creation on every render |
 
 ## Key files
 
-| File | Role |
-|---|---|
-| `tailwind.config.js` | Token definitions + NativeWind preset |
-| `global.css` | Tailwind directives; imported once |
-| `babel.config.js` | NativeWind Babel preset |
-| `nativewind-env.d.ts` | TypeScript ambient declarations |
-| `DESIGN.md` | Figma-sourced design tokens (source of truth) |
-| `constants/theme.ts` | Legacy `Colors` + `Fonts` from the Expo scaffold; used only by `(tabs)/_layout.tsx` tab bar tint. Not used by product screens. |
+| File                  | Role                                                                                                                           |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `tailwind.config.js`  | Token definitions + NativeWind preset                                                                                          |
+| `global.css`          | Tailwind directives; imported once                                                                                             |
+| `babel.config.js`     | NativeWind Babel preset                                                                                                        |
+| `nativewind-env.d.ts` | TypeScript ambient declarations                                                                                                |
+| `DESIGN.md`           | Figma-sourced design tokens (source of truth)                                                                                  |
+| `constants/theme.ts`  | Legacy `Colors` + `Fonts` from the Expo scaffold; used only by `(tabs)/_layout.tsx` tab bar tint. Not used by product screens. |
 
 ## Dependencies
 

@@ -55,14 +55,14 @@ A summary of the coding rules for this project. **`CLAUDE.md` at the repo root i
 
 ## Key files
 
-| File | Contents |
-|---|---|
-| `CLAUDE.md` | Full authoritative rules, gotchas, commands, architecture overview |
-| `DESIGN.md` | Design token source of truth |
-| `tailwind.config.js` | Tailwind token registry |
-| `tsconfig.json` | Path aliases (`@/`) |
-| `eslint.config.js` | ESLint rules (expo flat config) |
-| `.prettierrc` | Prettier config (Tailwind class sorting) |
+| File                 | Contents                                                           |
+| -------------------- | ------------------------------------------------------------------ |
+| `CLAUDE.md`          | Full authoritative rules, gotchas, commands, architecture overview |
+| `DESIGN.md`          | Design token source of truth                                       |
+| `tailwind.config.js` | Tailwind token registry                                            |
+| `tsconfig.json`      | Path aliases (`@/`)                                                |
+| `eslint.config.js`   | ESLint rules (expo flat config)                                    |
+| `.prettierrc`        | Prettier config (Tailwind class sorting)                           |
 
 ## Cross-refs
 

@@ -11,7 +11,7 @@ There is exactly one piece of global state: the Supabase `Session` (or `null`) e
 ```ts
 type AuthContextValue = {
   session: Session | null;
-  user: User | null;     // derived from session?.user
+  user: User | null; // derived from session?.user
   loading: boolean;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -47,8 +47,8 @@ There are no reducers, no stores, no Zustand, no Redux. For a project this size,
 
 ## Key files
 
-| File | Role |
-|---|---|
+| File                   | Role                                       |
+| ---------------------- | ------------------------------------------ |
 | `lib/auth-context.tsx` | `AuthProvider`, `AuthContext`, `useAuth()` |
 
 ## Cross-refs

@@ -50,14 +50,14 @@
 
 ## Frame Index
 
-| Node ID | Screen | Canvas X | Status |
-|---------|--------|---------:|--------|
-| `4:2`   | Auth — Sign In                          |   100 | Designed |
-| `13:2`  | Onboarding — Step 1: Basic Info         |   573 | Designed (header still reads "Step 1 of 3") |
-| `14:2`  | Onboarding — Step 2: Symptoms (3-step)  |  1046 | Designed (older flow) |
-| `15:2`  | Onboarding — Step 3: Language (3-step)  |  1519 | Designed (older flow) |
-| `170:2` | Onboarding — Step 2: Goals (4-step)     |  1992 | Designed (newer flow) |
-| `178:2` | Onboarding — Step 3: Integrations (4-step) | 2465 | Designed (newer flow) |
+| Node ID | Screen                                     | Canvas X | Status                                      |
+| ------- | ------------------------------------------ | -------: | ------------------------------------------- |
+| `4:2`   | Auth — Sign In                             |      100 | Designed                                    |
+| `13:2`  | Onboarding — Step 1: Basic Info            |      573 | Designed (header still reads "Step 1 of 3") |
+| `14:2`  | Onboarding — Step 2: Symptoms (3-step)     |     1046 | Designed (older flow)                       |
+| `15:2`  | Onboarding — Step 3: Language (3-step)     |     1519 | Designed (older flow)                       |
+| `170:2` | Onboarding — Step 2: Goals (4-step)        |     1992 | Designed (newer flow)                       |
+| `178:2` | Onboarding — Step 3: Integrations (4-step) |     2465 | Designed (newer flow)                       |
 
 All frames are 393 × 852 mobile.
 
@@ -68,27 +68,34 @@ All frames are 393 × 852 mobile.
 The original sitemap defines a much larger app. Everything below is **NOT IN FIGMA** yet:
 
 ### 1. Onboarding flow — missing pieces
-- 1.1 Welcome Splash *(original sitemap shows this before Auth)*
-- 1.5b Step 4 of 4 — "You're all set" confirmation *(planned as a dummy stub in code; not yet designed in Figma)*
+
+- 1.1 Welcome Splash _(original sitemap shows this before Auth)_
+- 1.5b Step 4 of 4 — "You're all set" confirmation _(planned as a dummy stub in code; not yet designed in Figma)_
 - 1.6 First Log Prompt ("You're all set 🎉")
 
 ### 2. Log tab (default landing)
+
 - 3.1 Log Something
 - 3.2–3.x Meal logging, photo capture, voice note, record meeting, etc.
 
 ### 3. Insights tab
+
 - All Insights screens
 
 ### 4. My Plan tab
+
 - All My Plan screens
 
 ### 5. Activity tab
+
 - Activity / history screens
 
 ### 6. More tab
+
 - Settings, profile, integrations management, account, support
 
 ### 7. Cross-cutting
+
 - Care Team screens
 - Notifications / reminders
 - Empty / loading / error states for any of the above

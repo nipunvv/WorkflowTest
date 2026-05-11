@@ -47,19 +47,10 @@ export default function LoginScreen() {
         />
       </View>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View
-          className="flex-1 justify-between px-8"
-          style={{ paddingTop: 48, paddingBottom: 16 }}
-        >
+        <View className="flex-1 justify-between px-8" style={{ paddingTop: 48, paddingBottom: 16 }}>
           <View className="items-center" style={{ gap: 24 }}>
-            <View
-              className="items-center justify-center"
-              style={{ width: 140, height: 140 }}
-            >
-              <View
-                pointerEvents="none"
-                style={{ position: 'absolute', width: 140, height: 140 }}
-              >
+            <View className="items-center justify-center" style={{ width: 140, height: 140 }}>
+              <View pointerEvents="none" style={{ position: 'absolute', width: 140, height: 140 }}>
                 <Image
                   source={require('@/assets/images/auth-logo-glow.png')}
                   style={{ width: '100%', height: '100%' }}
@@ -67,7 +58,7 @@ export default function LoginScreen() {
                 />
               </View>
               <View
-                className="bg-bg-logo items-center justify-center"
+                className="items-center justify-center bg-bg-logo"
                 style={{
                   width: 72,
                   height: 72,
@@ -81,13 +72,13 @@ export default function LoginScreen() {
 
             <View className="items-center" style={{ gap: 4 }}>
               <Text
-                className="text-text-heading text-center"
+                className="text-center text-text-heading"
                 style={{ fontSize: 32, lineHeight: 40, fontWeight: '700' }}
               >
                 Welcome to
               </Text>
               <Text
-                className="text-text-heading text-center"
+                className="text-center text-text-heading"
                 style={{ fontSize: 32, lineHeight: 40, fontWeight: '700' }}
               >
                 Hi Honey
@@ -95,14 +86,14 @@ export default function LoginScreen() {
             </View>
 
             <Text
-              className="text-text-body text-center"
+              className="text-center text-text-body"
               style={{ fontSize: 16, lineHeight: 24, paddingHorizontal: 16 }}
             >
               Your gentle companion for tracking symptoms & finding triggers.
             </Text>
 
             <View
-              className="bg-bg-badge flex-row items-center"
+              className="flex-row items-center bg-bg-badge"
               style={{
                 paddingHorizontal: 16,
                 paddingVertical: 10,
@@ -112,10 +103,7 @@ export default function LoginScreen() {
               }}
             >
               <Text style={{ fontSize: 14 }}>🔒</Text>
-              <Text
-                className="text-text-badge"
-                style={{ fontSize: 13, fontWeight: '500' }}
-              >
+              <Text className="text-text-badge" style={{ fontSize: 13, fontWeight: '500' }}>
                 Your health data is private & encrypted
               </Text>
             </View>
@@ -128,7 +116,7 @@ export default function LoginScreen() {
               accessibilityRole="button"
               accessibilityLabel="Sign in with Google"
               accessibilityState={{ busy: submitting, disabled: submitting }}
-              className="bg-button-primary-bg flex-row items-center justify-center"
+              className="flex-row items-center justify-center bg-button-primary-bg"
               style={{
                 height: 56,
                 borderRadius: 16,
@@ -146,20 +134,14 @@ export default function LoginScreen() {
                     style={{ width: 20, height: 20 }}
                     contentFit="contain"
                   />
-                  <Text
-                    className="text-white"
-                    style={{ fontSize: 17, fontWeight: '600' }}
-                  >
+                  <Text className="text-white" style={{ fontSize: 17, fontWeight: '600' }}>
                     Sign in with Google
                   </Text>
                 </>
               )}
             </Pressable>
 
-            <Text
-              className="text-text-subtle text-center"
-              style={{ fontSize: 12, lineHeight: 18 }}
-            >
+            <Text className="text-center text-text-subtle" style={{ fontSize: 12, lineHeight: 18 }}>
               By continuing, you agree to our{' '}
               <Text
                 onPress={openTerms}

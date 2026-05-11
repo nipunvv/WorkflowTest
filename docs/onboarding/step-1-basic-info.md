@@ -29,57 +29,59 @@ The screen is a `ScrollView` (with `keyboardShouldPersistTaps="handled"`) inside
 
 ### First Name
 
-| Property | Value |
-|---|---|
-| Component | `TextInput` |
-| `accessibilityLabel` | `"First Name"` |
-| Placeholder | `"Angel"` (placeholder text color `#a6998c`) |
-| Style | `bg-bg-input`, amber border (`#d4a574`, 1.5px), `borderRadius: 16` |
-| Validation | Required; `trim().length > 0` |
+| Property             | Value                                                              |
+| -------------------- | ------------------------------------------------------------------ |
+| Component            | `TextInput`                                                        |
+| `accessibilityLabel` | `"First Name"`                                                     |
+| Placeholder          | `"Angel"` (placeholder text color `#a6998c`)                       |
+| Style                | `bg-bg-input`, amber border (`#d4a574`, 1.5px), `borderRadius: 16` |
+| Validation           | Required; `trim().length > 0`                                      |
 
 ### Date of Birth
 
-| Property | Value |
-|---|---|
-| Component | `DateField` (local wrapper, see below) |
-| `testID` | `"dob-field"` |
-| `accessibilityLabel` | `"Date of Birth"` |
-| `accessibilityRole` | `"button"` |
-| Placeholder | `"Select date"` |
-| `defaultPickerDate` | `new Date(1990, 0, 1)` (picker opens at Jan 1 1990 when no value is set) |
-| `maximumDate` | `new Date()` (today — no future dates) |
-| Validation | Required for `canProceed` — **see ambiguity note below** |
+| Property             | Value                                                                    |
+| -------------------- | ------------------------------------------------------------------------ |
+| Component            | `DateField` (local wrapper, see below)                                   |
+| `testID`             | `"dob-field"`                                                            |
+| `accessibilityLabel` | `"Date of Birth"`                                                        |
+| `accessibilityRole`  | `"button"`                                                               |
+| Placeholder          | `"Select date"`                                                          |
+| `defaultPickerDate`  | `new Date(1990, 0, 1)` (picker opens at Jan 1 1990 when no value is set) |
+| `maximumDate`        | `new Date()` (today — no future dates)                                   |
+| Validation           | Required for `canProceed` — **see ambiguity note below**                 |
 
 ### Diagnosis Date
 
-| Property | Value |
-|---|---|
-| Component | `DateField` |
-| `testID` | `"diagnosis-field"` |
-| `accessibilityLabel` | `"Diagnosis Date"` |
-| `accessibilityRole` | `"button"` |
-| Placeholder | `"Select diagnosis date"` |
-| `disabledPlaceholder` | `"Not applicable"` |
-| Validation | Optional; not part of `canProceed` |
-| Disabled when | `notSure === true` |
+| Property              | Value                              |
+| --------------------- | ---------------------------------- |
+| Component             | `DateField`                        |
+| `testID`              | `"diagnosis-field"`                |
+| `accessibilityLabel`  | `"Diagnosis Date"`                 |
+| `accessibilityRole`   | `"button"`                         |
+| Placeholder           | `"Select diagnosis date"`          |
+| `disabledPlaceholder` | `"Not applicable"`                 |
+| Validation            | Optional; not part of `canProceed` |
+| Disabled when         | `notSure === true`                 |
 
 ## "Not sure" toggle
 
 A `Switch` next to the "Diagnosis Date" label controls the `notSure` state.
 
-| Property | Value |
-|---|---|
-| `testID` | `"diagnosis-not-sure"` |
-| `accessibilityRole` | `"switch"` |
-| `accessibilityLabel` | `"Not sure"` |
-| Track color (on) | `#9caf88` (sage green) |
-| Track color (off) | `#d4c3b0` |
+| Property             | Value                  |
+| -------------------- | ---------------------- |
+| `testID`             | `"diagnosis-not-sure"` |
+| `accessibilityRole`  | `"switch"`             |
+| `accessibilityLabel` | `"Not sure"`           |
+| Track color (on)     | `#9caf88` (sage green) |
+| Track color (off)    | `#d4c3b0`              |
 
 **Side effects when toggled ON:**
+
 - `diagnosisDate` state is cleared (`setDiagnosisDate(null)`).
 - `DateField` receives `disabled={true}`, which sets `opacity: 0.5`, uses `bg-bg-input-disabled` fill, and shows the `disabledPlaceholder` ("Not applicable").
 
 **Side effects when toggled OFF:**
+
 - `notSure` reverts to `false`.
 - `DateField` re-enables.
 - `diagnosisDate` remains `null` until the user explicitly picks a new date.
@@ -102,11 +104,11 @@ This behavior is encoded in the test suite (see "Next is enabled when First Name
 
 ## Navigation
 
-| Action | Behavior |
-|---|---|
-| Tap "Next" when `canProceed` | `router.push('/onboarding/step-2')` |
+| Action                        | Behavior                                            |
+| ----------------------------- | --------------------------------------------------- |
+| Tap "Next" when `canProceed`  | `router.push('/onboarding/step-2')`                 |
 | Tap "Next" when `!canProceed` | No-op (button is `disabled`, handler returns early) |
-| Tap "Back" | `router.back()` |
+| Tap "Back"                    | `router.back()`                                     |
 
 The Next button's visual opacity drops to `0.5` when `!canProceed`.
 
@@ -127,36 +129,36 @@ The Next button's visual opacity drops to `0.5` when `!canProceed`.
 
 Every interactive element has both `accessibilityRole` and `accessibilityLabel`:
 
-| Element | role | label |
-|---|---|---|
-| First Name input | (TextInput default: `none`) | `"First Name"` |
-| DOB field | `"button"` | `"Date of Birth"` |
-| Diagnosis field | `"button"` | `"Diagnosis Date"` |
-| "Not sure" switch | `"switch"` | `"Not sure"` |
-| Next button | `"button"` | `"Next"` |
-| Back button | `"button"` | `"Back"` |
+| Element           | role                        | label              |
+| ----------------- | --------------------------- | ------------------ |
+| First Name input  | (TextInput default: `none`) | `"First Name"`     |
+| DOB field         | `"button"`                  | `"Date of Birth"`  |
+| Diagnosis field   | `"button"`                  | `"Diagnosis Date"` |
+| "Not sure" switch | `"switch"`                  | `"Not sure"`       |
+| Next button       | `"button"`                  | `"Next"`           |
+| Back button       | `"button"`                  | `"Back"`           |
 
 The Next button also sets `accessibilityState={{ disabled: !canProceed }}`. The DOB and Diagnosis fields set `accessibilityState={{ disabled }}`.
 
 ## testID contracts
 
-| testID | Element | Used by |
-|---|---|---|
-| `"dob-field"` | DOB `DateField` root `Pressable` | RNTL tests, Maestro |
-| `"diagnosis-field"` | Diagnosis `DateField` root `Pressable` | RNTL tests, Maestro |
-| `"diagnosis-not-sure"` | "Not sure" `Switch` | Maestro (`.maestro/onboarding-step-1.yaml`) |
-| `"progress-bar"` | Progress bar track `View` | RNTL tests |
-| `"progress-fill"` | Progress bar fill `View` | RNTL tests |
-| `"google-button-spinner"` | (In login screen, not this screen) | — |
+| testID                    | Element                                | Used by                                     |
+| ------------------------- | -------------------------------------- | ------------------------------------------- |
+| `"dob-field"`             | DOB `DateField` root `Pressable`       | RNTL tests, Maestro                         |
+| `"diagnosis-field"`       | Diagnosis `DateField` root `Pressable` | RNTL tests, Maestro                         |
+| `"diagnosis-not-sure"`    | "Not sure" `Switch`                    | Maestro (`.maestro/onboarding-step-1.yaml`) |
+| `"progress-bar"`          | Progress bar track `View`              | RNTL tests                                  |
+| `"progress-fill"`         | Progress bar fill `View`               | RNTL tests                                  |
+| `"google-button-spinner"` | (In login screen, not this screen)     | —                                           |
 
 ## Key files & components
 
-| File | Role |
-|---|---|
-| `app/(onboarding)/step-1.tsx` | Screen + `DateField` component |
-| `app/(onboarding)/__tests__/step-1.test.tsx` | Jest + RNTL test suite |
-| `app/(onboarding)/step-2.tsx` | Stub destination for Next navigation |
-| `.maestro/onboarding-step-1.yaml` | E2E smoke test (status: RED — not yet passing on any build) |
+| File                                         | Role                                                        |
+| -------------------------------------------- | ----------------------------------------------------------- |
+| `app/(onboarding)/step-1.tsx`                | Screen + `DateField` component                              |
+| `app/(onboarding)/__tests__/step-1.test.tsx` | Jest + RNTL test suite                                      |
+| `app/(onboarding)/step-2.tsx`                | Stub destination for Next navigation                        |
+| `.maestro/onboarding-step-1.yaml`            | E2E smoke test (status: RED — not yet passing on any build) |
 
 ## Dependencies
 

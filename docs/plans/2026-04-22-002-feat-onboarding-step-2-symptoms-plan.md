@@ -1,5 +1,5 @@
 ---
-title: "feat: Add onboarding Step 2 symptoms screen (issue #3)"
+title: 'feat: Add onboarding Step 2 symptoms screen (issue #3)'
 type: feat
 status: active
 date: 2026-04-22
@@ -25,21 +25,26 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 ## Requirements Trace (from issue #3)
 
 **Render:**
+
 - R1. **Render:** step caption ("Step 2 of 3"), progress bar at ~2/3 fill, question ("What are your primary symptoms?"), helper text ("Select all that apply"), all six chips, Next button, Back link
 
 **Interaction:**
+
 - R2. **Multi-select chip behavior:** tapping a chip toggles its selected state; tapping a selected chip deselects it; multiple chips can be simultaneously selected
 - R3. **Next enablement:** disabled when zero chips are selected; enabled when one or more are selected
 
 **Navigation:**
+
 - R4. **Next navigation:** tapping enabled Next navigates to `/onboarding/step-3`
 - R5. **Back navigation:** tapping Back calls `router.back()`
 
 **Accessibility & visual:**
+
 - R6. **Accessibility:** every chip has `accessibilityRole="checkbox"`, `accessibilityLabel` (emoji-free), and `accessibilityState.checked` reflecting current selection
 - R7. **Chip size stability:** selected-chip outer dimensions equal unselected-chip outer dimensions so the wrap layout does not reflow on toggle
 
 **Quality gates:**
+
 - R8. **E2E smoke (Maestro):** open Step 2 from Step 1, select two chips, deselect one, tap Next, assert navigation
 - R9. **No regression** in Step 1 or the existing auth flow
 
@@ -95,7 +100,7 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
   - (a) **`@ts-expect-error` + watch for regen** — loud when types catch up, but Unit 4 may need to remove the directive before its tsc passes. Matches Pattern 5 when types are stale.
   - (b) **`as never`** — silent opt-out; consistent with Step 1's existing pattern; won't break tsc regardless of regen state.
   - (c) **No cast; rely on type-gen** — run `npx expo start` once after Unit 1 lands to refresh the manifest, then `push('/onboarding/step-3')` compiles cleanly. Cleanest end state but depends on the implementer remembering the type-gen step.
-  Step 1's existing `as never` stays untouched regardless.
+    Step 1's existing `as never` stays untouched regardless.
 - **No new root-layout changes** — `(onboarding)` group is already registered under the authed guard. The Step 3 placeholder added in this plan piggybacks on the existing registration.
 - **Progress header stays inline in each step** — Step 2's progress bar differs from Step 1 only in `width: '66.666%'` and the caption string. Extracting a shared component now is premature; wait for Step 3 to see the actual duplication shape.
 - **Symptom IDs are kebab-case strings** — `dry-eyes`, `dry-mouth`, `joint-pain`, `fatigue`, `brain-fog`, `neuropathy`. Matches existing naming style (route segments, test IDs) and maps cleanly to future database column values.
@@ -133,10 +138,12 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 **Dependencies:** None.
 
 **Files:**
+
 - Create: `app/(onboarding)/symptoms.ts`
 - Create: `app/(onboarding)/step-3.tsx`
 
 **Approach:**
+
 - `symptoms.ts` exports:
   - A `SymptomId` type (string-literal union of the six IDs)
   - A `Symptom` type with `{ id: SymptomId; emoji: string; label: string; accessibilityLabel: string }`
@@ -144,13 +151,16 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 - `step-3.tsx` mirrors the current `step-2.tsx` stub: centered "Step 3 coming soon" text inside `SafeAreaView` + `View`. Four lines of logic, no state, no props. A leading comment states "Placeholder; real Step 3 tracked as a separate issue."
 
 **Patterns to follow:**
+
 - `app/(onboarding)/step-2.tsx` (current stub) for the placeholder shape and token usage.
 - `app/(onboarding)/step-1.tsx` `DateField` type declaration style (inline `type` export) for `symptoms.ts` type syntax.
 
 **Test scenarios:**
+
 - Test expectation: none — the catalog is a typed-data module and the stub is a placeholder; no behavior to assert. Covered transitively by Unit 3's tests iterating over `SYMPTOMS.length` / labels, and by Unit 4's "Next navigates to `/onboarding/step-3`" assertion resolving to a real route on a dev-client.
 
 **Verification:**
+
 - `npx tsc --noEmit` clean — catalog types compile, stub types compile.
 - `npm run lint` clean.
 - A dev-client running this branch can manually navigate to `workflowtest://onboarding/step-3` and see "Step 3 coming soon" without a 404.
@@ -164,9 +174,11 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 **Dependencies:** None.
 
 **Files:**
+
 - Modify: `tailwind.config.js`
 
 **Approach:**
+
 - Under `theme.extend.colors`, add `text-chip-label: "#594d40"` (chip label text, new).
 - Under `theme.extend.boxShadow`, add `chip: "0 2px 8px rgba(156,175,136,0.25)"` (selected-chip soft sage shadow, new).
 - **Reuse existing tokens** (no config change needed):
@@ -177,9 +189,11 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 - Document the reuse choices inline with brief comments in the config.
 
 **Test scenarios:**
+
 - Test expectation: none — pure configuration, no behavioral change. Verified transitively via Unit 4 rendering and manual visual QA.
 
 **Verification:**
+
 - `npx tsc --noEmit` clean — `tailwind.config.js` is JS, not type-checked, but the config file should still parse.
 - `npm run lint` clean.
 - New token names resolve in NativeWind `className` usage (exercised by Unit 4's implementation).
@@ -193,9 +207,11 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 **Dependencies:** Unit 1 (so `import { SYMPTOMS } from '../symptoms'` resolves in the test file).
 
 **Files:**
+
 - Create: `app/(onboarding)/__tests__/step-2.test.tsx`
 
 **Approach:**
+
 - Mirror the test harness from `app/(onboarding)/__tests__/step-1.test.tsx`:
   - `SafeAreaProvider` wrapper with explicit `initialMetrics` (top/bottom/left/right insets = 0; frame 393×852)
   - `renderScreen(ui = <OnboardingStep2Screen />)` helper
@@ -208,12 +224,14 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 **Execution note:** This is the RED half. Do NOT modify `step-2.tsx` in this unit. Verify RED with `npm test` — expect every new assertion to fail for the right reason: "Unable to find …" matchers, not "Cannot find module …", `TypeError`, or `SyntaxError`. Paste the failing output into the PR description.
 
 **Patterns to follow:**
+
 - `app/(onboarding)/__tests__/step-1.test.tsx` — harness, mock factory, query patterns.
 - Pattern 1 from `docs/solutions/best-practices/tdd-multiscreen-react-native-patterns-2026-04-22.md` — always pass event names without the `on` prefix.
 
 **Test scenarios:**
 
-*Static render (R1):*
+_Static render (R1):_
+
 - **Happy path — step caption:** `screen.getByText('Step 2 of 3')` is on screen.
 - **Happy path — progress bar:** `getByTestId('progress-bar')` exists with a `testID="progress-fill"` child. (Do NOT assert on the fill's width string — Step 1 precedent is to assert testID presence only; width literal is GREEN's choice.)
 - **Happy path — question:** `getByText(/What are your primary symptoms/i)` is on screen.
@@ -222,32 +240,38 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 - **Happy path — Next button:** `getByRole('button', { name: /^Next$/i })` on screen.
 - **Happy path — Back link:** `getByRole('button', { name: /^Back$/i })` on screen. Unit 4's implementation spec mandates `accessibilityRole="button"` on Back (matching Step 1), so the test should enforce that — not accept `link` as a fallback.
 
-*Chip toggle (R2):*
+_Chip toggle (R2):_
+
 - **Happy path — single-chip toggle on:** Initial `accessibilityState.checked` is `false` on the Dry Eyes chip. After `fireEvent.press(chip)`, `accessibilityState.checked === true`.
 - **Happy path — single-chip toggle off:** After pressing twice, `accessibilityState.checked === false` again.
 - **Happy path — multi-select:** Press Dry Eyes and Fatigue. Both chips' `accessibilityState.checked === true` simultaneously.
 - **Edge case — deselecting one of many:** With Dry Eyes and Fatigue both selected, pressing Fatigue again leaves Dry Eyes selected and Fatigue unselected.
 
-*Next enablement (R3):*
+_Next enablement (R3):_
+
 - **Edge case — initial state:** Next is disabled (`accessibilityState.disabled === true`) on first render with zero chips selected.
 - **Happy path — one chip selected enables Next:** After `fireEvent.press` on any single chip, Next is enabled (`accessibilityState.disabled === false`).
 - **Edge case — deselecting last chip re-disables Next:** Select one chip, then deselect it. Next becomes disabled again.
 - **Happy path — multiple chips still enables Next:** After selecting two chips, Next is enabled.
 
-*Navigation (R4, R5):*
+_Navigation (R4, R5):_
+
 - **Happy path — Next press navigates:** With one chip selected, `fireEvent.press(next)` → `mockPush` called exactly once with a string or object whose `pathname` matches `/\/onboarding\/step-3/`.
 - **Edge case — Next press is no-op when disabled:** With no chips selected, `fireEvent.press(next)` → `mockPush` NOT called.
 - **Happy path — Back press:** `fireEvent.press(back)` → `mockBack` called exactly once. `mockPush` NOT called.
 
-*Accessibility (R6):*
+_Accessibility (R6):_
+
 - **Happy path — every chip has role + label + state:** For each chip, assert `accessibilityRole === 'checkbox'`, `accessibilityLabel` is a non-empty string matching the catalog's `accessibilityLabel` field, and `accessibilityState.checked` is either `true` or `false` (not `undefined`).
 - **Happy path — checked state reflects selection:** After toggling Dry Eyes on, the Dry Eyes chip's `accessibilityState.checked === true`; all other chips remain `false`.
 
-*Additional coverage:*
+_Additional coverage:_
+
 - **Integration — tests against catalog ordering:** Assert the rendered chip order matches `SYMPTOMS` iteration order. Catches accidental re-ordering.
 - **Edge case — whitespace-only state doesn't apply** (symptoms field has no text input), skipped.
 
 **Verification:**
+
 - `npx jest app/\(onboarding\)/__tests__/step-2.test.tsx` exits non-zero with every new test failing for the right reason.
 - `npx jest app/\(onboarding\)/__tests__/step-1.test.tsx` still passes (no regression; Step 1's tests are untouched).
 - `npx jest hooks/__tests__/use-redirect-on-sign-in.test.ts` still passes.
@@ -263,9 +287,11 @@ Design reference: Figma node `14:2` in file `CLEcJLTTd4L1JDDjc6KDwl`.
 **Dependencies:** Unit 1 (catalog), Unit 2 (tokens), Unit 3 (tests in place to drive GREEN).
 
 **Files:**
+
 - Modify: `app/(onboarding)/step-2.tsx` (full rewrite of the placeholder)
 
 **Approach:**
+
 - Top-level layout matches Step 1: `<View className="flex-1 bg-bg-primary">` wrapping `<SafeAreaView edges={['top', 'bottom']}>` wrapping `<ScrollView keyboardShouldPersistTaps="handled">` with `contentContainerStyle` of `paddingTop: 28, paddingHorizontal: 28, paddingBottom: 32, flexGrow: 1`.
 - Progress header block: "Step 2 of 3" caption (`text-subtle`, Inter Medium 14), then `<View testID="progress-bar" …>` containing `<View testID="progress-fill" style={{ width: '66.666%', … }}>`. Height 6dp, radius 3dp. Width reads as 2/3 fill per issue (~66%).
 - 36dp spacer `<View style={{ height: 36 }} />`.
@@ -307,18 +333,21 @@ function SymptomChip({ symptom, selected, onToggle }: SymptomChipProps) {
 }
 ```
 
-*This sketch is directional — see issue spec for exact color/padding/shadow values; do not copy-paste.*
+_This sketch is directional — see issue spec for exact color/padding/shadow values; do not copy-paste._
 
 **Patterns to follow:**
+
 - `app/(onboarding)/step-1.tsx` for top-level layout, navigation block, `useState` + `useRouter` pattern, `accessibilityState` on Pressable.
 - ADR 009 (`Stack.Protected`) — no changes; route is already gated.
 - ADR 006 (DateField wrapper) — same co-location principle, but SymptomChip doesn't need the custom-event escape hatch (press is standard).
 
 **Test scenarios:**
+
 - Same scenarios from Unit 3 — this unit makes them pass, doesn't add new tests.
 - No additional behavioral scenarios. Any new test idea that surfaces during GREEN goes in a follow-up commit, not this unit's commit.
 
 **Verification:**
+
 - `npx jest app/\(onboarding\)/__tests__/step-2.test.tsx` — all scenarios pass.
 - `npm test` (full suite) — green, no regressions. Expected total after this unit: Step 1's 26 + Step 2's ~22 + login's 13 + redirect hook's 6 = ~67 tests.
 - `npx tsc --noEmit` clean.
@@ -334,9 +363,11 @@ function SymptomChip({ symptom, selected, onToggle }: SymptomChipProps) {
 **Dependencies:** Unit 4 (screen must render for the flow's assertions to resolve).
 
 **Files:**
+
 - Create: `.maestro/onboarding-step-2.yaml`
 
 **Approach:**
+
 - Header: `appId: com.workflowtest.app` (copy from `.maestro/launch.yaml` or `.maestro/onboarding-step-1.yaml`).
 - Leading comment block documenting: RED→GREEN landed; requires dev-client build (no new native modules in this issue; the date-picker modules from issue #2 are still required but already present on any issue-#2-or-later build); requires live Supabase session; OAuth can't be driven by Maestro so sign-in is manual precondition.
 - Flow body:
@@ -352,12 +383,15 @@ function SymptomChip({ symptom, selected, onToggle }: SymptomChipProps) {
   10. `- assertVisible: "Step 3 coming soon"` (match the full placeholder text from Unit 1's stub — substring match works but exact match prevents accidental matches from future screens containing "Step 3")
 
 **Patterns to follow:**
+
 - `.maestro/onboarding-step-1.yaml` for the comment structure, `appId` placement, precondition documentation, and the navigation-by-deep-link approach.
 
 **Test scenarios:**
+
 - Test expectation: the YAML itself is the spec; executing it against a GREEN-implemented dev-client build is the passing test. Static verification is syntactic validity + file existence.
 
 **Verification:**
+
 - The file parses as valid two-doc YAML (`python3 -c "import yaml, sys; list(yaml.safe_load_all(open('.maestro/onboarding-step-2.yaml')))"` returns without error).
 - `git diff` for this unit touches only the new YAML file.
 - `.maestro/onboarding-step-1.yaml` and `.maestro/launch.yaml` are unchanged (no regression).
@@ -374,14 +408,14 @@ function SymptomChip({ symptom, selected, onToggle }: SymptomChipProps) {
 
 ## Risks & Dependencies
 
-| Risk | Mitigation |
-|---|---|
-| Chip size stability (issue's padding math is off by 1dp per side, and font-weight change widens glyphs independently) | Key Technical Decisions now recommends a 1px transparent border in the selected state to sidestep both problems. Visually QA on iPhone 17 during GREEN. If transparent-border approach still drifts due to font-weight width differences, fall back to an explicit `minWidth` per chip. Test assertions do not cover pixel dimensions — this is human-QA territory. |
-| Emoji rendering divergence across platforms — 👁 (EYE U+1F441) and 🌫 (FOG U+1F32B) have weaker Android emoji-font coverage, may render as uncolored glyph or monochrome outline on older Android dev-clients | Flag during QA. If Android rendering is poor, substitute with the text-only `accessibilityLabel` on that platform via `Platform.select`, or switch to alternative emojis (e.g., 👀 for Dry Eyes). Not blocking on iOS-only delivery. |
-| RN's `accessibilityRole="checkbox"` behavior is not identical across iOS VoiceOver and Android TalkBack. TalkBack may read the chip as "button" rather than "checkbox" despite the role prop | Verify on a TalkBack-enabled device in follow-up QA. Issue does not require Android parity yet (simulator-only delivery); flag as a known limitation in the PR description. |
-| `Set<SymptomId>` identity bugs — forgetting `new Set(prev)` and instead mutating the existing Set causes React to skip re-renders because the reference didn't change | Toggle handler's implementation must always return a new `Set`. Easy to check during code review. Tests cover the toggle behavior, so a subtle identity bug would surface as failing assertions. |
-| Typed-routes manifest regeneration is unpredictable between Unit 1 creating `step-3.tsx` and Unit 4 running `tsc --noEmit`. `@ts-expect-error` becomes an "unused directive" (tsc error under `strict: true`) once the manifest refreshes. `as never` silently suppresses but loses signal. | Key Technical Decisions now lists three options (a/b/c). Default to option (c) — no cast, run `npx expo start` once after Unit 1 to refresh types — unless the implementer hits friction during GREEN. |
-| Step 3's placeholder stub might be mistaken for the real Step 3 during manual QA and shipped to users | Placeholder explicitly reads "Step 3 coming soon" and has a TODO-style leading comment. `CLAUDE.md` housekeeping section lists this as the standard pattern. Not a real risk in the pre-MVP stage; flagged for completeness. |
+| Risk                                                                                                                                                                                                                                                                                        | Mitigation                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chip size stability (issue's padding math is off by 1dp per side, and font-weight change widens glyphs independently)                                                                                                                                                                       | Key Technical Decisions now recommends a 1px transparent border in the selected state to sidestep both problems. Visually QA on iPhone 17 during GREEN. If transparent-border approach still drifts due to font-weight width differences, fall back to an explicit `minWidth` per chip. Test assertions do not cover pixel dimensions — this is human-QA territory. |
+| Emoji rendering divergence across platforms — 👁 (EYE U+1F441) and 🌫 (FOG U+1F32B) have weaker Android emoji-font coverage, may render as uncolored glyph or monochrome outline on older Android dev-clients                                                                               | Flag during QA. If Android rendering is poor, substitute with the text-only `accessibilityLabel` on that platform via `Platform.select`, or switch to alternative emojis (e.g., 👀 for Dry Eyes). Not blocking on iOS-only delivery.                                                                                                                                |
+| RN's `accessibilityRole="checkbox"` behavior is not identical across iOS VoiceOver and Android TalkBack. TalkBack may read the chip as "button" rather than "checkbox" despite the role prop                                                                                                | Verify on a TalkBack-enabled device in follow-up QA. Issue does not require Android parity yet (simulator-only delivery); flag as a known limitation in the PR description.                                                                                                                                                                                         |
+| `Set<SymptomId>` identity bugs — forgetting `new Set(prev)` and instead mutating the existing Set causes React to skip re-renders because the reference didn't change                                                                                                                       | Toggle handler's implementation must always return a new `Set`. Easy to check during code review. Tests cover the toggle behavior, so a subtle identity bug would surface as failing assertions.                                                                                                                                                                    |
+| Typed-routes manifest regeneration is unpredictable between Unit 1 creating `step-3.tsx` and Unit 4 running `tsc --noEmit`. `@ts-expect-error` becomes an "unused directive" (tsc error under `strict: true`) once the manifest refreshes. `as never` silently suppresses but loses signal. | Key Technical Decisions now lists three options (a/b/c). Default to option (c) — no cast, run `npx expo start` once after Unit 1 to refresh types — unless the implementer hits friction during GREEN.                                                                                                                                                              |
+| Step 3's placeholder stub might be mistaken for the real Step 3 during manual QA and shipped to users                                                                                                                                                                                       | Placeholder explicitly reads "Step 3 coming soon" and has a TODO-style leading comment. `CLAUDE.md` housekeeping section lists this as the standard pattern. Not a real risk in the pre-MVP stage; flagged for completeness.                                                                                                                                        |
 
 ## Documentation / Operational Notes
 

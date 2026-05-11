@@ -98,8 +98,9 @@ describe('OnboardingStep1Screen — static render', () => {
     renderScreen();
     // Back may be implemented as a Pressable with accessibilityRole="button" or "link".
     // Accept either — a11y contract is covered separately below.
-    const back = screen.queryByRole('link', { name: /^Back$/i })
-      ?? screen.getByRole('button', { name: /^Back$/i });
+    const back =
+      screen.queryByRole('link', { name: /^Back$/i }) ??
+      screen.getByRole('button', { name: /^Back$/i });
     expect(back).toBeOnTheScreen();
   });
 });
@@ -253,8 +254,9 @@ describe('OnboardingStep1Screen — navigation (R5, R6)', () => {
 
   test('tapping Back calls router.back()', () => {
     renderScreen();
-    const back = screen.queryByRole('link', { name: /^Back$/i })
-      ?? screen.getByRole('button', { name: /^Back$/i });
+    const back =
+      screen.queryByRole('link', { name: /^Back$/i }) ??
+      screen.getByRole('button', { name: /^Back$/i });
 
     fireEvent.press(back);
     expect(mockBack).toHaveBeenCalledTimes(1);
@@ -265,8 +267,9 @@ describe('OnboardingStep1Screen — navigation (R5, R6)', () => {
     fireEvent.changeText(screen.getByLabelText(/First Name/i), 'Angel');
     fireEvent(screen.getByTestId('dob-field'), 'changeDate', new Date('1990-06-01'));
 
-    const back = screen.queryByRole('link', { name: /^Back$/i })
-      ?? screen.getByRole('button', { name: /^Back$/i });
+    const back =
+      screen.queryByRole('link', { name: /^Back$/i }) ??
+      screen.getByRole('button', { name: /^Back$/i });
     fireEvent.press(back);
 
     expect(mockBack).toHaveBeenCalledTimes(1);
@@ -297,8 +300,9 @@ describe('OnboardingStep1Screen — accessibility (R7)', () => {
     expect(next.props.accessibilityRole ?? next.props.role).toBeTruthy();
     expect(next.props.accessibilityLabel).toBeTruthy();
 
-    const back = screen.queryByRole('link', { name: /^Back$/i })
-      ?? screen.getByRole('button', { name: /^Back$/i });
+    const back =
+      screen.queryByRole('link', { name: /^Back$/i }) ??
+      screen.getByRole('button', { name: /^Back$/i });
     expect(back.props.accessibilityRole ?? back.props.role).toBeTruthy();
     expect(back.props.accessibilityLabel).toBeTruthy();
   });

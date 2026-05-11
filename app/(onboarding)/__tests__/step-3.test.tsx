@@ -157,9 +157,8 @@ describe('OnboardingStep3Screen — mutual exclusion (R3)', () => {
   test('exactly one row is selected at any time across repeated toggles', () => {
     renderScreen();
     const countSelected = () =>
-      [getEnglishRow(), getZhRow()].filter(
-        (r) => r.props.accessibilityState?.selected === true,
-      ).length;
+      [getEnglishRow(), getZhRow()].filter((r) => r.props.accessibilityState?.selected === true)
+        .length;
 
     // Initial state
     expect(countSelected()).toBe(1);

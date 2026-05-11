@@ -20,6 +20,7 @@ The repo uses Supabase as its auth provider. The Supabase JS client ships a firs
 Use Supabase's `signInWithOAuth({ provider: 'google' })` with `skipBrowserRedirect: true` and `flowType: 'pkce'`. Open the returned authorize URL in `WebBrowser.openAuthSessionAsync`, then exchange the `?code=` redirect param via `supabase.auth.exchangeCodeForSession(code)`.
 
 Key configuration in `lib/supabase.ts`:
+
 - `detectSessionInUrl: false` — the default `true` assumes a web URL; breaks React Native.
 - `flowType: 'pkce'` — the default implicit flow is deprecated and incompatible with PKCE.
 

@@ -29,7 +29,7 @@ function renderScreen(summary: OnboardingSummary = defaultSummary, ui?: ReactEle
   return render(
     <SafeAreaProvider initialMetrics={initialMetrics}>
       {ui ?? <OnboardingStep4Screen summary={summary} />}
-    </SafeAreaProvider>,
+    </SafeAreaProvider>
   );
 }
 
@@ -96,9 +96,7 @@ describe('OnboardingStep4Screen — static render (R1)', () => {
 
   test('renders subtitle line 2: "Let\'s start your journey, one day at a time."', () => {
     renderScreen();
-    expect(
-      screen.getByText("Let's start your journey, one day at a time."),
-    ).toBeOnTheScreen();
+    expect(screen.getByText("Let's start your journey, one day at a time.")).toBeOnTheScreen();
   });
 
   test('renders a summary list container with accessibilityRole="list"', () => {
@@ -143,9 +141,7 @@ describe('OnboardingStep4Screen — static render (R1)', () => {
 
   test('renders the privacy pill text', () => {
     renderScreen();
-    expect(
-      screen.getByText(/Your health data is private/i),
-    ).toBeOnTheScreen();
+    expect(screen.getByText(/Your health data is private/i)).toBeOnTheScreen();
   });
 
   test('does NOT render a Back button', () => {

@@ -6,43 +6,43 @@ Team ran 2025-04-22 after PR #6 merge. Team lead: main session. Teammates: Docum
 
 ### `docs/` — feature + architecture + development (Documentation Engineer, 14 files, ~1450 lines)
 
-| File | Lines | Purpose |
-|---|---|---|
-| `docs/index.md` | 67 | Scanning index for all docs |
-| `docs/architecture/authentication.md` | 145 | PKCE OAuth flow + mermaid sequence diagram |
-| `docs/architecture/routing.md` | 125 | Expo Router v6 groups + mermaid route tree |
-| `docs/architecture/secure-store-adapter.md` | 68 | iOS Keychain chunking (`.0`/`.1`/`.count` scheme) |
-| `docs/architecture/session-refresh.md` | 51 | `AppState` → `startAutoRefresh`/`stopAutoRefresh` |
-| `docs/architecture/state-management.md` | 57 | `AuthContext` is essentially all global state |
-| `docs/architecture/styling.md` | 117 | NativeWind v4 tokens + DESIGN.md divergence |
-| `docs/authentication/sign-in-screen.md` | 108 | `login.tsx` spec: layout, states, legal links |
-| `docs/onboarding/step-1-basic-info.md` | 179 | Full Step 1 spec + validation + testID contracts |
-| `docs/onboarding/post-signin-redirect.md` | 81 | `useRedirectOnSignIn` hook and its limitation |
-| `docs/development/setup.md` | 120 | Clone → install → env → run → EAS |
-| `docs/development/project-structure.md` | 151 | Annotated repo tree |
-| `docs/development/testing.md` | 136 | Jest+RNTL patterns, Maestro limits |
-| `docs/development/coding-conventions.md` | 71 | Pointer to CLAUDE.md + summary |
+| File                                        | Lines | Purpose                                           |
+| ------------------------------------------- | ----- | ------------------------------------------------- |
+| `docs/index.md`                             | 67    | Scanning index for all docs                       |
+| `docs/architecture/authentication.md`       | 145   | PKCE OAuth flow + mermaid sequence diagram        |
+| `docs/architecture/routing.md`              | 125   | Expo Router v6 groups + mermaid route tree        |
+| `docs/architecture/secure-store-adapter.md` | 68    | iOS Keychain chunking (`.0`/`.1`/`.count` scheme) |
+| `docs/architecture/session-refresh.md`      | 51    | `AppState` → `startAutoRefresh`/`stopAutoRefresh` |
+| `docs/architecture/state-management.md`     | 57    | `AuthContext` is essentially all global state     |
+| `docs/architecture/styling.md`              | 117   | NativeWind v4 tokens + DESIGN.md divergence       |
+| `docs/authentication/sign-in-screen.md`     | 108   | `login.tsx` spec: layout, states, legal links     |
+| `docs/onboarding/step-1-basic-info.md`      | 179   | Full Step 1 spec + validation + testID contracts  |
+| `docs/onboarding/post-signin-redirect.md`   | 81    | `useRedirectOnSignIn` hook and its limitation     |
+| `docs/development/setup.md`                 | 120   | Clone → install → env → run → EAS                 |
+| `docs/development/project-structure.md`     | 151   | Annotated repo tree                               |
+| `docs/development/testing.md`               | 136   | Jest+RNTL patterns, Maestro limits                |
+| `docs/development/coding-conventions.md`    | 71    | Pointer to CLAUDE.md + summary                    |
 
 ### `docs/decisions/` — ADRs (Project Context Updater, 9 files, ~400 lines)
 
-| ADR | Title |
-|---|---|
-| 001 | Supabase Google OAuth via PKCE (not native SDK) |
-| 002 | SecureStore chunking adapter (iOS Keychain 2KB limit) |
-| 003 | NativeWind v4 + Tailwind v3.4; StyleSheet as fallback |
-| 004 | Figma hex tokens in `tailwind.config.js`; DESIGN.md reconciliation deferred |
-| 005 | Strict RED-first TDD; tests never modified to pass |
+| ADR | Title                                                                             |
+| --- | --------------------------------------------------------------------------------- |
+| 001 | Supabase Google OAuth via PKCE (not native SDK)                                   |
+| 002 | SecureStore chunking adapter (iOS Keychain 2KB limit)                             |
+| 003 | NativeWind v4 + Tailwind v3.4; StyleSheet as fallback                             |
+| 004 | Figma hex tokens in `tailwind.config.js`; DESIGN.md reconciliation deferred       |
+| 005 | Strict RED-first TDD; tests never modified to pass                                |
 | 006 | `DateField` wrapper for testable custom synthetic events (RNTL tree-walk pattern) |
-| 007 | Post-sign-in redirect filters `SIGNED_IN` only; profile gate deferred |
-| 008 | EAS simulator-only dev-client builds (no Apple Developer account) |
-| 009 | `Stack.Protected guard={isAuthed}` for auth-gated route groups |
+| 007 | Post-sign-in redirect filters `SIGNED_IN` only; profile gate deferred             |
+| 008 | EAS simulator-only dev-client builds (no Apple Developer account)                 |
+| 009 | `Stack.Protected guard={isAuthed}` for auth-gated route groups                    |
 
 ### Entry-point files modified (Project Context Updater)
 
-| File | Change |
-|---|---|
+| File        | Change                                                                                                                                                                                                                                                                                                                                             |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `CLAUDE.md` | Additive audit: added post-sign-in redirect subsection, updated routing tree to include `(onboarding)/`, enumerated current token counts (9 auth + 11 onboarding + 3 shadows), added DateField wrapper pattern note, added per-file `expo-router` mock rule + RED scaffolding rule, added Maestro flow + dev-client rebuild warnings. No rewrites. |
-| `README.md` | Replaced `create-expo-app` default boilerplate with 96-line project README (description, getting started, structure, commands, docs links, roadmap). |
+| `README.md` | Replaced `create-expo-app` default boilerplate with 96-line project README (description, getting started, structure, commands, docs links, roadmap).                                                                                                                                                                                               |
 
 ## Discrepancies Surfaced (These Are Real)
 

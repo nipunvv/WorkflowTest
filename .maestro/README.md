@@ -18,8 +18,8 @@ maestro test .maestro/
 
 ## What these flows cover
 
-| Flow | Purpose |
-|------|---------|
+| Flow          | Purpose                                                                |
+| ------------- | ---------------------------------------------------------------------- |
 | `launch.yaml` | App launches cleanly; login screen renders with the Google sign-in CTA |
 
 ## What these flows do NOT cover

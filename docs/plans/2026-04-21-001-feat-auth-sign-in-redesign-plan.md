@@ -1,5 +1,5 @@
 ---
-title: "feat: Redesign Auth / Sign-In screen (issue #1)"
+title: 'feat: Redesign Auth / Sign-In screen (issue #1)'
 type: feat
 status: active
 date: 2026-04-21
@@ -13,6 +13,7 @@ origin: https://github.com/nipunvv/WorkflowTest/issues/1
 The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name + "Continue with Google" button). Issue #1 replaces it with the Figma-designed sign-in screen (Figma node `4:2`): organic decorative background, honey-jar logo with glow, H1 + subtext, sage-tinted privacy badge, dark Google Sign-In button, and legal footer. The existing auth wiring (`useAuth().signInWithGoogle()` returning `{ error }`, local `submitting` flag, `Alert.alert` on error) is untouched — this is a pure UI + assets + tokens change.
 
 **Scope decisions made in planning:**
+
 - H1 copy uses **"Hi Honey"** per user decision. Rename limited to `app.json` `name` (the user-facing display name). `slug`, `scheme: "workflowtest"`, `ios.bundleIdentifier: "com.workflowtest.app"`, and `package.json name` stay untouched — they are wired into Supabase Redirect URLs, EAS build history, Maestro `appId`, and the repo identity (per `CLAUDE.md` non-negotiables).
 - Figma is source-of-truth for colors/spacing (issue says "pixel-close to Figma"). Figma hex values (`#fff8f0`, `#1f1a14`, `#33291f`, `#d4a574`, `#9caf88`, …) diverge from `DESIGN.md`'s ramp — reconciling DESIGN.md to match is deferred to a follow-up issue.
 - Assets ship as PNG exports (no new `react-native-svg` dependency). SVG conversion is a follow-up optimization.
@@ -52,20 +53,20 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 
 ### Figma Design (node `4:2`) — token values used
 
-| Role | Hex | Notes |
-|---|---|---|
-| Page background | `#fff8f0` | cream / warm |
-| Logo square bg | `#d4a574` | honey-tan, 72dp square, 20dp radius |
-| Logo glow | decorative asset | 140dp, behind logo (PNG export) |
-| Decorations overlay | decorative asset | absolute, full-bleed behind content (PNG export) |
-| H1 text | `#33291f` | Inter Bold 32 / 40 line-height |
-| Body text | `#736659` | Inter Regular 16 / 24 |
-| Badge bg | `rgba(156,175,136,0.15)` | sage tint, 100dp pill |
-| Badge text | `#617354` | Inter Medium 13 |
-| Google button bg | `#1f1a14` | 56dp tall, 16dp radius, shadow `0 4 12 rgba(0,0,0,0.1)` |
-| Google button label | white | Inter Semi Bold 17 |
-| Legal footer text | `#8c8073` | Inter Regular 12 / 18 |
-| Legal link | `#d4a574` | Inter Medium 12, underlined |
+| Role                | Hex                      | Notes                                                   |
+| ------------------- | ------------------------ | ------------------------------------------------------- |
+| Page background     | `#fff8f0`                | cream / warm                                            |
+| Logo square bg      | `#d4a574`                | honey-tan, 72dp square, 20dp radius                     |
+| Logo glow           | decorative asset         | 140dp, behind logo (PNG export)                         |
+| Decorations overlay | decorative asset         | absolute, full-bleed behind content (PNG export)        |
+| H1 text             | `#33291f`                | Inter Bold 32 / 40 line-height                          |
+| Body text           | `#736659`                | Inter Regular 16 / 24                                   |
+| Badge bg            | `rgba(156,175,136,0.15)` | sage tint, 100dp pill                                   |
+| Badge text          | `#617354`                | Inter Medium 13                                         |
+| Google button bg    | `#1f1a14`                | 56dp tall, 16dp radius, shadow `0 4 12 rgba(0,0,0,0.1)` |
+| Google button label | white                    | Inter Semi Bold 17                                      |
+| Legal footer text   | `#8c8073`                | Inter Regular 12 / 18                                   |
+| Legal link          | `#d4a574`                | Inter Medium 12, underlined                             |
 
 ### Institutional Learnings
 
@@ -108,17 +109,21 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Dependencies:** None
 
 **Files:**
+
 - Modify: `tailwind.config.js`
 
 **Approach:**
+
 - Add under `theme.extend.colors`: `bg-primary: '#fff8f0'`, `bg-logo: '#d4a574'`, `bg-badge: 'rgba(156,175,136,0.15)'`, `button-primary-bg: '#1f1a14'`, `text-heading: '#33291f'`, `text-body: '#736659'`, `text-badge: '#617354'`, `text-subtle: '#8c8073'`, `accent-primary: '#d4a574'`.
 - Add under `theme.extend.boxShadow`: `button: '0 4px 12px rgba(0,0,0,0.1)'`.
 - Leave DESIGN.md untouched — flag reconciliation in a follow-up issue.
 
 **Test scenarios:**
+
 - Test expectation: none — pure configuration, no behavioral change. Verified transitively via Unit 5 implementation and Unit 7 visual QA.
 
 **Verification:**
+
 - `npx tsc --noEmit` passes. New token names resolve in NativeWind (Unit 5 implementation will exercise them).
 
 - [ ] **Unit 2: Export Figma assets into `assets/images/`**
@@ -130,22 +135,27 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Dependencies:** None
 
 **Files:**
+
 - Create: `assets/images/auth-decorations.png` (full-bleed background overlay, Figma node `8:2`)
 - Create: `assets/images/auth-logo-glow.png` (140dp circle glow behind logo, Figma node `5:4`)
 - Create: `assets/images/google-logo.png` (20dp Google "G" mark, Figma node `120:2`)
 
 **Approach:**
+
 - Export each asset from Figma at 2x scale, PNG format.
 - Name files with a clear prefix so future auth screens can share them.
 - No downscaling / editing — match Figma's export directly.
 
 **Patterns to follow:**
+
 - Other `assets/images/*.png` files already in the repo (React logos / splash / app icons) for directory conventions.
 
 **Test scenarios:**
+
 - Test expectation: none — asset-only change. Verified visually in Unit 7.
 
 **Verification:**
+
 - All three files exist at the listed paths. `npx expo start` doesn't 404 on them when Unit 4 imports them.
 
 - [ ] **Unit 3: Update product display name in `app.json`**
@@ -157,18 +167,22 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Dependencies:** None
 
 **Files:**
+
 - Modify: `app.json` (field: `expo.name`)
 
 **Approach:**
+
 - Change **only** `expo.name` from `"workflow-test"` to `"Hi Honey"`.
 - **Do NOT change** `expo.slug`, `expo.scheme`, `expo.ios.bundleIdentifier`, or `expo.android.package`. Those are wired into the Supabase Redirect URL allowlist and Maestro's `appId`; changing them is out of scope and would break the OAuth flow (per `CLAUDE.md`'s non-negotiables).
 - `package.json` `name` stays `workflow-test` (technical package identifier).
 - `CLAUDE.md` stays as-is (repo/project identifier, not product identifier). Add a one-line note in the repo's README (if present) or leave — the split is subtle but real.
 
 **Test scenarios:**
+
 - Test expectation: none — single-field config change. Maestro flow in Unit 6 will assert the new name is visible.
 
 **Verification:**
+
 - `app.json` diff shows only `expo.name` changed. Dev client still authenticates (smoke test after Unit 5 ships).
 
 - [ ] **Unit 4 (RED): Write failing tests for the redesigned sign-in screen**
@@ -180,9 +194,11 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Dependencies:** None. Intentionally runs before token/asset/UI work so the tests define "done" before any implementation begins.
 
 **Files:**
+
 - Create: `app/(auth)/__tests__/login.test.tsx`
 
 **Approach:**
+
 - First Jest test file in the project — this unit also establishes the canonical mock pattern for future screens.
 - Mock `@/lib/auth-context`:
   ```
@@ -199,10 +215,12 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Execution note:** This is the RED half of red/green. Do NOT touch `login.tsx`, `tailwind.config.js`, or any asset in this unit. Commit the failing tests as-is. Verify RED with a full `npm test` run and record the failing output in the PR description.
 
 **Patterns to follow:**
+
 - `jest-setup.ts` mock-extension pattern (mocks `expo-secure-store`, `expo-web-browser.openAuthSessionAsync`, etc.).
 - This unit defines a new pattern for future auth-related screens — keep the `useAuth` factory mock generic enough to reuse.
 
 **Test scenarios:**
+
 - **Happy path — renders H1:** Finds text matching `/Welcome to/i` and `/Hi Honey/` visible on screen.
 - **Happy path — renders subtext:** Finds text matching `/gentle companion/i`.
 - **Happy path — renders privacy badge:** Finds text matching `/private.*encrypted/i`.
@@ -218,6 +236,7 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 - **Happy path — accessibility:** Google button and both legal links each have both `accessibilityRole` and `accessibilityLabel` set (non-empty strings).
 
 **Verification:**
+
 - `npx jest app/(auth)/__tests__/login.test.tsx` exits **non-zero** with every test case failing for the right reason: the new UI elements don't exist yet (matchers fail with "Unable to find …"), NOT syntax / import / runtime errors.
 - `npx tsc --noEmit` still clean (test file is syntactically valid TS).
 - `npm run lint` still clean.
@@ -232,9 +251,11 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Dependencies:** Unit 1 (tokens), Unit 2 (assets), Unit 4 (tests in place). Unit 3 is independent but conceptually related.
 
 **Files:**
+
 - Modify: `app/(auth)/login.tsx`
 
 **Approach:**
+
 - Use `<View>`, `<Text>`, `<Pressable>` only. `Image` from `expo-image` for the three PNG assets.
 - Layout shell: full-screen `<View className="flex-1 bg-bg-primary">` with safe-area top+bottom handled via `useSafeAreaInsets()` (non-scroll screen, per CLAUDE.md "safe areas" rule).
 - Two vertical sections (Figma structure): **Top Section** (decorations absolute layer, Logo Area `[glow 140dp + honey square 72dp with 🍯 emoji]`, Welcome text "Welcome to / Hi Honey", subtext, Privacy badge pill) and **Bottom Section** (Google button, Legal footer). `justify-between` on the root so the two sections anchor top and bottom.
@@ -248,14 +269,17 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Execution note:** This is the GREEN half. Do NOT modify `__tests__/login.test.tsx` — if a test is wrong, stop and discuss; do not edit it to match the implementation (CLAUDE.md non-negotiable). Stay minimal — write only what's needed to make each test pass.
 
 **Patterns to follow:**
+
 - Current `login.tsx` wiring pattern (submitting flag, Alert on error, destructure `useAuth`) — preserve verbatim, only the JSX changes.
 - Figma frame `4:2` for layout geometry, colors, typography, and shadow values.
 
 **Test scenarios:**
+
 - Same 13 scenarios from Unit 4 — this unit makes them pass, does not add new ones.
 - Additional behavioral confirmations (not new tests — implementation-only): loading spinner color is white (matches `button-primary-bg` contrast), shadow matches Figma value `0 4 12 rgba(0,0,0,0.1)`.
 
 **Verification:**
+
 - `npx jest app/(auth)/__tests__/login.test.tsx` — all 13 cases green.
 - `npm test` (full suite) — green, no regressions.
 - `npx tsc --noEmit` clean.
@@ -271,17 +295,21 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Dependencies:** Unit 5 (new copy has to actually be on screen first)
 
 **Files:**
+
 - Modify: `.maestro/launch.yaml`
 
 **Approach:**
+
 - Replace the `assertVisible` lines that match the old strings ("Sign in to continue", "Continue with Google") with selectors for the new ones ("Welcome to", "Hi Honey", "Sign in with Google", and the privacy badge phrase).
 - Keep the `appId` and launch steps unchanged.
 - No new flows added — that's a follow-up once we add onboarding / post-auth screens.
 
 **Test scenarios:**
+
 - Test expectation: the flow itself IS the test. Post-Unit-4, running `maestro test .maestro/launch.yaml` against a dev-client build must succeed.
 
 **Verification:**
+
 - `maestro test .maestro/launch.yaml` passes against a simulator running the dev-client EAS build with the redesigned screen.
 
 - [ ] **Unit 7: Visual parity + acceptance verification**
@@ -295,6 +323,7 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 **Files:** None
 
 **Approach:**
+
 - Start `npx expo start --dev-client`.
 - Load on iPhone 17 simulator.
 - Side-by-side compare against Figma node `4:2`. Fix dp drift (spacing, radii, shadow, letter-spacing). Acceptable tolerance: ~1dp for positioning, exact for colors.
@@ -303,9 +332,11 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 - Confirm tapping "Terms of Service" and "Privacy Policy" each open an in-app `ASWebAuthenticationSession` / `SFSafariViewController`.
 
 **Test scenarios:**
+
 - Test expectation: none directly — this is manual QA. Covered by the Unit 4 unit tests (behavior) and Unit 5 Maestro flow (end-to-end).
 
 **Verification:**
+
 - All four gates green: `npx tsc --noEmit`, `npm run lint`, `npm test`, `maestro test .maestro/launch.yaml`.
 - Real OAuth flow completes on the dev client and lands on `(tabs)`.
 - Side-by-side visual match on iPhone 17 simulator.
@@ -321,14 +352,14 @@ The current `app/(auth)/login.tsx` is a minimal placeholder (centered brand name
 
 ## Risks & Dependencies
 
-| Risk | Mitigation |
-|---|---|
-| Renaming `app.json` `expo.name` accidentally creeps into `slug` / `scheme` / bundle ID and breaks Supabase Redirect URL matching | Unit 3 locks the diff surgically to `expo.name` only; Unit 6 verifies OAuth still completes end-to-end |
-| Figma hex values diverge from DESIGN.md — future screens pick up mismatched tokens | Tokens added in Unit 1 are Figma-derived and named by role, not by DESIGN.md's legacy names. Reconciliation tracked as a follow-up issue. |
-| Jest's `Alert` spy leaks across tests | Use `jest.spyOn(Alert, 'alert').mockImplementation(() => undefined)` in `beforeEach` and restore in `afterEach`, or wrap in `jest.mock('react-native/Libraries/Alert/Alert')` at the top of the file |
-| `WebBrowser.openBrowserAsync` isn't pre-mocked in `jest-setup.ts` (only `openAuthSessionAsync` is) | Extend the existing `expo-web-browser` mock to stub `openBrowserAsync` returning `Promise.resolve({ type: 'opened' })`, or override per-test |
-| Android flag emoji coverage / honey-jar emoji rendering differences between iOS and Android | 🍯 and 🔒 are well-supported on both; verify in Unit 6 if the dev client is available on Android; not a blocker for iOS-simulator-only delivery |
-| Asset file sizes inflate the binary | 2x retina PNGs at the sizes used (≤ 1024×1024) are small enough not to matter for a single auth screen; revisit only if bundle size regresses |
+| Risk                                                                                                                             | Mitigation                                                                                                                                                                                           |
+| -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Renaming `app.json` `expo.name` accidentally creeps into `slug` / `scheme` / bundle ID and breaks Supabase Redirect URL matching | Unit 3 locks the diff surgically to `expo.name` only; Unit 6 verifies OAuth still completes end-to-end                                                                                               |
+| Figma hex values diverge from DESIGN.md — future screens pick up mismatched tokens                                               | Tokens added in Unit 1 are Figma-derived and named by role, not by DESIGN.md's legacy names. Reconciliation tracked as a follow-up issue.                                                            |
+| Jest's `Alert` spy leaks across tests                                                                                            | Use `jest.spyOn(Alert, 'alert').mockImplementation(() => undefined)` in `beforeEach` and restore in `afterEach`, or wrap in `jest.mock('react-native/Libraries/Alert/Alert')` at the top of the file |
+| `WebBrowser.openBrowserAsync` isn't pre-mocked in `jest-setup.ts` (only `openAuthSessionAsync` is)                               | Extend the existing `expo-web-browser` mock to stub `openBrowserAsync` returning `Promise.resolve({ type: 'opened' })`, or override per-test                                                         |
+| Android flag emoji coverage / honey-jar emoji rendering differences between iOS and Android                                      | 🍯 and 🔒 are well-supported on both; verify in Unit 6 if the dev client is available on Android; not a blocker for iOS-simulator-only delivery                                                      |
+| Asset file sizes inflate the binary                                                                                              | 2x retina PNGs at the sizes used (≤ 1024×1024) are small enough not to matter for a single auth screen; revisit only if bundle size regresses                                                        |
 
 ## Documentation / Operational Notes
 

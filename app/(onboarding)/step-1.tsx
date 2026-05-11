@@ -38,11 +38,7 @@ function DateField(props: DateFieldProps) {
       ? formatDate(value)
       : placeholder;
 
-  const textColor = disabled
-    ? '#b2a699'
-    : value
-      ? '#33291f'
-      : '#a6998c';
+  const textColor = disabled ? '#b2a699' : value ? '#33291f' : '#a6998c';
 
   return (
     <>
@@ -119,15 +115,12 @@ export default function OnboardingStep1Screen() {
           }}
         >
           <View style={{ gap: 12, paddingBottom: 8, width: '100%' }}>
-            <Text
-              className="text-text-subtle"
-              style={{ fontSize: 14, fontWeight: '500' }}
-            >
+            <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '500' }}>
               Step 1 of 3
             </Text>
             <View
               testID="progress-bar"
-              className="bg-bg-progress-track overflow-hidden"
+              className="overflow-hidden bg-bg-progress-track"
               style={{
                 height: 6,
                 borderRadius: 3,
@@ -167,10 +160,7 @@ export default function OnboardingStep1Screen() {
             </Text>
 
             <View style={{ gap: 8, width: '100%' }}>
-              <Text
-                className="text-text-body"
-                style={{ fontSize: 14, fontWeight: '500' }}
-              >
+              <Text className="text-text-body" style={{ fontSize: 14, fontWeight: '500' }}>
                 First Name
               </Text>
               <TextInput
@@ -193,10 +183,7 @@ export default function OnboardingStep1Screen() {
             </View>
 
             <View style={{ gap: 8, width: '100%' }}>
-              <Text
-                className="text-text-body"
-                style={{ fontSize: 14, fontWeight: '500' }}
-              >
+              <Text className="text-text-body" style={{ fontSize: 14, fontWeight: '500' }}>
                 Date of Birth
               </Text>
               <DateField
@@ -218,10 +205,7 @@ export default function OnboardingStep1Screen() {
                   width: '100%',
                 }}
               >
-                <Text
-                  className="text-text-body"
-                  style={{ fontSize: 14, fontWeight: '500' }}
-                >
+                <Text className="text-text-body" style={{ fontSize: 14, fontWeight: '500' }}>
                   Diagnosis Date
                 </Text>
                 <View
@@ -241,10 +225,7 @@ export default function OnboardingStep1Screen() {
                     thumbColor="#ffffff"
                     ios_backgroundColor="#d4c3b0"
                   />
-                  <Text
-                    className="text-text-subtle"
-                    style={{ fontSize: 13 }}
-                  >
+                  <Text className="text-text-subtle" style={{ fontSize: 13 }}>
                     Not sure
                   </Text>
                 </View>
@@ -282,10 +263,7 @@ export default function OnboardingStep1Screen() {
                 opacity: canProceed ? 1 : 0.5,
               }}
             >
-              <Text
-                className="text-white"
-                style={{ fontSize: 17, fontWeight: '600' }}
-              >
+              <Text className="text-white" style={{ fontSize: 17, fontWeight: '600' }}>
                 Next
               </Text>
             </Pressable>
@@ -299,10 +277,7 @@ export default function OnboardingStep1Screen() {
                 paddingVertical: 8,
               }}
             >
-              <Text
-                className="text-text-subtle"
-                style={{ fontSize: 15, fontWeight: '500' }}
-              >
+              <Text className="text-text-subtle" style={{ fontSize: 15, fontWeight: '500' }}>
                 Back
               </Text>
             </Pressable>

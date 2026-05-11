@@ -34,9 +34,9 @@ useEffect(() => {
 
 ## Key files
 
-| File | Role |
-|---|---|
-| `app/_layout.tsx` | Both the module-scope listener and the `useEffect` seed call |
+| File              | Role                                                                             |
+| ----------------- | -------------------------------------------------------------------------------- |
+| `app/_layout.tsx` | Both the module-scope listener and the `useEffect` seed call                     |
 | `lib/supabase.ts` | `autoRefreshToken: true` enables the refresh machinery that `start/stop` control |
 
 ## Gotchas

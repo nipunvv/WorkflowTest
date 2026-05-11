@@ -6,10 +6,10 @@ Describes the testing approach, conventions, module mocks, and the known limitat
 
 ## Layers
 
-| Layer | Tooling | Scope |
-|---|---|---|
-| Unit / integration | Jest 29 + `@testing-library/react-native` 13.3 | Components, hooks, utilities |
-| E2E | Maestro YAML | App-level smoke flows on a real dev-client build |
+| Layer              | Tooling                                        | Scope                                            |
+| ------------------ | ---------------------------------------------- | ------------------------------------------------ |
+| Unit / integration | Jest 29 + `@testing-library/react-native` 13.3 | Components, hooks, utilities                     |
+| E2E                | Maestro YAML                                   | App-level smoke flows on a real dev-client build |
 
 ## Jest + RNTL conventions
 
@@ -121,14 +121,14 @@ maestro test .maestro/
 
 ## Key files
 
-| File | Role |
-|---|---|
-| `jest-setup.ts` | Global module mocks and env var injection |
-| `package.json` `"jest"` | Jest config: `jest-expo` preset, `moduleNameMapper`, `transformIgnorePatterns` |
-| `app/(auth)/__tests__/login.test.tsx` | Login screen tests |
-| `app/(onboarding)/__tests__/step-1.test.tsx` | Onboarding step 1 tests |
-| `hooks/__tests__/use-redirect-on-sign-in.test.ts` | Hook tests |
-| `.maestro/onboarding-step-1.yaml` | E2E onboarding smoke flow |
+| File                                              | Role                                                                           |
+| ------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `jest-setup.ts`                                   | Global module mocks and env var injection                                      |
+| `package.json` `"jest"`                           | Jest config: `jest-expo` preset, `moduleNameMapper`, `transformIgnorePatterns` |
+| `app/(auth)/__tests__/login.test.tsx`             | Login screen tests                                                             |
+| `app/(onboarding)/__tests__/step-1.test.tsx`      | Onboarding step 1 tests                                                        |
+| `hooks/__tests__/use-redirect-on-sign-in.test.ts` | Hook tests                                                                     |
+| `.maestro/onboarding-step-1.yaml`                 | E2E onboarding smoke flow                                                      |
 
 ## Cross-refs
 

@@ -16,17 +16,17 @@ appId: com.workflowtest.app
 - launchApp:
     clearState: false
 
-- assertVisible: "Step 4 of 4"
+- assertVisible: 'Step 4 of 4'
 - assertVisible: "You're all set"
-- assertVisible: "Your gentle companion is ready."
-- assertVisible: "Profile saved"
-- assertVisible: "symptoms tracked"
-- assertVisible: "connected"
-- assertVisible: "Language set to"
-- assertVisible: "Get Started"
-- assertVisible: "Your health data is private"
+- assertVisible: 'Your gentle companion is ready.'
+- assertVisible: 'Profile saved'
+- assertVisible: 'symptoms tracked'
+- assertVisible: 'connected'
+- assertVisible: 'Language set to'
+- assertVisible: 'Get Started'
+- assertVisible: 'Your health data is private'
 
-- tapOn: "Get Started"
+- tapOn: 'Get Started'
 
 # After tapping Get Started, onboarding is replaced — assert we left Step 4.
-- assertNotVisible: "Step 4 of 4"
+- assertNotVisible: 'Step 4 of 4'

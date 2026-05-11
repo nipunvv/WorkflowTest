@@ -12,24 +12,25 @@
 
 Six screen frames currently exist on the canvas. Auth is one screen; onboarding is split across two design iterations (an older 3-step flow and a newer 4-step flow). Both versions live on the canvas side-by-side.
 
-| # | Screen | Node ID | Canvas X | Notes |
-|---|--------|---------|---------:|-------|
-| 1 | Auth — Sign In | `4:2` | 100 | Entry / sign-in |
-| 2 | Onboarding — Step 1 Basic Info | `13:2` | 573 | Shared start of both flows |
-| 3 | Onboarding — Step 2 Symptoms (3-step flow) | `14:2` | 1046 | Older "Step 2 of 3" |
-| 4 | Onboarding — Step 3 Language (3-step flow) | `15:2` | 1519 | Older "Step 3 of 3" |
-| 5 | Onboarding — Step 2 Goals (4-step flow) | `170:2` | 1992 | Newer "Step 2 of 4" |
-| 6 | Onboarding — Step 3 Integrations (4-step flow) | `178:2` | 2465 | Newer "Step 3 of 4" |
+| #   | Screen                                         | Node ID | Canvas X | Notes                      |
+| --- | ---------------------------------------------- | ------- | -------: | -------------------------- |
+| 1   | Auth — Sign In                                 | `4:2`   |      100 | Entry / sign-in            |
+| 2   | Onboarding — Step 1 Basic Info                 | `13:2`  |      573 | Shared start of both flows |
+| 3   | Onboarding — Step 2 Symptoms (3-step flow)     | `14:2`  |     1046 | Older "Step 2 of 3"        |
+| 4   | Onboarding — Step 3 Language (3-step flow)     | `15:2`  |     1519 | Older "Step 3 of 3"        |
+| 5   | Onboarding — Step 2 Goals (4-step flow)        | `170:2` |     1992 | Newer "Step 2 of 4"        |
+| 6   | Onboarding — Step 3 Integrations (4-step flow) | `178:2` |     2465 | Newer "Step 3 of 4"        |
 
 **Not yet designed:** Step 4 of the 4-step flow (no frame on canvas); the post-onboarding "First Log Prompt" / Log Something / Insights / Care Team screens described in `SCREENS.md`.
 
 ---
 
-## 1. Auth — Sign In  (`4:2`)
+## 1. Auth — Sign In (`4:2`)
 
 Welcome / sign-in screen.
 
 **Top section (`5:2`)**
+
 - Logo area (`5:3`): organic glow disc with 🍯 honey logo (72×72) inside a 160×160 frame.
 - Welcome text (`5:7`):
   - Heading: "Welcome to Hi Honey"
@@ -37,6 +38,7 @@ Welcome / sign-in screen.
 - Privacy badge (`5:10`): 🔒 "Your health data is private & encrypted"
 
 **Bottom section (`6:2`)**
+
 - Auth buttons (`6:3`):
   - Primary: "Sign in with Google" (`6:4`) with Google logo (`120:2`)
   - Divider: "or" (`6:10`)
@@ -44,20 +46,23 @@ Welcome / sign-in screen.
 - Legal footer text (`6:14`)
 
 **Decorations (`8:2`)**
+
 - Two organic blobs (top-right `8:3`, bottom-left `8:4`)
 - Three accent dots (`8:5`, `8:6`, `8:7`)
 
 ---
 
-## 2. Onboarding — Step 1: Basic Info  (`13:2`)
+## 2. Onboarding — Step 1: Basic Info (`13:2`)
 
 First step of onboarding, shown in both flow versions.
 
 **Header (`13:3`)**
-- Label: "Step 1 of 3"  *(progress fill 112 / 337 ≈ 33%)*
+
+- Label: "Step 1 of 3" _(progress fill 112 / 337 ≈ 33%)_
 - Progress bar (`13:5`)
 
 **Card — Basic Info (`13:8`)**
+
 - Title: "Let's get to know you 👋"
 - Input — First Name (`13:10`): label + text field, sample value "Angel"
 - Input — Date of Birth (`13:14`): label + date picker with 📅 trailing icon, placeholder "Select date"
@@ -66,6 +71,7 @@ First step of onboarding, shown in both flow versions.
   - Disabled date picker showing "Not applicable" when toggle is on
 
 **Navigation (`13:29`)**
+
 - Primary button: "Next"
 - Back link
 
@@ -73,12 +79,14 @@ First step of onboarding, shown in both flow versions.
 
 ---
 
-## 3. Onboarding — Step 2: Symptoms  (`14:2`)  *— older 3-step flow*
+## 3. Onboarding — Step 2: Symptoms (`14:2`) _— older 3-step flow_
 
 **Header (`14:3`)**
-- Label: "Step 2 of 3"  (progress fill 224 / 337 ≈ 67%)
+
+- Label: "Step 2 of 3" (progress fill 224 / 337 ≈ 67%)
 
 **Card — Symptoms (`14:8`)**
+
 - Question: "What are your primary symptoms?"
 - Helper: "Select all that apply"
 - Symptom chips (`14:12`) — 2-column grid of 6 chips:
@@ -93,60 +101,69 @@ First step of onboarding, shown in both flow versions.
 
 ---
 
-## 4. Onboarding — Step 3: Language  (`15:2`)  *— older 3-step flow*
+## 4. Onboarding — Step 3: Language (`15:2`) _— older 3-step flow_
 
 **Header (`15:3`)**
-- Label: "Step 3 of 3"  (progress bar full)
+
+- Label: "Step 3 of 3" (progress bar full)
 
 **Card — Language (`15:8`)**
+
 - Question: "Preferred Language? 🌍"
 - Helper: "You can change this later in settings"
 - Language options (`15:12`) — radio list:
-  - 🇺🇸 English / English  *(selected — radio dot present)*
+  - 🇺🇸 English / English _(selected — radio dot present)_
   - 🇨🇳 简体中文 / Simplified Chinese
 
 **Navigation (`15:29`)**
+
 - Primary button: "Get Started 🎉"
 - Back link
 
 ---
 
-## 5. Onboarding — Step 2: Goals  (`170:2`)  *— newer 4-step flow*
+## 5. Onboarding — Step 2: Goals (`170:2`) _— newer 4-step flow_
 
 **Header (`171:2`)**
-- Label: "Step 2 of 4"  (progress fill 169 / 337 ≈ 50%)
+
+- Label: "Step 2 of 4" (progress fill 169 / 337 ≈ 50%)
 
 **Card — Goals (`172:3`)**
+
 - Question: "What matters most to you right now?"
 - Helper: "Select all that apply — we'll personalize your experience"
 - Goal options (`172:7`) — selectable rows with check indicator:
-  - 🔍 Find my symptom triggers  *(✓ selected)*
-  - ⚡ Improve my daily energy  *(✓ selected)*
+  - 🔍 Find my symptom triggers _(✓ selected)_
+  - ⚡ Improve my daily energy _(✓ selected)_
   - 📋 Understand my protocol
   - 📊 Capture everything in one place
   - 🤝 Coordinate with my care team
-  - ✍️ Other  *(expanded state with input field "Tell us what matters to you…")*
+  - ✍️ Other _(expanded state with input field "Tell us what matters to you…")_
 
 **Navigation (`173:2`):** Next button + Back link.
 
 ---
 
-## 6. Onboarding — Step 3: Integrations  (`178:2`)  *— newer 4-step flow*
+## 6. Onboarding — Step 3: Integrations (`178:2`) _— newer 4-step flow_
 
 **Header (`179:2`)**
-- Label: "Step 3 of 4"  (progress fill 253 / 337 ≈ 75%)
+
+- Label: "Step 3 of 4" (progress fill 253 / 337 ≈ 75%)
 
 **Title block (`180:3`)**
+
 - "Recommended" badge (`180:6`)
 - Heading: "Connect your devices"
 - Subheading: "Automatic sleep & weight tracking saves you time."
 
 **Integration cards (`180:10`)**
+
 - Oura Ring (`180:11`): 💍 logo, "Sleep stages, HRV", **Connected** badge with ✓
 - Withings Scale (`180:21`): ⚖️ logo, "Weight, body composition", **Connect** button
 - More integrations hint (`180:29`): ✨ "More integrations coming soon"
 
 **Navigation (`184:3`)**
+
 - Primary button: "Continue"
 - Secondary link: "Skip for now"
 

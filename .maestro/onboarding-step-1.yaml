@@ -27,25 +27,25 @@ appId: com.workflowtest.app
 # established above so the root `Stack.Protected guard={isAuthed}` admits the route.
 - openLink: workflowtest://onboarding/step-1
 
-- assertVisible: "Step 1 of 3"
+- assertVisible: 'Step 1 of 3'
 - assertVisible: "Let's get to know you"
 
 - tapOn:
-    id: "First Name"
-- inputText: "Angel"
+    id: 'First Name'
+- inputText: 'Angel'
 
 # Open the Date of Birth picker and dismiss it. Real-device picker UI varies by
 # platform; this step may need platform-specific handling during GREEN.
 - tapOn:
-    id: "dob-field"
+    id: 'dob-field'
 # After selecting a date, the picker closes. If Maestro can't drive selection,
 # GREEN should wire a developer-build shortcut (e.g., long-press to seed a date).
 
 # Toggle "Not sure" ON to exercise the diagnosis-disable path.
 - tapOn:
-    id: "diagnosis-not-sure"
-- assertVisible: "Not applicable"
+    id: 'diagnosis-not-sure'
+- assertVisible: 'Not applicable'
 
 # Advance to Step 2. Placeholder — update this assertion once Step 2 ships.
-- tapOn: "Next"
-- assertVisible: "Step 2"
+- tapOn: 'Next'
+- assertVisible: 'Step 2'

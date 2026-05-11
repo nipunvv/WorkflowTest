@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **NativeWind** for styling (Tailwind classes via `className`). Use `StyleSheet.create()` as a fallback when NativeWind can't express the style (animated values, runtime-computed values).
 - **Supabase** for database + auth. Client-side public vars use the `EXPO_PUBLIC_` prefix.
 - **Secrets rule:** never put a secret in an `EXPO_PUBLIC_*` variable — those bundle into the distributed binary and are trivially extractable. Any call that needs a secret key goes through a backend API (Supabase Edge Function, server route, etc.) that holds the secret server-side.
-- **Testing:** Jest + React Native Testing Library for unit/integration; Maestro YAML flows for E2E. Details in *Testing conventions* below.
+- **Testing:** Jest + React Native Testing Library for unit/integration; Maestro YAML flows for E2E. Details in _Testing conventions_ below.
 - **Deploy via EAS** — `eas build`, `eas submit`. Not Vercel. Not Netlify. (OTA via `eas update` is not wired up yet — `expo-updates` is not installed.)
 - **Performance:**
   - Use `FlatList` / `SectionList` for any scrollable list beyond a handful of items. Don't `ScrollView` + `.map()` — `ScrollView` mounts every child upfront; virtualizers render only what's visible. (Reach for `FlashList` if/when items get heavy enough to jank FlatList — not installed yet.)
@@ -93,10 +93,10 @@ Browser-based PKCE flow, not native Google Sign-In. Trace:
 
 The redirect URL sent to Supabase depends on the runtime:
 
-| Runtime | `Linking.createURL('auth/callback')` returns |
-|---|---|
-| Expo Go | `exp://<LAN_IP>:8081/--/auth/callback` (IP changes per network) |
-| Dev client / standalone | `workflowtest://auth/callback` (stable) |
+| Runtime                 | `Linking.createURL('auth/callback')` returns                    |
+| ----------------------- | --------------------------------------------------------------- |
+| Expo Go                 | `exp://<LAN_IP>:8081/--/auth/callback` (IP changes per network) |
+| Dev client / standalone | `workflowtest://auth/callback` (stable)                         |
 
 Supabase's Redirect URL allowlist matches the host literally — `**` wildcards only cover the path, not the host/port. So every LAN IP you develop from needs its own allowlist entry in Expo Go, OR use a dev client and the `workflowtest://` URL works everywhere.
 
@@ -148,6 +148,7 @@ function DateField({ testID, accessibilityLabel, value, onChangeDate, ... }: Dat
 ```
 
 RNTL's `fireEvent(node, 'changeDate', date)` walks the tree from the queried node upward until it finds `onChangeDate` — the event name capitalizes to the prop name. Two gotchas:
+
 - Use `fireEvent(node, 'changeDate', ...)` **not** `fireEvent(node, 'onChangeDate', ...)` — RNTL auto-prefixes `on`, so the latter resolves to `props.onOnChangeDate` (no-op).
 - The wrapper component does not need to be the directly queried node — RNTL walks up to a parent that declares the prop.
 

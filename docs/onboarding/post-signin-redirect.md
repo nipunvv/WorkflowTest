@@ -33,12 +33,12 @@ export function useRedirectOnSignIn() {
 
 Supabase emits several auth events. The hook only acts on `SIGNED_IN`:
 
-| Event | Hook action |
-|---|---|
-| `SIGNED_IN` | `replace('/onboarding/step-1')` |
-| `INITIAL_SESSION` | Ignored (session restore on launch) |
-| `TOKEN_REFRESHED` | Ignored |
-| `SIGNED_OUT` | Ignored (the `Stack.Protected` guard in `_layout.tsx` handles routing back to login) |
+| Event             | Hook action                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------ |
+| `SIGNED_IN`       | `replace('/onboarding/step-1')`                                                      |
+| `INITIAL_SESSION` | Ignored (session restore on launch)                                                  |
+| `TOKEN_REFRESHED` | Ignored                                                                              |
+| `SIGNED_OUT`      | Ignored (the `Stack.Protected` guard in `_layout.tsx` handles routing back to login) |
 
 This distinction is critical: `INITIAL_SESSION` fires on every cold start when a session is already in SecureStore. Without the filter, returning users would be redirected to onboarding on every app launch.
 
@@ -56,15 +56,16 @@ This is called out explicitly in the source code comment:
 
 ## Key files
 
-| File | Role |
-|---|---|
-| `hooks/use-redirect-on-sign-in.ts` | Hook implementation |
-| `hooks/__tests__/use-redirect-on-sign-in.test.ts` | Jest test suite |
-| `app/_layout.tsx` | Calls `useRedirectOnSignIn()` |
+| File                                              | Role                          |
+| ------------------------------------------------- | ----------------------------- |
+| `hooks/use-redirect-on-sign-in.ts`                | Hook implementation           |
+| `hooks/__tests__/use-redirect-on-sign-in.test.ts` | Jest test suite               |
+| `app/_layout.tsx`                                 | Calls `useRedirectOnSignIn()` |
 
 ## Test coverage
 
 Tests in `hooks/__tests__/use-redirect-on-sign-in.test.ts` verify:
+
 - Subscribes to auth events on mount
 - Redirects on `SIGNED_IN`
 - Does not redirect on `INITIAL_SESSION`, `TOKEN_REFRESHED`, `SIGNED_OUT`

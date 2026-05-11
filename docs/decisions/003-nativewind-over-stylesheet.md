@@ -21,6 +21,7 @@ Use **NativeWind v4** with **Tailwind v3.4.x** (pinned — NativeWind v4 is not 
 - Anything NativeWind's Tailwind subset can't express.
 
 Configuration:
+
 - `tailwind.config.js` — `presets: [require("nativewind/preset")]`, custom design tokens in `theme.extend`.
 - `global.css` imported once at the top of `app/_layout.tsx`.
 - `babel.config.js` — `jsxImportSource: "nativewind"` + `nativewind/babel` preset.

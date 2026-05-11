@@ -11,13 +11,13 @@ export default function OnboardingCompleteScreen() {
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 items-center justify-center px-8">
           <Text
-            className="text-text-heading text-center"
+            className="text-center text-text-heading"
             style={{ fontSize: 28, fontWeight: '700', lineHeight: 36 }}
           >
             You&rsquo;re all set!
           </Text>
           <Text
-            className="text-text-subtle text-center"
+            className="text-center text-text-subtle"
             style={{ fontSize: 15, lineHeight: 22, marginTop: 12 }}
           >
             Your dashboard is coming soon.

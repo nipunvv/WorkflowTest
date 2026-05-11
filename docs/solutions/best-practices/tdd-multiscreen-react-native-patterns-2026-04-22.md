@@ -46,8 +46,7 @@ The gaps worth capturing:
 RNTL v13's `getEventHandlerName` (see `node_modules/@testing-library/react-native/build/event-handler.js`) converts an event name into a prop lookup with:
 
 ```js
-const getEventHandlerName = (eventName) =>
-  `on${capitalizeFirstLetter(eventName)}`;
+const getEventHandlerName = (eventName) => `on${capitalizeFirstLetter(eventName)}`;
 ```
 
 So `fireEvent(node, 'changeDate', arg)` resolves to `props.onChangeDate`. Writing `fireEvent(node, 'onChangeDate', arg)` resolves to `props.onOnChangeDate`, which doesn't exist — the call silently no-ops.
@@ -78,7 +77,14 @@ type DateFieldProps = {
   disabledPlaceholder?: string;
 };
 
-function DateField({ testID, accessibilityLabel, value, onChangeDate, disabled, placeholder }: DateFieldProps) {
+function DateField({
+  testID,
+  accessibilityLabel,
+  value,
+  onChangeDate,
+  disabled,
+  placeholder,
+}: DateFieldProps) {
   const [pickerOpen, setPickerOpen] = useState(false);
   return (
     <>
@@ -96,7 +102,10 @@ function DateField({ testID, accessibilityLabel, value, onChangeDate, disabled, 
         isVisible={pickerOpen}
         mode="date"
         onCancel={() => setPickerOpen(false)}
-        onConfirm={(d) => { setPickerOpen(false); onChangeDate(d); }}
+        onConfirm={(d) => {
+          setPickerOpen(false);
+          onChangeDate(d);
+        }}
       />
     </>
   );
@@ -271,7 +280,7 @@ Fixed (one-character class of fix, huge signal change):
 fireEvent(getByTestId('dob-field'), 'changeDate', new Date('1990-06-01'));
 ```
 
-Editing the test here was legitimate: the *contract* (the component exposes `onChangeDate: (d: Date) => void`) didn't change — only the broken API call to RNTL did. `CLAUDE.md`'s "never modify tests to make them pass" rule is about spec-level assertions, not broken API calls.
+Editing the test here was legitimate: the _contract_ (the component exposes `onChangeDate: (d: Date) => void`) didn't change — only the broken API call to RNTL did. `CLAUDE.md`'s "never modify tests to make them pass" rule is about spec-level assertions, not broken API calls.
 
 ### Example B — Wrapper component exposing `onChangeDate`
 

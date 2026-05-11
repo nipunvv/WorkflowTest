@@ -47,11 +47,11 @@ sb-abc-auth-token.2      →  <remainder>
 
 ## Key files & components
 
-| File | Role |
-|---|---|
-| `lib/secure-store-adapter.ts` | The adapter implementation |
-| `lib/supabase.ts` | Passes `ChunkedSecureStoreAdapter` as the `storage` option to `createClient` |
-| `jest-setup.ts` | Mocks `expo-secure-store` with an in-memory `Map`; the adapter's tests run against this mock |
+| File                          | Role                                                                                         |
+| ----------------------------- | -------------------------------------------------------------------------------------------- |
+| `lib/secure-store-adapter.ts` | The adapter implementation                                                                   |
+| `lib/supabase.ts`             | Passes `ChunkedSecureStoreAdapter` as the `storage` option to `createClient`                 |
+| `jest-setup.ts`               | Mocks `expo-secure-store` with an in-memory `Map`; the adapter's tests run against this mock |
 
 ## Dependencies
 

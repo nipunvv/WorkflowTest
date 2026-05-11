@@ -81,6 +81,7 @@ maestro test .maestro/            # Run all Maestro flows
 ```
 
 Requires:
+
 1. A dev-client build installed on a booted iOS Simulator.
 2. The user must be **already signed in** (Maestro cannot drive the Google OAuth sheet).
 
@@ -96,12 +97,12 @@ npx tsc --noEmit    # TypeScript type-check
 
 ## EAS build reference
 
-| Command | What it does |
-|---|---|
-| `npx eas build --platform ios --profile development` | Cloud build for iOS Simulator (dev-client) |
-| `npx eas build --platform ios --profile preview` | Internal preview build (iOS Simulator) |
-| `npx eas build --platform ios --profile production` | Production build (requires Apple Developer account) |
-| `npx eas build:run -p ios --latest` | Download + install latest build on booted simulator |
+| Command                                              | What it does                                        |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| `npx eas build --platform ios --profile development` | Cloud build for iOS Simulator (dev-client)          |
+| `npx eas build --platform ios --profile preview`     | Internal preview build (iOS Simulator)              |
+| `npx eas build --platform ios --profile production`  | Production build (requires Apple Developer account) |
+| `npx eas build:run -p ios --latest`                  | Download + install latest build on booted simulator |
 
 ## Simulator caveats
 

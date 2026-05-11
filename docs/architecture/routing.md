@@ -44,11 +44,11 @@ graph TD
 
 Every `.tsx` file in `app/` is automatically a route. Folder names in parentheses — `(auth)`, `(tabs)`, `(onboarding)` — are **route groups**: they affect the URL structure and layout nesting without adding a URL path segment.
 
-| Route group | URL prefix | Access |
-|---|---|---|
-| `(auth)` | `/` (e.g. `/login`) | Unauthenticated only |
-| `(tabs)` | `/` (tab root) | Authenticated only |
-| `(onboarding)` | `/onboarding/...` | Authenticated only |
+| Route group    | URL prefix          | Access               |
+| -------------- | ------------------- | -------------------- |
+| `(auth)`       | `/` (e.g. `/login`) | Unauthenticated only |
+| `(tabs)`       | `/` (tab root)      | Authenticated only   |
+| `(onboarding)` | `/onboarding/...`   | Authenticated only   |
 
 ### Stack.Protected guards
 
@@ -92,19 +92,19 @@ The iOS bundle identifier is `com.workflowtest.app`. Changing either `scheme` or
 
 ## Key files & components
 
-| File | Role |
-|---|---|
-| `app/_layout.tsx` | Root layout; `AuthProvider` wrapper; `Stack.Protected` guards; `unstable_settings` |
-| `app/(auth)/_layout.tsx` | Auth group layout; headerless Stack |
-| `app/(auth)/login.tsx` | Sign-in screen |
-| `app/(tabs)/_layout.tsx` | Tab bar layout (Home, Explore) |
-| `app/(tabs)/index.tsx` | Home screen (placeholder) |
-| `app/(tabs)/explore.tsx` | Explore screen (placeholder) |
-| `app/(onboarding)/_layout.tsx` | Onboarding group layout; headerless Stack |
-| `app/(onboarding)/step-1.tsx` | Basic info form |
-| `app/(onboarding)/step-2.tsx` | Stub ("Step 2 coming soon") |
-| `app/modal.tsx` | Modal screen (presented modally) |
-| `.expo/types/router.d.ts` | Auto-generated typed route definitions |
+| File                           | Role                                                                               |
+| ------------------------------ | ---------------------------------------------------------------------------------- |
+| `app/_layout.tsx`              | Root layout; `AuthProvider` wrapper; `Stack.Protected` guards; `unstable_settings` |
+| `app/(auth)/_layout.tsx`       | Auth group layout; headerless Stack                                                |
+| `app/(auth)/login.tsx`         | Sign-in screen                                                                     |
+| `app/(tabs)/_layout.tsx`       | Tab bar layout (Home, Explore)                                                     |
+| `app/(tabs)/index.tsx`         | Home screen (placeholder)                                                          |
+| `app/(tabs)/explore.tsx`       | Explore screen (placeholder)                                                       |
+| `app/(onboarding)/_layout.tsx` | Onboarding group layout; headerless Stack                                          |
+| `app/(onboarding)/step-1.tsx`  | Basic info form                                                                    |
+| `app/(onboarding)/step-2.tsx`  | Stub ("Step 2 coming soon")                                                        |
+| `app/modal.tsx`                | Modal screen (presented modally)                                                   |
+| `.expo/types/router.d.ts`      | Auto-generated typed route definitions                                             |
 
 ## Dependencies
 

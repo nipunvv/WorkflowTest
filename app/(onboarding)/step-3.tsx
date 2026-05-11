@@ -33,16 +33,10 @@ function LanguageRow({ language, selected, onSelect }: LanguageRowProps) {
     >
       <Text style={{ fontSize: 24 }}>{language.flag}</Text>
       <View style={{ flex: 1, marginLeft: 12, gap: 2 }}>
-        <Text
-          className="text-text-heading"
-          style={{ fontSize: 16, fontWeight: '600' }}
-        >
+        <Text className="text-text-heading" style={{ fontSize: 16, fontWeight: '600' }}>
           {language.nativeName}
         </Text>
-        <Text
-          className="text-text-subtle"
-          style={{ fontSize: 13, fontWeight: '400' }}
-        >
+        <Text className="text-text-subtle" style={{ fontSize: 13, fontWeight: '400' }}>
           {language.englishName}
         </Text>
       </View>
@@ -98,15 +92,12 @@ export default function OnboardingStep3Screen() {
           }}
         >
           <View style={{ gap: 12, paddingBottom: 8, width: '100%' }}>
-            <Text
-              className="text-text-subtle"
-              style={{ fontSize: 14, fontWeight: '500' }}
-            >
+            <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '500' }}>
               Step 3 of 3
             </Text>
             <View
               testID="progress-bar"
-              className="bg-bg-progress-track overflow-hidden"
+              className="overflow-hidden bg-bg-progress-track"
               style={{
                 height: 6,
                 borderRadius: 3,
@@ -147,10 +138,7 @@ export default function OnboardingStep3Screen() {
               >
                 Preferred Language? 🌍
               </Text>
-              <Text
-                className="text-text-subtle"
-                style={{ fontSize: 14, fontWeight: '400' }}
-              >
+              <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '400' }}>
                 You can change this later in settings
               </Text>
             </View>
@@ -192,10 +180,7 @@ export default function OnboardingStep3Screen() {
                 boxShadow: '0 4px 16px rgba(212,165,116,0.3)',
               }}
             >
-              <Text
-                className="text-white"
-                style={{ fontSize: 17, fontWeight: '600' }}
-              >
+              <Text className="text-white" style={{ fontSize: 17, fontWeight: '600' }}>
                 Get Started
               </Text>
               <Text style={{ fontSize: 18 }}>🎉</Text>
@@ -210,10 +195,7 @@ export default function OnboardingStep3Screen() {
                 paddingVertical: 8,
               }}
             >
-              <Text
-                className="text-text-subtle"
-                style={{ fontSize: 15, fontWeight: '500' }}
-              >
+              <Text className="text-text-subtle" style={{ fontSize: 15, fontWeight: '500' }}>
                 Back
               </Text>
             </Pressable>
