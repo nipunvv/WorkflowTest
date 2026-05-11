@@ -45,10 +45,6 @@ export default function OnboardingStep4Screen() {
   const deviceLabel = deviceNum === 1 ? '1 device connected' : `${deviceNum} devices connected`;
   const languageRowLabel = `Language set to ${languageLabel ?? 'English'}`;
 
-  const handleGetStarted = () => {
-    replace('/(tabs)');
-  };
-
   return (
     <View className="flex-1 bg-bg-primary" testID="onboarding-step-4-screen">
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
@@ -99,7 +95,6 @@ export default function OnboardingStep4Screen() {
               width: 160,
               height: 160,
               alignSelf: 'center',
-              position: 'relative',
             }}
           >
             <View
@@ -219,7 +214,7 @@ export default function OnboardingStep4Screen() {
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Get Started"
-              onPress={handleGetStarted}
+              onPress={() => replace('/(tabs)')}
               className="bg-bg-next"
               style={{
                 height: 56,

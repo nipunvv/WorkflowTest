@@ -74,10 +74,6 @@ export default function OnboardingStep3Screen() {
   }>();
   const [selected, setSelected] = useState<LanguageCode>('en');
 
-  const handleSelect = (code: LanguageCode) => {
-    setSelected(code);
-  };
-
   const handleGetStarted = () => {
     const languageLabel = LANGUAGES.find((l) => l.code === selected)?.englishName ?? 'English';
     push({
@@ -162,7 +158,7 @@ export default function OnboardingStep3Screen() {
                   key={language.code}
                   language={language}
                   selected={selected === language.code}
-                  onSelect={handleSelect}
+                  onSelect={setSelected}
                 />
               ))}
             </View>
