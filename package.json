@@ -30,7 +30,8 @@
       "/node_modules/",
       "/.maestro/",
       "/ios/",
-      "/android/"
+      "/android/",
+      "/.worktrees/"
     ]
   },
   "dependencies": {
