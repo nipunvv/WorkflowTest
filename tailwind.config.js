@@ -33,6 +33,7 @@ module.exports = {
         'text-chip-label': '#594d40',
 
         // Onboarding Step 4 tokens (from issue #15).
+        'accent-sage': '#9caf88',
         'text-body-secondary': '#594d40',
         'border-card': '#e0dbd6',
         'bg-privacy-pill': 'rgba(156,175,136,0.16)',

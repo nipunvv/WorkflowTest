@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -68,6 +68,10 @@ function LanguageRow({ language, selected, onSelect }: LanguageRowProps) {
 
 export default function OnboardingStep3Screen() {
   const { push, back } = useRouter();
+  const { firstName, symptomCount } = useLocalSearchParams<{
+    firstName?: string;
+    symptomCount?: string;
+  }>();
   const [selected, setSelected] = useState<LanguageCode>('en');
 
   const handleSelect = (code: LanguageCode) => {
@@ -75,7 +79,11 @@ export default function OnboardingStep3Screen() {
   };
 
   const handleGetStarted = () => {
-    push('/(onboarding)/step-4');
+    const languageLabel = LANGUAGES.find((l) => l.code === selected)?.englishName ?? 'English';
+    push({
+      pathname: '/(onboarding)/step-4',
+      params: { firstName, symptomCount, deviceCount: '0', languageLabel },
+    });
   };
 
   return (
@@ -93,7 +101,7 @@ export default function OnboardingStep3Screen() {
         >
           <View style={{ gap: 12, paddingBottom: 8, width: '100%' }}>
             <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '500' }}>
-              Step 3 of 3
+              Step 3 of 4
             </Text>
             <View
               testID="progress-bar"
@@ -112,7 +120,7 @@ export default function OnboardingStep3Screen() {
                   height: 6,
                   borderRadius: 3,
                   borderCurve: 'continuous',
-                  width: '100%',
+                  width: '75%',
                 }}
               />
             </View>

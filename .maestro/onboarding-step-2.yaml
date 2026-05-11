@@ -19,7 +19,7 @@ appId: com.workflowtest.app
 
 - openLink: workflowtest://onboarding/step-2
 
-- assertVisible: 'Step 2 of 3'
+- assertVisible: 'Step 2 of 4'
 - assertVisible: 'What are your primary symptoms?'
 
 - tapOn: 'Dry Eyes'
@@ -32,4 +32,4 @@ appId: com.workflowtest.app
 
 # Step 3 is a placeholder stub (tracked as a separate issue). Match the full
 # placeholder string to avoid incidental matches on other screens.
-- assertVisible: 'Step 3 coming soon'
+- assertVisible: 'Preferred Language'

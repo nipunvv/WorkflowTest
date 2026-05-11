@@ -1,19 +1,6 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-export type OnboardingSummary = {
-  firstName?: string;
-  symptomCount: number;
-  deviceCount: number;
-  languageLabel: string;
-};
-
-const DEFAULT_SUMMARY: OnboardingSummary = {
-  symptomCount: 0,
-  deviceCount: 0,
-  languageLabel: 'English',
-};
 
 type SummaryRowProps = {
   label: string;
@@ -28,34 +15,35 @@ function SummaryRow({ label }: SummaryRowProps) {
       style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}
     >
       <View
-        style={{
-          width: 20,
-          height: 20,
-          borderRadius: 10,
-          backgroundColor: '#9caf88',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        className="bg-accent-sage items-center justify-center"
+        style={{ width: 20, height: 20, borderRadius: 10, borderCurve: 'continuous' }}
       >
         <Text style={{ color: '#ffffff', fontSize: 11, fontWeight: '700' }}>✓</Text>
       </View>
-      <Text style={{ fontSize: 15, fontWeight: '500', color: '#33291f', lineHeight: 20 }}>
+      <Text
+        className="text-text-heading"
+        style={{ fontSize: 15, fontWeight: '500', lineHeight: 20 }}
+      >
         {label}
       </Text>
     </View>
   );
 }
 
-export default function OnboardingStep4Screen({
-  summary = DEFAULT_SUMMARY,
-}: { summary?: OnboardingSummary } = {}) {
+export default function OnboardingStep4Screen() {
   const { replace } = useRouter();
-  const { firstName, symptomCount, deviceCount, languageLabel } = summary;
+  const { firstName, symptomCount, deviceCount, languageLabel } = useLocalSearchParams<{
+    firstName?: string;
+    symptomCount?: string;
+    deviceCount?: string;
+    languageLabel?: string;
+  }>();
 
   const title = firstName ? `You're all set, ${firstName}!` : "You're all set!";
-  const symptomLabel = `${symptomCount} symptoms tracked`;
-  const deviceLabel = deviceCount === 1 ? '1 device connected' : `${deviceCount} devices connected`;
-  const languageRowLabel = `Language set to ${languageLabel}`;
+  const symptomLabel = `${Number(symptomCount ?? 0)} symptoms tracked`;
+  const deviceNum = Number(deviceCount ?? 0);
+  const deviceLabel = deviceNum === 1 ? '1 device connected' : `${deviceNum} devices connected`;
+  const languageRowLabel = `Language set to ${languageLabel ?? 'English'}`;
 
   const handleGetStarted = () => {
     replace('/(tabs)');

@@ -1,12 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import type { ReactElement } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import OnboardingStep4Screen, { type OnboardingSummary } from '../step-4';
+import OnboardingStep4Screen from '../step-4';
 
 jest.mock('expo-router', () => ({
   useRouter: jest.fn(),
+  useLocalSearchParams: jest.fn(),
   Stack: {
     Screen: () => null,
     Protected: ({ children }: { children: unknown }) => children ?? null,
@@ -18,17 +19,25 @@ const initialMetrics = {
   frame: { x: 0, y: 0, width: 393, height: 852 },
 };
 
-const defaultSummary: OnboardingSummary = {
+type ScreenParams = {
+  firstName?: string;
+  symptomCount?: string;
+  deviceCount?: string;
+  languageLabel?: string;
+};
+
+const defaultParams: ScreenParams = {
   firstName: 'Angel',
-  symptomCount: 3,
-  deviceCount: 1,
+  symptomCount: '3',
+  deviceCount: '1',
   languageLabel: 'English',
 };
 
-function renderScreen(summary: OnboardingSummary = defaultSummary, ui?: ReactElement) {
+function renderScreen(params: ScreenParams = defaultParams, ui?: ReactElement) {
+  jest.mocked(useLocalSearchParams).mockReturnValue(params as ReturnType<typeof useLocalSearchParams>);
   return render(
     <SafeAreaProvider initialMetrics={initialMetrics}>
-      {ui ?? <OnboardingStep4Screen summary={summary} />}
+      {ui ?? <OnboardingStep4Screen />}
     </SafeAreaProvider>
   );
 }
@@ -85,7 +94,7 @@ describe('OnboardingStep4Screen — static render (R1)', () => {
   });
 
   test('renders fallback title "You\'re all set!" when firstName is absent', () => {
-    renderScreen({ ...defaultSummary, firstName: undefined });
+    renderScreen({ ...defaultParams, firstName: undefined });
     expect(screen.getByText("You're all set!")).toBeOnTheScreen();
   });
 
@@ -109,23 +118,23 @@ describe('OnboardingStep4Screen — static render (R1)', () => {
     expect(screen.getByText('Profile saved')).toBeOnTheScreen();
   });
 
-  test('renders the symptomCount row (e.g. "3 symptoms tracked" when symptomCount=3)', () => {
+  test('renders the symptomCount row (e.g. "3 symptoms tracked" when symptomCount="3")', () => {
     renderScreen();
     expect(screen.getByText('3 symptoms tracked')).toBeOnTheScreen();
   });
 
   test('renders the deviceCount row with singular (1 device connected)', () => {
-    renderScreen({ ...defaultSummary, deviceCount: 1 });
+    renderScreen({ ...defaultParams, deviceCount: '1' });
     expect(screen.getByText('1 device connected')).toBeOnTheScreen();
   });
 
   test('renders the deviceCount row with plural (2 devices connected)', () => {
-    renderScreen({ ...defaultSummary, deviceCount: 2 });
+    renderScreen({ ...defaultParams, deviceCount: '2' });
     expect(screen.getByText('2 devices connected')).toBeOnTheScreen();
   });
 
   test('renders the deviceCount row with zero (0 devices connected)', () => {
-    renderScreen({ ...defaultSummary, deviceCount: 0 });
+    renderScreen({ ...defaultParams, deviceCount: '0' });
     expect(screen.getByText('0 devices connected')).toBeOnTheScreen();
   });
 
@@ -152,33 +161,43 @@ describe('OnboardingStep4Screen — static render (R1)', () => {
 
 describe('OnboardingStep4Screen — dynamic content interpolation (R2)', () => {
   test('title interpolates a different firstName correctly', () => {
-    renderScreen({ ...defaultSummary, firstName: 'Sam' });
+    renderScreen({ ...defaultParams, firstName: 'Sam' });
     expect(screen.getByText("You're all set, Sam!")).toBeOnTheScreen();
   });
 
   test('symptomCount interpolation: "5 symptoms tracked"', () => {
-    renderScreen({ ...defaultSummary, symptomCount: 5 });
+    renderScreen({ ...defaultParams, symptomCount: '5' });
     expect(screen.getByText('5 symptoms tracked')).toBeOnTheScreen();
   });
 
   test('deviceCount singular: "1 device connected"', () => {
-    renderScreen({ ...defaultSummary, deviceCount: 1 });
+    renderScreen({ ...defaultParams, deviceCount: '1' });
     expect(screen.getByText('1 device connected')).toBeOnTheScreen();
   });
 
   test('deviceCount plural: "3 devices connected"', () => {
-    renderScreen({ ...defaultSummary, deviceCount: 3 });
+    renderScreen({ ...defaultParams, deviceCount: '3' });
     expect(screen.getByText('3 devices connected')).toBeOnTheScreen();
   });
 
   test('deviceCount zero: "0 devices connected"', () => {
-    renderScreen({ ...defaultSummary, deviceCount: 0 });
+    renderScreen({ ...defaultParams, deviceCount: '0' });
     expect(screen.getByText('0 devices connected')).toBeOnTheScreen();
   });
 
   test('languageLabel: "Language set to Español" when languageLabel="Español"', () => {
-    renderScreen({ ...defaultSummary, languageLabel: 'Español' });
+    renderScreen({ ...defaultParams, languageLabel: 'Español' });
     expect(screen.getByText('Language set to Español')).toBeOnTheScreen();
+  });
+});
+
+describe('OnboardingStep4Screen — default params (production path)', () => {
+  test('renders with defaults when no params are passed (real nav path without data)', () => {
+    renderScreen({});
+    expect(screen.getByText("You're all set!")).toBeOnTheScreen();
+    expect(screen.getByText('0 symptoms tracked')).toBeOnTheScreen();
+    expect(screen.getByText('0 devices connected')).toBeOnTheScreen();
+    expect(screen.getByText('Language set to English')).toBeOnTheScreen();
   });
 });
 

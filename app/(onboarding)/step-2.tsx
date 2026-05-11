@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -44,6 +44,7 @@ function SymptomChip({ symptom, selected, onToggle }: SymptomChipProps) {
 
 export default function OnboardingStep2Screen() {
   const { push, back } = useRouter();
+  const { firstName } = useLocalSearchParams<{ firstName?: string }>();
   const [selected, setSelected] = useState<Set<SymptomId>>(new Set());
 
   const canProceed = selected.size > 0;
@@ -62,7 +63,10 @@ export default function OnboardingStep2Screen() {
 
   const handleNext = () => {
     if (!canProceed) return;
-    push('/(onboarding)/step-3');
+    push({
+      pathname: '/(onboarding)/step-3',
+      params: { firstName, symptomCount: String(selected.size) },
+    });
   };
 
   return (
@@ -80,7 +84,7 @@ export default function OnboardingStep2Screen() {
         >
           <View style={{ gap: 12, paddingBottom: 8, width: '100%' }}>
             <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '500' }}>
-              Step 2 of 3
+              Step 2 of 4
             </Text>
             <View
               testID="progress-bar"
@@ -99,7 +103,7 @@ export default function OnboardingStep2Screen() {
                   height: 6,
                   borderRadius: 3,
                   borderCurve: 'continuous',
-                  width: '66.666%',
+                  width: '50%',
                 }}
               />
             </View>

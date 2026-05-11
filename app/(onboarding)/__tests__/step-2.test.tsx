@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import type { ReactElement, ReactNode } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -10,6 +10,7 @@ import { SYMPTOMS } from '../symptoms';
 // may want different router behavior, and a global mock would couple them.
 jest.mock('expo-router', () => ({
   useRouter: jest.fn(),
+  useLocalSearchParams: jest.fn(),
   Stack: {
     Screen: () => null,
     Protected: ({ children }: { children: ReactNode }) => children ?? null,
@@ -46,6 +47,7 @@ beforeEach(() => {
     dismissTo: jest.fn(),
     canDismiss: () => false,
   });
+  jest.mocked(useLocalSearchParams).mockReturnValue({} as ReturnType<typeof useLocalSearchParams>);
 });
 
 function getChip(label: string) {
@@ -72,9 +74,9 @@ describe('SYMPTOMS catalog — contract (R1 prerequisite)', () => {
 });
 
 describe('OnboardingStep2Screen — static render (R1)', () => {
-  test('renders the "Step 2 of 3" header caption', () => {
+  test('renders the "Step 2 of 4" header caption', () => {
     renderScreen();
-    expect(screen.getByText('Step 2 of 3')).toBeOnTheScreen();
+    expect(screen.getByText('Step 2 of 4')).toBeOnTheScreen();
   });
 
   test('renders the progress bar with a fill element', () => {

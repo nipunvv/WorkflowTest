@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import type { ReactElement } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -10,6 +10,7 @@ import OnboardingStep3Screen from '../step-3';
 // no-ops during render.
 jest.mock('expo-router', () => ({
   useRouter: jest.fn(),
+  useLocalSearchParams: jest.fn(),
   Stack: {
     Screen: () => null,
     Protected: ({ children }: { children: unknown }) => children ?? null,
@@ -48,6 +49,7 @@ beforeEach(() => {
     dismissTo: jest.fn(),
     canDismiss: () => false,
   });
+  jest.mocked(useLocalSearchParams).mockReturnValue({} as ReturnType<typeof useLocalSearchParams>);
 });
 
 // Query helpers. The 简体中文 row's accessibilityLabel is intentionally flexible —
@@ -70,9 +72,9 @@ function getBackControl() {
 }
 
 describe('OnboardingStep3Screen — static render (R1)', () => {
-  test('renders the "Step 3 of 3" header caption', () => {
+  test('renders the "Step 3 of 4" header caption', () => {
     renderScreen();
-    expect(screen.getByText('Step 3 of 3')).toBeOnTheScreen();
+    expect(screen.getByText('Step 3 of 4')).toBeOnTheScreen();
   });
 
   test('renders the progress bar with a fill element', () => {

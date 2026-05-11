@@ -98,7 +98,7 @@ export default function OnboardingStep1Screen() {
 
   const handleNext = () => {
     if (!canProceed) return;
-    push('/(onboarding)/step-2');
+    push({ pathname: '/(onboarding)/step-2', params: { firstName } });
   };
 
   return (
@@ -116,7 +116,7 @@ export default function OnboardingStep1Screen() {
         >
           <View style={{ gap: 12, paddingBottom: 8, width: '100%' }}>
             <Text className="text-text-subtle" style={{ fontSize: 14, fontWeight: '500' }}>
-              Step 1 of 3
+              Step 1 of 4
             </Text>
             <View
               testID="progress-bar"
@@ -133,7 +133,7 @@ export default function OnboardingStep1Screen() {
                 style={{
                   height: 6,
                   borderRadius: 3,
-                  width: '33.333%',
+                  width: '25%',
                 }}
               />
             </View>

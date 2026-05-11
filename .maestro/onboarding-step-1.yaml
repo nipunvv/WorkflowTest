@@ -27,7 +27,7 @@ appId: com.workflowtest.app
 # established above so the root `Stack.Protected guard={isAuthed}` admits the route.
 - openLink: workflowtest://onboarding/step-1
 
-- assertVisible: 'Step 1 of 3'
+- assertVisible: 'Step 1 of 4'
 - assertVisible: "Let's get to know you"
 
 - tapOn:

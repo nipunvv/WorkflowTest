@@ -49,9 +49,9 @@ beforeEach(() => {
 });
 
 describe('OnboardingStep1Screen — static render', () => {
-  test('renders the "Step 1 of 3" header caption', () => {
+  test('renders the "Step 1 of 4" header caption', () => {
     renderScreen();
-    expect(screen.getByText('Step 1 of 3')).toBeOnTheScreen();
+    expect(screen.getByText('Step 1 of 4')).toBeOnTheScreen();
   });
 
   test('renders the progress bar with a fill element', () => {
