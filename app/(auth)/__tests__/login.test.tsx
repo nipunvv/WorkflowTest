@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import * as WebBrowser from 'expo-web-browser';
 import type { ReactElement } from 'react';
 import { Alert } from 'react-native';
@@ -30,7 +30,7 @@ function renderScreen(ui: ReactElement = <LoginScreen />) {
   return render(<SafeAreaProvider initialMetrics={initialMetrics}>{ui}</SafeAreaProvider>);
 }
 
-function mockAuth(signInWithGoogle = jest.fn(async () => ({ error: null as Error | null }))) {
+function mockAuth(signInWithGoogle = jest.fn(() => Promise.resolve({ error: null as Error | null }))) {
   jest.mocked(useAuth).mockReturnValue({
     session: null,
     user: null,
@@ -97,7 +97,9 @@ describe('LoginScreen — Google sign-in wiring', () => {
     const signInWithGoogle = mockAuth();
     renderScreen();
 
-    fireEvent.press(screen.getByRole('button', { name: /Sign in with Google/i }));
+    await act(async () => {
+      fireEvent.press(screen.getByRole('button', { name: /Sign in with Google/i }));
+    });
 
     await waitFor(() => {
       expect(signInWithGoogle).toHaveBeenCalledTimes(1);
@@ -117,16 +119,22 @@ describe('LoginScreen — Google sign-in wiring', () => {
     renderScreen();
 
     const button = screen.getByRole('button', { name: /Sign in with Google/i });
-    fireEvent.press(button);
-    fireEvent.press(button);
-    fireEvent.press(button);
+    await act(async () => {
+      fireEvent.press(button);
+    });
+    await act(async () => {
+      fireEvent.press(button);
+    });
+    await act(async () => {
+      fireEvent.press(button);
+    });
 
     expect(signInWithGoogle).toHaveBeenCalledTimes(1);
 
-    resolve({ error: null });
-    await waitFor(() => {
-      expect(signInWithGoogle).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      resolve({ error: null });
     });
+    expect(signInWithGoogle).toHaveBeenCalledTimes(1);
   });
 
   test('shows a loading indicator while sign-in is in-flight', async () => {
@@ -141,20 +149,26 @@ describe('LoginScreen — Google sign-in wiring', () => {
     );
     renderScreen();
 
-    fireEvent.press(screen.getByRole('button', { name: /Sign in with Google/i }));
+    await act(async () => {
+      fireEvent.press(screen.getByRole('button', { name: /Sign in with Google/i }));
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId('google-button-spinner')).toBeOnTheScreen();
     });
 
-    resolve({ error: null });
+    await act(async () => {
+      resolve({ error: null });
+    });
   });
 
   test('surfaces an Alert when signInWithGoogle resolves with an error', async () => {
-    mockAuth(jest.fn(async () => ({ error: new Error('oauth failed') })));
+    mockAuth(jest.fn(() => Promise.resolve({ error: new Error('oauth failed') })));
     renderScreen();
 
-    fireEvent.press(screen.getByRole('button', { name: /Sign in with Google/i }));
+    await act(async () => {
+      fireEvent.press(screen.getByRole('button', { name: /Sign in with Google/i }));
+    });
 
     await waitFor(() => {
       expect(alertSpy).toHaveBeenCalled();
@@ -166,17 +180,21 @@ describe('LoginScreen — Google sign-in wiring', () => {
   test('clears the submitting flag after an error so the button works again', async () => {
     const signInWithGoogle = jest
       .fn()
-      .mockResolvedValueOnce({ error: new Error('oauth failed') })
-      .mockResolvedValueOnce({ error: null });
+      .mockReturnValueOnce(Promise.resolve({ error: new Error('oauth failed') }))
+      .mockReturnValueOnce(Promise.resolve({ error: null }));
     mockAuth(signInWithGoogle);
     renderScreen();
 
     const button = screen.getByRole('button', { name: /Sign in with Google/i });
 
-    fireEvent.press(button);
+    await act(async () => {
+      fireEvent.press(button);
+    });
     await waitFor(() => expect(alertSpy).toHaveBeenCalled());
 
-    fireEvent.press(button);
+    await act(async () => {
+      fireEvent.press(button);
+    });
     await waitFor(() => {
       expect(signInWithGoogle).toHaveBeenCalledTimes(2);
     });
@@ -188,7 +206,9 @@ describe('LoginScreen — legal links', () => {
     mockAuth();
     renderScreen();
 
-    fireEvent.press(screen.getByRole('link', { name: /Terms of Service/i }));
+    await act(async () => {
+      fireEvent.press(screen.getByRole('link', { name: /Terms of Service/i }));
+    });
 
     await waitFor(() => {
       expect(WebBrowser.openBrowserAsync).toHaveBeenCalled();
@@ -203,7 +223,9 @@ describe('LoginScreen — legal links', () => {
     mockAuth();
     renderScreen();
 
-    fireEvent.press(screen.getByRole('link', { name: /Privacy Policy/i }));
+    await act(async () => {
+      fireEvent.press(screen.getByRole('link', { name: /Privacy Policy/i }));
+    });
 
     await waitFor(() => {
       expect(WebBrowser.openBrowserAsync).toHaveBeenCalled();
