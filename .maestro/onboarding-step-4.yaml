@@ -1,0 +1,32 @@
+appId: com.workflowtest.app
+---
+# Onboarding Step 4 — Complete (celebration) smoke flow.
+#
+# PRECONDITIONS:
+#   - Dev-client build installed on a booted iOS simulator.
+#   - User is already signed in AND has reached Step 4 (deep link or manual flow).
+#
+# KNOWN LIMITATIONS:
+#   - This flow does not drive Steps 1–3; it assumes the app has been navigated to
+#     Step 4 manually (or via a future deep link). Update with a fully chained
+#     flow once intermediate state can be seeded by a test build.
+#   - The "Get Started" tap will route to `/(tabs)`, which currently does not exist.
+#     The assertion below only checks that we have left Step 4, not where we landed.
+
+- launchApp:
+    clearState: false
+
+- assertVisible: "Step 4 of 4"
+- assertVisible: "You're all set"
+- assertVisible: "Your gentle companion is ready."
+- assertVisible: "Profile saved"
+- assertVisible: "symptoms tracked"
+- assertVisible: "connected"
+- assertVisible: "Language set to"
+- assertVisible: "Get Started"
+- assertVisible: "Your health data is private"
+
+- tapOn: "Get Started"
+
+# After tapping Get Started, onboarding is replaced — assert we left Step 4.
+- assertNotVisible: "Step 4 of 4"

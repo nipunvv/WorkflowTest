@@ -31,6 +31,11 @@ module.exports = {
 
         // Onboarding Step 2 tokens (from issue #3).
         "text-chip-label": "#594d40",
+
+        // Onboarding Step 4 tokens (from issue #15).
+        "text-body-secondary": "#594d40",
+        "border-card": "#e0dbd6",
+        "bg-privacy-pill": "rgba(156,175,136,0.16)",
       },
       boxShadow: {
         button: "0 4px 12px rgba(0,0,0,0.1)",

@@ -73,7 +73,7 @@ function LanguageRow({ language, selected, onSelect }: LanguageRowProps) {
 }
 
 export default function OnboardingStep3Screen() {
-  const { replace, back } = useRouter();
+  const { push, back } = useRouter();
   const [selected, setSelected] = useState<LanguageCode>('en');
 
   const handleSelect = (code: LanguageCode) => {
@@ -81,7 +81,7 @@ export default function OnboardingStep3Screen() {
   };
 
   const handleGetStarted = () => {
-    replace('/(onboarding)/complete');
+    push('/(onboarding)/step-4');
   };
 
   return (
