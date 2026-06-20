@@ -4,7 +4,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import OnboardingStep2Screen from '../step-2';
-import { SYMPTOMS } from '../symptoms';
+import { GOALS } from '../goals';
 
 // Mock expo-router per-file (not globally in jest-setup.ts) — future screens
 // may want different router behavior, and a global mock would couple them.
@@ -48,33 +48,43 @@ beforeEach(() => {
   });
 });
 
-function getChip(label: string) {
+function getGoalRow(label: string) {
   return screen.getByRole('checkbox', { name: new RegExp(label, 'i') });
 }
 
-describe('SYMPTOMS catalog — contract (R1 prerequisite)', () => {
-  test('exposes exactly six symptoms', () => {
-    expect(SYMPTOMS).toHaveLength(6);
+function getOtherRow() {
+  return screen.getByRole('checkbox', { name: /^Other$/i });
+}
+
+describe('GOALS catalog — contract (R1 prerequisite)', () => {
+  test('exposes exactly five preset goals', () => {
+    expect(GOALS).toHaveLength(5);
   });
 
-  test('every symptom has a unique id', () => {
-    const ids = SYMPTOMS.map((s) => s.id);
+  test('every goal has a unique id', () => {
+    const ids = GOALS.map((g) => g.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  test('every symptom has a unique non-empty accessibilityLabel', () => {
-    const labels = SYMPTOMS.map((s) => s.accessibilityLabel);
+  test('every goal has a unique non-empty label', () => {
+    const labels = GOALS.map((g) => g.label);
     expect(new Set(labels).size).toBe(labels.length);
     for (const label of labels) {
       expect(label.length).toBeGreaterThan(0);
     }
   });
+
+  test('every goal has a non-empty emoji', () => {
+    for (const goal of GOALS) {
+      expect(goal.emoji.length).toBeGreaterThan(0);
+    }
+  });
 });
 
 describe('OnboardingStep2Screen — static render (R1)', () => {
-  test('renders the "Step 2 of 3" header caption', () => {
+  test('renders the "Step 2 of 4" header caption', () => {
     renderScreen();
-    expect(screen.getByText('Step 2 of 3')).toBeOnTheScreen();
+    expect(screen.getByText('Step 2 of 4')).toBeOnTheScreen();
   });
 
   test('renders the progress bar with a fill element', () => {
@@ -83,21 +93,26 @@ describe('OnboardingStep2Screen — static render (R1)', () => {
     expect(screen.getByTestId('progress-fill')).toBeOnTheScreen();
   });
 
-  test('renders the primary question', () => {
+  test('renders the H1 question', () => {
     renderScreen();
-    expect(screen.getByText(/What are your primary symptoms/i)).toBeOnTheScreen();
+    expect(screen.getByText(/What matters most to you right now/i)).toBeOnTheScreen();
   });
 
-  test('renders the "Select all that apply" helper text', () => {
+  test('renders the helper text', () => {
     renderScreen();
     expect(screen.getByText(/Select all that apply/i)).toBeOnTheScreen();
   });
 
-  test('renders all six symptom chips by their accessibility label', () => {
+  test('renders all five preset goal rows by their visible label', () => {
     renderScreen();
-    for (const symptom of SYMPTOMS) {
-      expect(getChip(symptom.accessibilityLabel)).toBeOnTheScreen();
+    for (const goal of GOALS) {
+      expect(getGoalRow(goal.label)).toBeOnTheScreen();
     }
+  });
+
+  test('renders the "Other" row', () => {
+    renderScreen();
+    expect(getOtherRow()).toBeOnTheScreen();
   });
 
   test('renders the Next button', () => {
@@ -111,83 +126,144 @@ describe('OnboardingStep2Screen — static render (R1)', () => {
   });
 });
 
-describe('OnboardingStep2Screen — chip toggle (R2)', () => {
-  test('tapping a chip toggles its checked state to true', () => {
+describe('OnboardingStep2Screen — preset goal toggle (R3)', () => {
+  test('tapping a preset goal toggles its checked state from false to true', () => {
     renderScreen();
-    const chip = getChip('dry eyes');
-    expect(chip.props.accessibilityState?.checked).toBe(false);
+    const row = getGoalRow('Find my symptom triggers');
+    expect(row.props.accessibilityState?.checked).toBe(false);
 
-    fireEvent.press(chip);
+    fireEvent.press(row);
 
-    expect(getChip('dry eyes').props.accessibilityState?.checked).toBe(true);
+    expect(getGoalRow('Find my symptom triggers').props.accessibilityState?.checked).toBe(true);
   });
 
-  test('tapping a selected chip deselects it', () => {
+  test('tapping a selected preset goal deselects it', () => {
     renderScreen();
-    const chip = getChip('dry eyes');
-    fireEvent.press(chip);
-    fireEvent.press(getChip('dry eyes'));
-    expect(getChip('dry eyes').props.accessibilityState?.checked).toBe(false);
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
+    expect(getGoalRow('Find my symptom triggers').props.accessibilityState?.checked).toBe(false);
   });
 
-  test('supports multiple chips selected simultaneously', () => {
+  test('supports multiple preset goals selected simultaneously', () => {
     renderScreen();
-    fireEvent.press(getChip('dry eyes'));
-    fireEvent.press(getChip('fatigue'));
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
+    fireEvent.press(getGoalRow('Improve my daily energy'));
 
-    expect(getChip('dry eyes').props.accessibilityState?.checked).toBe(true);
-    expect(getChip('fatigue').props.accessibilityState?.checked).toBe(true);
+    expect(getGoalRow('Find my symptom triggers').props.accessibilityState?.checked).toBe(true);
+    expect(getGoalRow('Improve my daily energy').props.accessibilityState?.checked).toBe(true);
   });
 
-  test('deselecting one chip leaves other selections intact', () => {
+  test('deselecting one preset leaves other selected presets intact', () => {
     renderScreen();
-    fireEvent.press(getChip('dry eyes'));
-    fireEvent.press(getChip('fatigue'));
-    fireEvent.press(getChip('fatigue'));
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
+    fireEvent.press(getGoalRow('Improve my daily energy'));
+    fireEvent.press(getGoalRow('Improve my daily energy'));
 
-    expect(getChip('dry eyes').props.accessibilityState?.checked).toBe(true);
-    expect(getChip('fatigue').props.accessibilityState?.checked).toBe(false);
+    expect(getGoalRow('Find my symptom triggers').props.accessibilityState?.checked).toBe(true);
+    expect(getGoalRow('Improve my daily energy').props.accessibilityState?.checked).toBe(false);
   });
 });
 
-describe('OnboardingStep2Screen — Next enablement (R3)', () => {
+describe('OnboardingStep2Screen — Other row expand/collapse (R4)', () => {
+  test('initial render: "Other" row is unchecked and the input is not in the tree', () => {
+    renderScreen();
+    expect(getOtherRow().props.accessibilityState?.checked).toBe(false);
+    expect(screen.queryByPlaceholderText(/Tell us what matters to you/i)).not.toBeOnTheScreen();
+  });
+
+  test('tapping "Other" reveals the TextInput with the expected placeholder', () => {
+    renderScreen();
+    fireEvent.press(getOtherRow());
+
+    expect(getOtherRow().props.accessibilityState?.checked).toBe(true);
+    expect(screen.getByPlaceholderText(/Tell us what matters to you/i)).toBeOnTheScreen();
+  });
+
+  test('typing into the "Other" input updates its displayed value', () => {
+    renderScreen();
+    fireEvent.press(getOtherRow());
+    const input = screen.getByPlaceholderText(/Tell us what matters to you/i);
+    fireEvent.changeText(input, 'Better sleep');
+
+    expect(screen.getByDisplayValue('Better sleep')).toBeOnTheScreen();
+  });
+
+  test('deselecting "Other" hides the TextInput', () => {
+    renderScreen();
+    fireEvent.press(getOtherRow());
+    fireEvent.press(getOtherRow());
+
+    expect(screen.queryByPlaceholderText(/Tell us what matters to you/i)).not.toBeOnTheScreen();
+  });
+
+  test('deselecting "Other" clears the typed text — re-selecting shows an empty input', () => {
+    renderScreen();
+    fireEvent.press(getOtherRow());
+    fireEvent.changeText(
+      screen.getByPlaceholderText(/Tell us what matters to you/i),
+      'Better sleep',
+    );
+    fireEvent.press(getOtherRow());
+
+    // Reselect — input should be present again, with no prior value
+    fireEvent.press(getOtherRow());
+    const input = screen.getByPlaceholderText(/Tell us what matters to you/i);
+    expect(input.props.value).toBe('');
+    expect(screen.queryByDisplayValue('Better sleep')).not.toBeOnTheScreen();
+  });
+
+  test('selecting "Other" while a preset goal is already selected does not deselect the preset', () => {
+    renderScreen();
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
+    fireEvent.press(getOtherRow());
+
+    expect(getGoalRow('Find my symptom triggers').props.accessibilityState?.checked).toBe(true);
+    expect(getOtherRow().props.accessibilityState?.checked).toBe(true);
+  });
+});
+
+describe('OnboardingStep2Screen — Next enablement (R5)', () => {
   function isNextDisabled() {
     const next = screen.getByRole('button', { name: /^Next$/i });
     return next.props.accessibilityState?.disabled === true;
   }
 
-  test('Next is disabled on initial render (no chips selected)', () => {
+  test('Next is disabled on initial render (no selections)', () => {
     renderScreen();
     expect(isNextDisabled()).toBe(true);
   });
 
-  test('Next is enabled after selecting one chip', () => {
+  test('Next is enabled after selecting one preset goal', () => {
     renderScreen();
-    fireEvent.press(getChip('dry eyes'));
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
     expect(isNextDisabled()).toBe(false);
   });
 
-  test('deselecting the last selected chip re-disables Next', () => {
+  test('Next is enabled when only "Other" is selected, even with empty text', () => {
     renderScreen();
-    fireEvent.press(getChip('dry eyes'));
+    fireEvent.press(getOtherRow());
     expect(isNextDisabled()).toBe(false);
+  });
 
-    fireEvent.press(getChip('dry eyes'));
+  test('Next stays enabled when multiple goals (preset + Other) are selected', () => {
+    renderScreen();
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
+    fireEvent.press(getOtherRow());
+    expect(isNextDisabled()).toBe(false);
+  });
+
+  test('deselecting the last selected goal re-disables Next', () => {
+    renderScreen();
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
     expect(isNextDisabled()).toBe(true);
-  });
-
-  test('Next stays enabled when multiple chips are selected', () => {
-    renderScreen();
-    fireEvent.press(getChip('dry eyes'));
-    fireEvent.press(getChip('fatigue'));
-    expect(isNextDisabled()).toBe(false);
   });
 });
 
-describe('OnboardingStep2Screen — navigation (R4, R5)', () => {
-  test('tapping Next with a selection navigates to /onboarding/step-3', () => {
+describe('OnboardingStep2Screen — navigation (R6, R7)', () => {
+  test('tapping Next with at least one selection navigates to /onboarding/step-3', () => {
     renderScreen();
-    fireEvent.press(getChip('dry eyes'));
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
 
     fireEvent.press(screen.getByRole('button', { name: /^Next$/i }));
 
@@ -195,58 +271,67 @@ describe('OnboardingStep2Screen — navigation (R4, R5)', () => {
     const [arg] = mockPush.mock.calls[0];
     const pathname =
       typeof arg === 'string' ? arg : (arg as { pathname?: string } | undefined)?.pathname;
-    // Accept either the group-stripped URL form (`/onboarding/step-3`) or the
-    // Expo Router typed-routes form (`/(onboarding)/step-3`).
     expect(pathname).toMatch(/\/\(?onboarding\)?\/step-3/);
   });
 
-  test('tapping Next does nothing when no chips are selected', () => {
+  test('tapping Next with no selection does nothing', () => {
     renderScreen();
     fireEvent.press(screen.getByRole('button', { name: /^Next$/i }));
     expect(mockPush).not.toHaveBeenCalled();
   });
 
-  test('tapping Back calls router.back()', () => {
+  test('tapping Back calls router.back() exactly once', () => {
     renderScreen();
     fireEvent.press(screen.getByRole('button', { name: /^Back$/i }));
     expect(mockBack).toHaveBeenCalledTimes(1);
+  });
+
+  test('tapping Back never calls push (no forward navigation leaked)', () => {
+    renderScreen();
+    fireEvent.press(screen.getByRole('button', { name: /^Back$/i }));
     expect(mockPush).not.toHaveBeenCalled();
   });
 });
 
-describe('OnboardingStep2Screen — accessibility (R6)', () => {
-  test('every chip exposes role=checkbox, a non-empty label, and a boolean checked state', () => {
+describe('OnboardingStep2Screen — accessibility (R8, R9)', () => {
+  test('every preset goal row exposes role=checkbox, a non-empty label, and a boolean checked state', () => {
     renderScreen();
-    for (const symptom of SYMPTOMS) {
-      const chip = getChip(symptom.accessibilityLabel);
-      expect(chip.props.accessibilityRole ?? chip.props.role).toBe('checkbox');
-      expect(typeof chip.props.accessibilityLabel).toBe('string');
-      expect(chip.props.accessibilityLabel.length).toBeGreaterThan(0);
-      expect(typeof chip.props.accessibilityState?.checked).toBe('boolean');
+    for (const goal of GOALS) {
+      const row = getGoalRow(goal.label);
+      expect(row.props.accessibilityRole ?? row.props.role).toBe('checkbox');
+      expect(typeof row.props.accessibilityLabel).toBe('string');
+      expect(row.props.accessibilityLabel.length).toBeGreaterThan(0);
+      expect(typeof row.props.accessibilityState?.checked).toBe('boolean');
     }
   });
 
-  test('chip accessibilityLabels contain no emoji characters', () => {
+  test('the "Other" row exposes role=checkbox, a non-empty label, and a boolean checked state', () => {
     renderScreen();
-    // Unicode property \p{Extended_Pictographic} covers all standardized emoji
-    // pictographs — broader than a hand-rolled code-point range and stable
-    // across future catalog additions.
-    const emojiPattern = /\p{Extended_Pictographic}/u;
-    for (const symptom of SYMPTOMS) {
-      const chip = getChip(symptom.accessibilityLabel);
-      expect(chip.props.accessibilityLabel).not.toMatch(emojiPattern);
-    }
+    const row = getOtherRow();
+    expect(row.props.accessibilityRole ?? row.props.role).toBe('checkbox');
+    expect(typeof row.props.accessibilityLabel).toBe('string');
+    expect(row.props.accessibilityLabel.length).toBeGreaterThan(0);
+    expect(typeof row.props.accessibilityState?.checked).toBe('boolean');
   });
 
-  test('only the selected chips report accessibilityState.checked === true', () => {
+  test('when the "Other" input is visible, it exposes a non-empty accessibilityLabel', () => {
     renderScreen();
-    fireEvent.press(getChip('dry eyes'));
-    fireEvent.press(getChip('brain fog'));
+    fireEvent.press(getOtherRow());
+    const input = screen.getByPlaceholderText(/Tell us what matters to you/i);
+    expect(typeof input.props.accessibilityLabel).toBe('string');
+    expect(input.props.accessibilityLabel.length).toBeGreaterThan(0);
+  });
 
-    for (const symptom of SYMPTOMS) {
-      const chip = getChip(symptom.accessibilityLabel);
-      const shouldBeChecked = symptom.id === 'dry-eyes' || symptom.id === 'brain-fog';
-      expect(chip.props.accessibilityState?.checked).toBe(shouldBeChecked);
+  test('only the selected rows report accessibilityState.checked === true', () => {
+    renderScreen();
+    fireEvent.press(getGoalRow('Find my symptom triggers'));
+    fireEvent.press(getOtherRow());
+
+    for (const goal of GOALS) {
+      const row = getGoalRow(goal.label);
+      const shouldBeChecked = goal.id === 'find-symptom-triggers';
+      expect(row.props.accessibilityState?.checked).toBe(shouldBeChecked);
     }
+    expect(getOtherRow().props.accessibilityState?.checked).toBe(true);
   });
 });

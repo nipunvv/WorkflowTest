@@ -102,7 +102,7 @@ export default function OnboardingStep3Screen() {
               className="text-text-subtle"
               style={{ fontSize: 14, fontWeight: '500' }}
             >
-              Step 3 of 3
+              Step 3 of 4
             </Text>
             <View
               testID="progress-bar"
@@ -121,7 +121,7 @@ export default function OnboardingStep3Screen() {
                   height: 6,
                   borderRadius: 3,
                   borderCurve: 'continuous',
-                  width: '100%',
+                  width: '75%',
                 }}
               />
             </View>

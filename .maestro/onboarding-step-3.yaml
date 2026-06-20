@@ -35,7 +35,7 @@ appId: com.workflowtest.app
 # registered (the (onboarding) group is already in app/_layout.tsx).
 - openLink: workflowtest://onboarding/step-3
 
-- assertVisible: "Step 3 of 3"
+- assertVisible: "Step 3 of 4"
 - assertVisible: "Preferred Language"
 - assertVisible: "You can change this later in settings"
 - assertVisible: "English"

@@ -70,9 +70,9 @@ function getBackControl() {
 }
 
 describe('OnboardingStep3Screen — static render (R1)', () => {
-  test('renders the "Step 3 of 3" header caption', () => {
+  test('renders the "Step 3 of 4" header caption', () => {
     renderScreen();
-    expect(screen.getByText('Step 3 of 3')).toBeOnTheScreen();
+    expect(screen.getByText('Step 3 of 4')).toBeOnTheScreen();
   });
 
   test('renders the progress bar with a fill element', () => {
